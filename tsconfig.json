@@ -25,16 +25,5 @@
     "**/dist",
     "**/node_modules",
     "**/scripts"
-  ],
-  "typedocOptions": {
-    "out": "./docs",
-    "exclude": "**/*+(index|public-api|spec).ts",
-    "externalPattern": "**/node_modules/**",
-    "excludeExternals": true,
-    "module": "es2015",
-    "target": "es5",
-    "name": "TypeScript Utilities",
-    "readme": "./.github/README.md",
-    "gitRevision": "master"
-  }
+  ]
 }
