@@ -6,9 +6,9 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna exec -- ts-node ../../scripts/build.ts",
     "commit": "git add --all && git-cz",
-    "docs": "typedoc ./packages && git add ./docs --all && git commit -m \"docs: generate documentation\"",
+    "docs": "typedoc ./packages",
     "postinstall": "npm run bootstrap",
-    "release": "lerna publish --repo-version 1.0.0 && npm run build && npm run docs && lerna exec -- npm publish dist --access public",
+    "release": "npm run docs && git add ./docs --all && lerna publish --repo-version 1.0.0 && npm run build && lerna exec -- npm publish dist --access public",
     "test": "karma start"
   },
   "repository": {
