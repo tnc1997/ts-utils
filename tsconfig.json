@@ -34,6 +34,7 @@
     "module": "es2015",
     "target": "es5",
     "name": "TypeScript Utilities",
-    "readme": "./.github/README.md"
+    "readme": "./.github/README.md",
+    "gitRevision": "master"
   }
 }

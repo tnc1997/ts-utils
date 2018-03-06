@@ -8,7 +8,7 @@
     "commit": "git add --all && git-cz",
     "docs": "typedoc ./packages",
     "postinstall": "npm run bootstrap",
-    "release": "npm run docs && git add ./docs --all && lerna publish --repo-version 1.0.0 && npm run build && lerna exec -- npm publish dist --access public",
+    "release": "npm run docs && git add ./docs --all && lerna publish && git push --follow-tags && npm run build && lerna exec -- npm publish dist --access public",
     "test": "karma start"
   },
   "repository": {
