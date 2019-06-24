@@ -1,0 +1,186 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@microsoft/api-documenter",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/api-extractor",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build-mocha",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build-typescript",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/node-library-build",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@microsoft/rush-stack-compiler-3.2",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "@ts-utils/gulp-core-build-documenter",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "@ts-utils/gulp-core-build-rollup",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "@ts-utils/node-library-build",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "build",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "chai",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "gulp",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "jest",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "mocha",
+      "allowedCategories": [
+        "libraries"
+      ]
+    },
+    {
+      "name": "orchestrator",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "prettier",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "rimraf",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "rollup",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "rollup-plugin-commonjs",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "rollup-plugin-node-resolve",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "rollup-plugin-typescript",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "ts-node",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "tslib",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "tslint",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    },
+    {
+      "name": "tslint-config-prettier",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "tslint-plugin-prettier",
+      "allowedCategories": [
+        "tools"
+      ]
+    },
+    {
+      "name": "typescript",
+      "allowedCategories": [
+        "libraries",
+        "tools"
+      ]
+    }
+  ]
+}
