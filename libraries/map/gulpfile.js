@@ -9,6 +9,6 @@ setConfig({
   shouldWarningsFailBuild: getConfig().production
 });
 
-task("default", serial(parallel(tscCmd, tslintCmd)/*, apiExtractor*/, apiDocumenter, rollup, jest));
+task("default", serial(parallel(tscCmd, tslintCmd), apiExtractor, apiDocumenter, rollup, jest));
 
 initialize(require("gulp"));
