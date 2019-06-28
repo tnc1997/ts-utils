@@ -3,7 +3,7 @@
   "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
   "apiReport": {
     "enabled": true,
-    "reportFolder": "../../common/reviews/api"
+    "reportFolder": "../../../common/reviews/api"
   },
   "docModel": {
     "enabled": true

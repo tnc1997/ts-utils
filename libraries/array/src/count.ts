@@ -5,10 +5,7 @@
  * @return {Map<T2, number>} a map with the criteria from the callback as the keys and the count as the values
  * @public
  */
-export function countBy<T1, T2>(
-  array: T1[],
-  callback: (value: T1) => T2
-): Map<T2, number> {
+export function countBy<T1, T2>(array: T1[], callback: (value: T1) => T2): Map<T2, number> { // tslint:disable-line
   const counts: Map<T2, number> = new Map<T2, number>();
 
   array.forEach((value: T1) => {

@@ -3,184 +3,84 @@
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
   "packages": [
     {
-      "name": "@microsoft/api-documenter",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "name": "@gulp-utils/gulp-core-build-api-documenter",
+      "allowedCategories": [ "libraries" ]
     },
     {
-      "name": "@microsoft/api-extractor",
-      "allowedCategories": [
-        "tools"
-      ]
+      "name": "@gulp-utils/gulp-core-build-documenter",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@gulp-utils/gulp-core-build-rollup",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/api-documenter",
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@microsoft/gulp-core-build",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@microsoft/gulp-core-build-mocha",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@microsoft/gulp-core-build-typescript",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@microsoft/node-library-build",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@microsoft/rush-stack-compiler-3.2",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
-    },
-    {
-      "name": "@ts-utils/gulp-core-build-documenter",
-      "allowedCategories": [
-        "libraries"
-      ]
-    },
-    {
-      "name": "@ts-utils/gulp-core-build-rollup",
-      "allowedCategories": [
-        "libraries"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "@ts-utils/node-library-build",
-      "allowedCategories": [
-        "libraries"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "build",
-      "allowedCategories": [
-        "libraries"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "chai",
-      "allowedCategories": [
-        "libraries"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "gulp",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "jest",
-      "allowedCategories": [
-        "libraries"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "mocha",
-      "allowedCategories": [
-        "libraries"
-      ]
-    },
-    {
-      "name": "orchestrator",
-      "allowedCategories": [
-        "tools"
-      ]
-    },
-    {
-      "name": "prettier",
-      "allowedCategories": [
-        "tools"
-      ]
-    },
-    {
-      "name": "rimraf",
-      "allowedCategories": [
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "rollup",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "rollup-plugin-commonjs",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "rollup-plugin-node-resolve",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
-    },
-    {
-      "name": "rollup-plugin-typescript",
-      "allowedCategories": [
-        "tools"
-      ]
-    },
-    {
-      "name": "ts-node",
-      "allowedCategories": [
-        "tools"
-      ]
-    },
-    {
-      "name": "tslib",
-      "allowedCategories": [
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "tslint",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
-    },
-    {
-      "name": "tslint-config-prettier",
-      "allowedCategories": [
-        "tools"
-      ]
-    },
-    {
-      "name": "tslint-plugin-prettier",
-      "allowedCategories": [
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     },
     {
       "name": "typescript",
-      "allowedCategories": [
-        "libraries",
-        "tools"
-      ]
+      "allowedCategories": [ "libraries" ]
     }
   ]
 }

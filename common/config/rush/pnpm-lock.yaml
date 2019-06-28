@@ -1,30 +1,21 @@
 dependencies:
-  '@microsoft/api-documenter': 7.3.3
+  '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+  '@gulp-utils/gulp-core-build-rollup': 1.0.0
   '@microsoft/gulp-core-build': 3.9.26
-  '@microsoft/gulp-core-build-mocha': 3.5.76
   '@microsoft/gulp-core-build-typescript': 8.1.16
-  '@microsoft/node-library-build': 6.0.67
   '@microsoft/rush-stack-compiler-3.2': 0.3.19
   '@rush-temp/array': 'file:projects/array.tgz'
-  '@rush-temp/gulp-core-build-documenter': 'file:projects/gulp-core-build-documenter.tgz'
-  '@rush-temp/gulp-core-build-rollup': 'file:projects/gulp-core-build-rollup.tgz'
   '@rush-temp/map': 'file:projects/map.tgz'
-  '@types/chai': 4.1.7
-  '@types/gulp': 3.8.32
   '@types/jest': 24.0.15
-  '@types/mocha': 5.2.7
-  '@types/node': 8.5.8
-  chai: 4.2.0
   gulp: 3.9.1
   jest: 24.8.0
-  mocha: 6.1.4
   rollup: 1.16.2
-  rollup-plugin-commonjs: 10.0.0_rollup@1.16.2
-  rollup-plugin-node-resolve: 5.0.4_rollup@1.16.2
+  rollup-plugin-commonjs: 10.0.1
+  rollup-plugin-node-resolve: 5.1.0
   rxjs: 5.5.12
-  tslint: 5.18.0_typescript@3.5.2
+  tslint: 5.18.0
   typescript: 3.5.2
-lockfileVersion: 5.1
+lockfileVersion: 5
 packages:
   /@babel/code-frame/7.0.0:
     dependencies:
@@ -159,6 +150,25 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-r5160ogAvGyHsal38Kux7YYtodEKOj89RGb28ht1jh3SJb08VwRwAKKJL0bGb04Zd/3r9FL3BFIc3bBidYffCA==
+  /@gulp-utils/gulp-core-build-api-documenter/1.0.0:
+    dependencies:
+      '@microsoft/api-documenter': 7.3.3
+      '@microsoft/gulp-core-build': 3.9.26
+      '@types/gulp': 3.8.32
+      gulp: 3.9.1
+    dev: false
+    resolution:
+      integrity: sha512-3aPbAWWDSdTIzBDTn08BiFS9AlkVRaRX3jpODpNZNxNMdIEfGVnzb24JkllWTWx4TSQNohNw+XWYL6jJ78Atcg==
+  /@gulp-utils/gulp-core-build-rollup/1.0.0:
+    dependencies:
+      '@microsoft/gulp-core-build': 3.9.26
+      '@types/gulp': 3.8.32
+      '@types/node': 8.5.8
+      gulp: 3.9.1
+      rollup: 1.16.2
+    dev: false
+    resolution:
+      integrity: sha512-30OpKD3CHq4Z87OFze1FFwGhRoRJkN2M9Lm7jUIaBA3YIUQo/13pB5pb7b1ECJdHv3O06brZ61PJsICCerazZg==
   /@jest/console/24.7.1:
     dependencies:
       '@jest/source-map': 24.3.0
@@ -179,7 +189,7 @@ packages:
       ansi-escapes: 3.2.0
       chalk: 2.4.2
       exit: 0.1.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-changed-files: 24.8.0
       jest-config: 24.8.0
       jest-haste-map: 24.8.1
@@ -255,7 +265,7 @@ packages:
   /@jest/source-map/24.3.0:
     dependencies:
       callsites: 3.1.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       source-map: 0.6.1
     dev: false
     engines:
@@ -291,7 +301,7 @@ packages:
       chalk: 2.4.2
       convert-source-map: 1.6.0
       fast-json-stable-stringify: 2.0.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-haste-map: 24.8.1
       jest-regex-util: 24.3.0
       jest-util: 24.8.0
@@ -429,17 +439,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-mnsL/1ikVWHl8sPNssavaAgtUaIM3hkQ8zeySuApU5dNmsMPzovJPfx9m5JGiMvs1v5QNAIVeiS9jnWwe/7anw==
-  /@microsoft/node-library-build/6.0.67:
-    dependencies:
-      '@microsoft/gulp-core-build': 3.9.26
-      '@microsoft/gulp-core-build-mocha': 3.5.76
-      '@microsoft/gulp-core-build-typescript': 8.1.16
-      '@types/gulp': 3.8.32
-      '@types/node': 8.5.8
-      gulp: 3.9.1
-    dev: false
-    resolution:
-      integrity: sha512-ORRfSHF/STAsYKmv7wAmF0XmhsF+I8R1WfiGqYBozo+xhLlR5S6cOnk5NNGGgndGT37hdqTF3IE0o3j1fDqQAg==
   /@microsoft/rush-stack-compiler-3.2/0.3.19:
     dependencies:
       '@microsoft/api-extractor': 7.2.1
@@ -597,7 +596,7 @@ packages:
       integrity: sha1-vShOV8hPEyXacCur/IKlMoGQwMU=
   /@types/resolve/0.0.8:
     dependencies:
-      '@types/node': 8.5.8
+      '@types/node': 12.0.10
     dev: false
     resolution:
       integrity: sha512-auApPaJf3NPfe18hSoJkp8EbZzer2ISk7o8mCC3M9he/a04+gbMF97NkpD2S8riMGvm4BMRI59/SZQSaLTKpsQ==
@@ -1148,7 +1147,7 @@ packages:
       component-emitter: 1.3.0
       define-property: 1.0.0
       isobject: 3.0.1
-      mixin-deep: 1.3.1
+      mixin-deep: 1.3.2
       pascalcase: 0.1.1
     dev: false
     engines:
@@ -1244,9 +1243,9 @@ packages:
       get-value: 2.0.6
       has-value: 1.0.0
       isobject: 3.0.1
-      set-value: 2.0.0
+      set-value: 2.0.1
       to-object-path: 0.3.0
-      union-value: 1.0.0
+      union-value: 1.0.1
       unset-value: 1.0.0
     dev: false
     engines:
@@ -1583,7 +1582,7 @@ packages:
       integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   /debug/3.2.6:
     dependencies:
-      ms: 2.1.1
+      ms: 2.1.2
     dev: false
     resolution:
       integrity: sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
@@ -2293,7 +2292,7 @@ packages:
       integrity: sha1-QpD60n8T6Jvn8zeZxrxaCr//DRk=
   /fs-extra/7.0.1:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jsonfile: 4.0.0
       universalify: 0.1.2
     dev: false
@@ -2571,10 +2570,10 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha1-dhPHeKGv6mLyXGMKCG1/Osu92Bg=
-  /graceful-fs/4.1.15:
+  /graceful-fs/4.2.0:
     dev: false
     resolution:
-      integrity: sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
+      integrity: sha512-jpSvDPV4Cq/bgtpndIWbI5hmYxhQGHPC4d4cqBPb4DLniCfhJokdXhwhaDuLBGLQdvvRum/UiX6ECVIPvDXqdg==
   /growl/1.10.5:
     dev: false
     engines:
@@ -3470,7 +3469,7 @@ packages:
       chalk: 2.4.2
       exit: 0.1.2
       glob: 7.1.4
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       import-local: 1.0.0
       is-ci: 1.2.1
       istanbul-api: 1.3.7
@@ -3512,7 +3511,7 @@ packages:
       chalk: 2.4.2
       exit: 0.1.2
       glob: 7.1.4
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       import-local: 1.0.0
       is-ci: 1.2.1
       istanbul-api: 1.3.7
@@ -3766,7 +3765,7 @@ packages:
   /jest-haste-map/22.4.3:
     dependencies:
       fb-watchman: 2.0.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-docblock: 22.4.3
       jest-serializer: 22.4.3
       jest-worker: 22.4.3
@@ -3778,7 +3777,7 @@ packages:
   /jest-haste-map/23.6.0:
     dependencies:
       fb-watchman: 2.0.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       invariant: 2.2.4
       jest-docblock: 23.2.0
       jest-serializer: 23.0.1
@@ -3793,7 +3792,7 @@ packages:
       '@jest/types': 24.8.0
       anymatch: 2.0.0
       fb-watchman: 2.0.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       invariant: 2.2.4
       jest-serializer: 24.4.0
       jest-util: 24.8.0
@@ -3813,7 +3812,7 @@ packages:
       chalk: 2.4.2
       co: 4.6.0
       expect: 22.4.3
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       is-generator-fn: 1.0.0
       jest-diff: 22.4.3
       jest-matcher-utils: 22.4.3
@@ -4057,7 +4056,7 @@ packages:
   /jest-runner/23.6.0:
     dependencies:
       exit: 0.1.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-config: 23.6.0
       jest-docblock: 23.2.0
       jest-haste-map: 23.6.0
@@ -4080,7 +4079,7 @@ packages:
       '@jest/types': 24.8.0
       chalk: 2.4.2
       exit: 0.1.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-config: 24.8.0
       jest-docblock: 24.3.0
       jest-haste-map: 24.8.1
@@ -4106,7 +4105,7 @@ packages:
       chalk: 2.4.2
       convert-source-map: 1.6.0
       exit: 0.1.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-config: 22.4.4
       jest-haste-map: 22.4.3
       jest-regex-util: 22.4.3
@@ -4132,7 +4131,7 @@ packages:
       convert-source-map: 1.6.0
       exit: 0.1.2
       fast-json-stable-stringify: 2.0.0
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-config: 23.6.0
       jest-haste-map: 23.6.0
       jest-message-util: 23.4.0
@@ -4162,7 +4161,7 @@ packages:
       chalk: 2.4.2
       exit: 0.1.2
       glob: 7.1.4
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       jest-config: 24.8.0
       jest-haste-map: 24.8.1
       jest-message-util: 24.8.0
@@ -4245,7 +4244,7 @@ packages:
     dependencies:
       callsites: 2.0.0
       chalk: 2.4.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       is-ci: 1.2.1
       jest-message-util: 22.4.3
       mkdirp: 0.5.1
@@ -4257,7 +4256,7 @@ packages:
     dependencies:
       callsites: 2.0.0
       chalk: 2.4.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       is-ci: 1.2.1
       jest-message-util: 23.4.0
       mkdirp: 0.5.1
@@ -4275,7 +4274,7 @@ packages:
       '@jest/types': 24.8.0
       callsites: 3.1.0
       chalk: 2.4.2
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       is-ci: 2.0.0
       mkdirp: 0.5.1
       slash: 2.0.0
@@ -4517,7 +4516,7 @@ packages:
   /jsonfile/4.0.0:
     dev: false
     optionalDependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
     resolution:
       integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
   /jsonify/0.0.0:
@@ -4638,7 +4637,7 @@ packages:
       integrity: sha1-IAkpG7Mc6oYbvxCnwVooyvdcMew=
   /load-json-file/1.1.0:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       parse-json: 2.2.0
       pify: 2.3.0
       pinkie-promise: 2.0.1
@@ -4650,7 +4649,7 @@ packages:
       integrity: sha1-lWkFcI1YtLq0wiYbBPWfMcmTdMA=
   /load-json-file/4.0.0:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -5035,16 +5034,15 @@ packages:
     dev: false
     resolution:
       integrity: sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
-  /mixin-deep/1.3.1:
+  /mixin-deep/1.3.2:
     dependencies:
       for-in: 1.0.2
       is-extendable: 1.0.1
-    deprecated: 'Critical bug fixed in v2.0.1, please upgrade to the latest version.'
     dev: false
     engines:
       node: '>=0.10.0'
     resolution:
-      integrity: sha512-8ZItLHeEgaqEvd5lYBXfm4EZSFCX29Jb9K+lAHhDKzReKBQKj3R+7NOF6tjqYi9t4oI8VUfaWITJQm86wnXGNQ==
+      integrity: sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==
   /mkdirp/0.5.1:
     dependencies:
       minimist: 0.0.8
@@ -5618,7 +5616,7 @@ packages:
       integrity: sha1-mkpoFMrBwM1zNgqV8yCDyOpHRbc=
   /path-type/1.1.0:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       pify: 2.3.0
       pinkie-promise: 2.0.1
     dev: false
@@ -6108,7 +6106,19 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
-  /rollup-plugin-commonjs/10.0.0_rollup@1.16.2:
+  /rollup-plugin-commonjs/10.0.1:
+    dependencies:
+      estree-walker: 0.6.1
+      is-reference: 1.1.2
+      magic-string: 0.25.2
+      resolve: 1.11.1
+      rollup-pluginutils: 2.8.1
+    dev: false
+    peerDependencies:
+      rollup: '>=1.12.0'
+    resolution:
+      integrity: sha512-x0PcCVdEc4J8igv1qe2vttz8JKAKcTs3wfIA3L8xEty3VzxgORLrzZrNWaVMc+pBC4U3aDOb9BnWLAQ8J11vkA==
+  /rollup-plugin-commonjs/10.0.1_rollup@1.16.2:
     dependencies:
       estree-walker: 0.6.1
       is-reference: 1.1.2
@@ -6120,8 +6130,20 @@ packages:
     peerDependencies:
       rollup: '>=1.12.0'
     resolution:
-      integrity: sha512-B8MoX5GRpj3kW4+YaFO/di2JsZkBxNjVmZ9LWjUoTAjq8N9wc7HObMXPsrvolVV9JXVtYSscflXM14A19dXPNQ==
-  /rollup-plugin-node-resolve/5.0.4_rollup@1.16.2:
+      integrity: sha512-x0PcCVdEc4J8igv1qe2vttz8JKAKcTs3wfIA3L8xEty3VzxgORLrzZrNWaVMc+pBC4U3aDOb9BnWLAQ8J11vkA==
+  /rollup-plugin-node-resolve/5.1.0:
+    dependencies:
+      '@types/resolve': 0.0.8
+      builtin-modules: 3.1.0
+      is-module: 1.0.0
+      resolve: 1.11.1
+      rollup-pluginutils: 2.8.1
+    dev: false
+    peerDependencies:
+      rollup: '>=1.11.0'
+    resolution:
+      integrity: sha512-2hwwHNj0s8UEtUNT+lJq8rFWEznP7yJm3GCHBicadF6hiNX1aRARRZIjz2doeTlTGg/hOvJr4C/8+3k9Y/J5Hg==
+  /rollup-plugin-node-resolve/5.1.0_rollup@1.16.2:
     dependencies:
       '@types/resolve': 0.0.8
       builtin-modules: 3.1.0
@@ -6133,7 +6155,7 @@ packages:
     peerDependencies:
       rollup: '>=1.11.0'
     resolution:
-      integrity: sha512-L/fGn+uZOCk/e3uNa3MITUCA3tXndcsaH0Bc7rq7v389vEXMXAYnmF0giEUWbhYxE7PyMGglByVrR8AeIP9klw==
+      integrity: sha512-2hwwHNj0s8UEtUNT+lJq8rFWEznP7yJm3GCHBicadF6hiNX1aRARRZIjz2doeTlTGg/hOvJr4C/8+3k9Y/J5Hg==
   /rollup-pluginutils/2.8.1:
     dependencies:
       estree-walker: 0.6.1
@@ -6252,30 +6274,17 @@ packages:
     dev: false
     resolution:
       integrity: sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
-  /set-value/0.4.3:
-    dependencies:
-      extend-shallow: 2.0.1
-      is-extendable: 0.1.1
-      is-plain-object: 2.0.4
-      to-object-path: 0.3.0
-    deprecated: 'Critical bug fixed in v3.0.1, please upgrade to the latest version.'
-    dev: false
-    engines:
-      node: '>=0.10.0'
-    resolution:
-      integrity: sha1-fbCPnT0i3H945Trzw79GZuzfzPE=
-  /set-value/2.0.0:
+  /set-value/2.0.1:
     dependencies:
       extend-shallow: 2.0.1
       is-extendable: 0.1.1
       is-plain-object: 2.0.4
       split-string: 3.1.0
-    deprecated: 'Critical bug fixed in v3.0.1, please upgrade to the latest version.'
     dev: false
     engines:
       node: '>=0.10.0'
     resolution:
-      integrity: sha512-hw0yxk9GT/Hr5yJEYnHNKYXkIA8mVJgd9ditYZCe16ZczcaELYYcfvaXesNACk2O8O0nTiPQcQhGUQj8JLzeeg==
+      integrity: sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw==
   /shebang-command/1.2.0:
     dependencies:
       shebang-regex: 1.0.0
@@ -6837,7 +6846,7 @@ packages:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev'
     resolution:
       integrity: sha512-sfodBHOucFg6egff8d1BvuofoOQ/nOeYNfbp7LDlKBcLNrL3lmS5zoiDGyOMdT7YsEXAwWpTdAHwOGOc8eRZAw==
-  /tslint/5.18.0_typescript@3.3.4000:
+  /tslint/5.18.0:
     dependencies:
       '@babel/code-frame': 7.0.0
       builtin-modules: 1.1.1
@@ -6851,8 +6860,7 @@ packages:
       resolve: 1.11.1
       semver: 5.7.0
       tslib: 1.10.0
-      tsutils: 2.29.0_typescript@3.3.4000
-      typescript: 3.3.4000
+      tsutils: 2.29.0
     dev: false
     engines:
       node: '>=4.8.0'
@@ -6894,19 +6902,18 @@ packages:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     resolution:
       integrity: sha512-bh5nAtW0tuhvOJnx1GLRn5ScraRLICGyJV5wJhtRWOLsxW70Kk5tZtpK3O/hW6LDnqKS9mlUMPZj9fEMJ0gxqA==
-  /tsutils/2.29.0_typescript@3.2.4:
+  /tsutils/2.29.0:
     dependencies:
       tslib: 1.10.0
-      typescript: 3.2.4
     dev: false
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     resolution:
       integrity: sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==
-  /tsutils/2.29.0_typescript@3.3.4000:
+  /tsutils/2.29.0_typescript@3.2.4:
     dependencies:
       tslib: 1.10.0
-      typescript: 3.3.4000
+      typescript: 3.2.4
     dev: false
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
@@ -6952,13 +6959,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
-  /typescript/3.3.4000:
-    dev: false
-    engines:
-      node: '>=4.2.0'
-    hasBin: true
-    resolution:
-      integrity: sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
   /typescript/3.4.5:
     dev: false
     engines:
@@ -6990,17 +6990,17 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
-  /union-value/1.0.0:
+  /union-value/1.0.1:
     dependencies:
       arr-union: 3.1.0
       get-value: 2.0.6
       is-extendable: 0.1.1
-      set-value: 0.4.3
+      set-value: 2.0.1
     dev: false
     engines:
       node: '>=0.10.0'
     resolution:
-      integrity: sha1-XHHDTLW61dzr4+oM0IIHulqhrqQ=
+      integrity: sha512-tJfXmxMeWYnczCVs7XAEvIV7ieppALdyepWMkHkwciRpZraG/xwT+s2JN8+pr1+8jCRf80FFzvr+MpQeeoF4Xg==
   /unique-stream/1.0.0:
     dev: false
     resolution:
@@ -7238,7 +7238,7 @@ packages:
       integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
   /write-file-atomic/2.4.1:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       imurmurhash: 0.1.4
       signal-exit: 3.0.2
     dev: false
@@ -7246,7 +7246,7 @@ packages:
       integrity: sha512-TGHFeZEZMnv+gBFRfjAcxL5bPHrsGKtnb4qsFAws7/vlh+QfwAaySIw4AXP9ZskTTh5GWu3FLuJhsWVdiJPGvg==
   /write-file-atomic/2.4.3:
     dependencies:
-      graceful-fs: 4.1.15
+      graceful-fs: 4.2.0
       imurmurhash: 0.1.4
       signal-exit: 3.0.2
     dev: false
@@ -7427,62 +7427,35 @@ packages:
       integrity: sha512-DUOKC/IhbkdLKKiV89gw9DUauTV8U/8yJl1sjf6MtDmzevLKOF2duNJ495S3MFVjqZarr+qNGCPbkg4mu4PpLw==
   'file:projects/array.tgz':
     dependencies:
+      '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+      '@gulp-utils/gulp-core-build-rollup': 1.0.0
       '@microsoft/gulp-core-build': 3.9.26
       '@microsoft/gulp-core-build-mocha': 3.5.76
       '@microsoft/gulp-core-build-typescript': 8.1.16
       '@microsoft/rush-stack-compiler-3.2': 0.3.19
       '@types/chai': 4.1.7
+      '@types/jest': 24.0.15
       '@types/mocha': 5.2.7
       chai: 4.2.0
       gulp: 3.9.1
+      jest: 24.8.0
       mocha: 6.1.4
       rollup: 1.16.2
-      rollup-plugin-commonjs: 10.0.0_rollup@1.16.2
-      rollup-plugin-node-resolve: 5.0.4_rollup@1.16.2
+      rollup-plugin-commonjs: 10.0.1_rollup@1.16.2
+      rollup-plugin-node-resolve: 5.1.0_rollup@1.16.2
       rxjs: 5.5.12
       tslint: 5.18.0_typescript@3.5.2
       typescript: 3.5.2
     dev: false
     name: '@rush-temp/array'
     resolution:
-      integrity: sha512-vhWQJPE3nU9avRx6Z/o9Tr0+J9p36aH/G9KroXm8gZVaprL0OShBfhcsMAnWvgDoJfEkNIlMQITExqaGG5KAsA==
+      integrity: sha512-w+EOsXTLXOAMXuwcPrMfDt2c+xFdjppJrMfOawmAzWSUCxuGh+J3ZEa2OHeTILV1jFIIciCpNJK2gvBKEE5Ebw==
       tarball: 'file:projects/array.tgz'
-    version: 0.0.0
-  'file:projects/gulp-core-build-documenter.tgz':
-    dependencies:
-      '@microsoft/api-documenter': 7.3.3
-      '@microsoft/gulp-core-build': 3.9.26
-      '@microsoft/node-library-build': 6.0.67
-      '@microsoft/rush-stack-compiler-3.2': 0.3.19
-      '@types/gulp': 3.8.32
-      gulp: 3.9.1
-      tslint: 5.18.0_typescript@3.3.4000
-      typescript: 3.3.4000
-    dev: false
-    name: '@rush-temp/gulp-core-build-documenter'
-    resolution:
-      integrity: sha512-ricISTa/RULV6XO/Bg61UyyzgGoaNOCGU8NETwZHD+AteQHYnRvjLSPv/Dqzg04Fftb1kmKiIJvlYvtDgOIVJA==
-      tarball: 'file:projects/gulp-core-build-documenter.tgz'
-    version: 0.0.0
-  'file:projects/gulp-core-build-rollup.tgz':
-    dependencies:
-      '@microsoft/gulp-core-build': 3.9.26
-      '@microsoft/node-library-build': 6.0.67
-      '@microsoft/rush-stack-compiler-3.2': 0.3.19
-      '@types/gulp': 3.8.32
-      '@types/node': 8.5.8
-      gulp: 3.9.1
-      rollup: 1.16.2
-      tslint: 5.18.0_typescript@3.3.4000
-      typescript: 3.3.4000
-    dev: false
-    name: '@rush-temp/gulp-core-build-rollup'
-    resolution:
-      integrity: sha512-LRHkdd0gLhTFNUja1y5eUN612J+t5ZtJ+qNBw4kCcArE+OMJdQtawKm2sHqDzymcuQlWQ1kcnfycqzpcoNKghw==
-      tarball: 'file:projects/gulp-core-build-rollup.tgz'
     version: 0.0.0
   'file:projects/map.tgz':
     dependencies:
+      '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+      '@gulp-utils/gulp-core-build-rollup': 1.0.0
       '@microsoft/gulp-core-build': 3.9.26
       '@microsoft/gulp-core-build-mocha': 3.5.76
       '@microsoft/gulp-core-build-typescript': 8.1.16
@@ -7492,37 +7465,28 @@ packages:
       gulp: 3.9.1
       jest: 24.8.0
       rollup: 1.16.2
-      rollup-plugin-commonjs: 10.0.0_rollup@1.16.2
-      rollup-plugin-node-resolve: 5.0.4_rollup@1.16.2
-      tslint: 5.18.0_typescript@3.3.4000
-      typescript: 3.3.4000
+      rollup-plugin-commonjs: 10.0.1_rollup@1.16.2
+      rollup-plugin-node-resolve: 5.1.0_rollup@1.16.2
+      tslint: 5.18.0_typescript@3.5.2
+      typescript: 3.5.2
     dev: false
     name: '@rush-temp/map'
     resolution:
-      integrity: sha512-M7XIX2dKaK9RP9zZkQjhrWRddewFDxjJcU5nJRYzBzR/ZgBOShDL8AXj9svnS8QoOI34bY2K6XG1T+fgHZj9Yw==
+      integrity: sha512-LsnlCW+PxLGZFz7Qsp86H3fkVRuMWbeR3CYjjjH4wc5vGkaIiBoKkkzYca+Z41e61o4BtGbwE/v6tPKce0B6bQ==
       tarball: 'file:projects/map.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
-  '@microsoft/api-documenter': ^7.0.0
+  '@gulp-utils/gulp-core-build-api-documenter': ^1.0.0
+  '@gulp-utils/gulp-core-build-rollup': ^1.0.0
   '@microsoft/gulp-core-build': ^3.0.0
-  '@microsoft/gulp-core-build-mocha': ^3.0.0
   '@microsoft/gulp-core-build-typescript': ^8.0.0
-  '@microsoft/node-library-build': ^6.0.0
   '@microsoft/rush-stack-compiler-3.2': ~0.3.0
   '@rush-temp/array': 'file:./projects/array.tgz'
-  '@rush-temp/gulp-core-build-documenter': 'file:./projects/gulp-core-build-documenter.tgz'
-  '@rush-temp/gulp-core-build-rollup': 'file:./projects/gulp-core-build-rollup.tgz'
   '@rush-temp/map': 'file:./projects/map.tgz'
-  '@types/chai': ^4.0.0
-  '@types/gulp': 3.8.32
   '@types/jest': ^24.0.0
-  '@types/mocha': ^5.0.0
-  '@types/node': 8.5.8
-  chai: ^4.0.0
   gulp: ~3.9.0
   jest: ^24.0.0
-  mocha: ^6.0.0
   rollup: ^1.0.0
   rollup-plugin-commonjs: ^10.0.0
   rollup-plugin-node-resolve: ^5.0.0

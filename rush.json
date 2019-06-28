@@ -158,7 +158,7 @@
      * you might configure your system's trigger to look for a special string such as "[skip-ci]"
      * in the commit message, and then customize Rush's message to contain that string.
      */
-    "versionBumpCommitMessage": "release: cut the vX.Y.Z release [skip ci]"
+    "versionBumpCommitMessage": "release: applying package updates [skip ci]"
   },
   "repository": {
     /**
@@ -176,7 +176,7 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote master branch.
      */
-    "url": "https://github.com/tnc1997/ts-utils"
+    "url": "https://github.com/tnc1997/ts-utils.git"
   },
   /**
    * Event hooks are customized script actions that Rush executes when specific events occur
@@ -314,18 +314,6 @@
     //   "projectFolder": "tools/my-toolchain",
     //   "reviewCategory": "tools"
     // }
-    {
-      "packageName": "@ts-utils/gulp-core-build-documenter",
-      "projectFolder": "core-build/gulp-core-build-documenter",
-      "reviewCategory": "libraries",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@ts-utils/gulp-core-build-rollup",
-      "projectFolder": "core-build/gulp-core-build-rollup",
-      "reviewCategory": "libraries",
-      "shouldPublish": false
-    },
     {
       "packageName": "@ts-utils/array",
       "projectFolder": "libraries/array",

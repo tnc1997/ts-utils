@@ -26,11 +26,11 @@
     "access": "public"
   },
   "devDependencies": {
+    "@gulp-utils/gulp-core-build-api-documenter": "^1.0.0",
+    "@gulp-utils/gulp-core-build-rollup": "^1.0.0",
     "@microsoft/gulp-core-build": "^3.0.0",
     "@microsoft/gulp-core-build-typescript": "^8.0.0",
     "@microsoft/rush-stack-compiler-3.2": "~0.3.0",
-    "@ts-utils/gulp-core-build-documenter": "^1.0.0",
-    "@ts-utils/gulp-core-build-rollup": "^1.0.0",
     "@types/jest": "^24.0.0",
     "gulp": "~3.9.0",
     "jest": "^24.0.0",

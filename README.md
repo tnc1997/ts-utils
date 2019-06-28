@@ -1,3 +1,1 @@
-![Logo](logo.svg)
-
 # Utils
