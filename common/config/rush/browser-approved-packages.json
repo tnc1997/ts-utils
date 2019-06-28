@@ -1,0 +1,86 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@gulp-utils/gulp-core-build-api-documenter",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@gulp-utils/gulp-core-build-documenter",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@gulp-utils/gulp-core-build-rollup",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/api-documenter",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build-mocha",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/gulp-core-build-typescript",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/node-library-build",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@microsoft/rush-stack-compiler-3.2",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "@ts-utils/node-library-build",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "build",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "chai",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "gulp",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "jest",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "mocha",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "rollup",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "rollup-plugin-commonjs",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "rollup-plugin-node-resolve",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "tslint",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "typescript",
+      "allowedCategories": [ "libraries" ]
+    }
+  ]
+}
