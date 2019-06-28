@@ -11,6 +11,10 @@
       "allowedCategories": [ "libraries" ]
     },
     {
+      "name": "@gulp-utils/gulp-core-build-jest",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
       "name": "@gulp-utils/gulp-core-build-rollup",
       "allowedCategories": [ "libraries" ]
     },
@@ -72,6 +76,10 @@
     },
     {
       "name": "rollup-plugin-node-resolve",
+      "allowedCategories": [ "libraries" ]
+    },
+    {
+      "name": "ts-jest",
       "allowedCategories": [ "libraries" ]
     },
     {
