@@ -1,5 +1,6 @@
 dependencies:
   '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+  '@gulp-utils/gulp-core-build-jest': 1.0.0
   '@gulp-utils/gulp-core-build-rollup': 1.0.0
   '@microsoft/gulp-core-build': 3.9.26
   '@microsoft/gulp-core-build-typescript': 8.1.16
@@ -13,6 +14,7 @@ dependencies:
   rollup-plugin-commonjs: 10.0.1
   rollup-plugin-node-resolve: 5.1.0
   rxjs: 5.5.12
+  ts-jest: 24.0.2
   tslint: 5.18.0
   typescript: 3.5.2
 lockfileVersion: 5
@@ -159,6 +161,19 @@ packages:
     dev: false
     resolution:
       integrity: sha512-3aPbAWWDSdTIzBDTn08BiFS9AlkVRaRX3jpODpNZNxNMdIEfGVnzb24JkllWTWx4TSQNohNw+XWYL6jJ78Atcg==
+  /@gulp-utils/gulp-core-build-jest/1.0.0:
+    dependencies:
+      '@jest/core': 24.8.0
+      '@jest/test-result': 24.8.0
+      '@jest/types': 24.8.0
+      '@microsoft/gulp-core-build': 3.9.26
+      '@types/gulp': 3.8.32
+      '@types/node': 8.5.8
+      gulp: 3.9.1
+      jest-silent-reporter: 0.1.2
+    dev: false
+    resolution:
+      integrity: sha512-uGq2YS7OTeWYzzQZh3Bojcs96M+pPuPGaJc3MZN1+a+SkqXoB3Ys70qqk5D/L8cDgK07DMPUtSttplhcIBp+Hg==
   /@gulp-utils/gulp-core-build-rollup/1.0.0:
     dependencies:
       '@microsoft/gulp-core-build': 3.9.26
@@ -1214,6 +1229,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-qhAVI1+Av2X7qelOfAIYwXONood6XlZE/fXaBSmW/T5SzLAmCgzi+eiWE7fUvbHaeNBQH13UftjpXxsfLkMpgw==
+  /bs-logger/0.2.6:
+    dependencies:
+      fast-json-stable-stringify: 2.0.0
+    dev: false
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==
   /bser/2.1.0:
     dependencies:
       node-int64: 0.4.0
@@ -4195,6 +4218,13 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-k//0DtglVstc1fv+GY/VHDIjrtNjdYvYjMlbLUed4kxrE92sIUewOi5Hj3vrpB8CXfkJntRPDRjCrCvUhBdL8Q==
+  /jest-silent-reporter/0.1.2:
+    dependencies:
+      chalk: 2.4.2
+      jest-util: 24.8.0
+    dev: false
+    resolution:
+      integrity: sha512-w/qc9NvWqdX0vZv6TUG4EE15d72+JxQJYh+3hqq8cTi3BnfBOtwNtL3T6TwkZSy/sfc3REW5niz0eSBPTIvWnA==
   /jest-snapshot/22.4.3:
     dependencies:
       chalk: 2.4.2
@@ -4861,6 +4891,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==
+  /make-error/1.3.5:
+    dev: false
+    resolution:
+      integrity: sha512-c3sIjNUow0+8swNwVpqoH4YCShKNFkMaw6oH1mNS2haDZQqkeZFlHS3dhoeEbKKmJB4vXpJucU6oH75aDYeE9g==
   /make-iterator/1.0.1:
     dependencies:
       kind-of: 6.0.2
@@ -6808,6 +6842,45 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+  /ts-jest/24.0.2:
+    dependencies:
+      bs-logger: 0.2.6
+      buffer-from: 1.1.1
+      fast-json-stable-stringify: 2.0.0
+      json5: 2.1.0
+      make-error: 1.3.5
+      mkdirp: 0.5.1
+      resolve: 1.11.1
+      semver: 5.7.0
+      yargs-parser: 10.1.0
+    dev: false
+    engines:
+      node: '>= 6'
+    hasBin: true
+    peerDependencies:
+      jest: '>=24 <25'
+    resolution:
+      integrity: sha512-h6ZCZiA1EQgjczxq+uGLXQlNgeg02WWJBbeT8j6nyIBRQdglqbvzDoHahTEIiS6Eor6x8mK6PfZ7brQ9Q6tzHw==
+  /ts-jest/24.0.2_jest@24.8.0:
+    dependencies:
+      bs-logger: 0.2.6
+      buffer-from: 1.1.1
+      fast-json-stable-stringify: 2.0.0
+      jest: 24.8.0
+      json5: 2.1.0
+      make-error: 1.3.5
+      mkdirp: 0.5.1
+      resolve: 1.11.1
+      semver: 5.7.0
+      yargs-parser: 10.1.0
+    dev: false
+    engines:
+      node: '>= 6'
+    hasBin: true
+    peerDependencies:
+      jest: '>=24 <25'
+    resolution:
+      integrity: sha512-h6ZCZiA1EQgjczxq+uGLXQlNgeg02WWJBbeT8j6nyIBRQdglqbvzDoHahTEIiS6Eor6x8mK6PfZ7brQ9Q6tzHw==
   /tslib/1.10.0:
     dev: false
     resolution:
@@ -7287,6 +7360,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI=
+  /yargs-parser/10.1.0:
+    dependencies:
+      camelcase: 4.1.0
+    dev: false
+    resolution:
+      integrity: sha512-VCIyR1wJoEBZUqk5PA+oOBF6ypbwh5aNB3I50guxAL/quggdfs4TtNHQrSazFA3fYZ+tEqfs0zIGlv0c/rgjbQ==
   /yargs-parser/11.1.1:
     dependencies:
       camelcase: 5.3.1
@@ -7428,6 +7507,7 @@ packages:
   'file:projects/array.tgz':
     dependencies:
       '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+      '@gulp-utils/gulp-core-build-jest': 1.0.0
       '@gulp-utils/gulp-core-build-rollup': 1.0.0
       '@microsoft/gulp-core-build': 3.9.26
       '@microsoft/gulp-core-build-mocha': 3.5.76
@@ -7444,17 +7524,19 @@ packages:
       rollup-plugin-commonjs: 10.0.1_rollup@1.16.2
       rollup-plugin-node-resolve: 5.1.0_rollup@1.16.2
       rxjs: 5.5.12
+      ts-jest: 24.0.2_jest@24.8.0
       tslint: 5.18.0_typescript@3.5.2
       typescript: 3.5.2
     dev: false
     name: '@rush-temp/array'
     resolution:
-      integrity: sha512-w+EOsXTLXOAMXuwcPrMfDt2c+xFdjppJrMfOawmAzWSUCxuGh+J3ZEa2OHeTILV1jFIIciCpNJK2gvBKEE5Ebw==
+      integrity: sha512-zuhmnheOy46MfLxyYrqPT2ZbgHRqGnIn5FpOs9X2P38EC/ob/wC7ZdqmQODz1FTx6l2hV5m4+L/YIMHv8nvHVA==
       tarball: 'file:projects/array.tgz'
     version: 0.0.0
   'file:projects/map.tgz':
     dependencies:
       '@gulp-utils/gulp-core-build-api-documenter': 1.0.0
+      '@gulp-utils/gulp-core-build-jest': 1.0.0
       '@gulp-utils/gulp-core-build-rollup': 1.0.0
       '@microsoft/gulp-core-build': 3.9.26
       '@microsoft/gulp-core-build-mocha': 3.5.76
@@ -7464,20 +7546,23 @@ packages:
       '@types/mocha': 5.2.7
       gulp: 3.9.1
       jest: 24.8.0
+      jest-silent-reporter: 0.1.2
       rollup: 1.16.2
       rollup-plugin-commonjs: 10.0.1_rollup@1.16.2
       rollup-plugin-node-resolve: 5.1.0_rollup@1.16.2
+      ts-jest: 24.0.2_jest@24.8.0
       tslint: 5.18.0_typescript@3.5.2
       typescript: 3.5.2
     dev: false
     name: '@rush-temp/map'
     resolution:
-      integrity: sha512-LsnlCW+PxLGZFz7Qsp86H3fkVRuMWbeR3CYjjjH4wc5vGkaIiBoKkkzYca+Z41e61o4BtGbwE/v6tPKce0B6bQ==
+      integrity: sha512-GPSb5MYtxYp59Ij6DShNZFqep5xDRH86rdi0Boqek9T7Sdr3mq2LRwz/YPAvl/qw8Zfs4M044T1tvMFWPT7L8Q==
       tarball: 'file:projects/map.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
   '@gulp-utils/gulp-core-build-api-documenter': ^1.0.0
+  '@gulp-utils/gulp-core-build-jest': ^1.0.0
   '@gulp-utils/gulp-core-build-rollup': ^1.0.0
   '@microsoft/gulp-core-build': ^3.0.0
   '@microsoft/gulp-core-build-typescript': ^8.0.0
@@ -7491,5 +7576,6 @@ specifiers:
   rollup-plugin-commonjs: ^10.0.0
   rollup-plugin-node-resolve: ^5.0.0
   rxjs: ^5.0.0
+  ts-jest: ^24.0.0
   tslint: ^5.0.0
   typescript: ^3.0.0
