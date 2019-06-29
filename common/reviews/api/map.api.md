@@ -5,13 +5,25 @@
 ```ts
 
 // @public
-export function entries<T1, T2>(map: Map<T1, T2>): Array<[T1, T2]>;
+export function containsKey<T1, T2>(map: Map<T1, T2>, key: T1): boolean;
+
+// @public
+export function containsValue<T1, T2>(map: Map<T1, T2>, value: T2): boolean;
+
+// @public
+export function entries<T1, T2>(map: Map<T1, T2>): [T1, T2][];
+
+// @public
+export function keys<T1, T2>(map: Map<T1, T2>): T1[];
 
 // @public
 export function max<T>(map: Map<T, number>): [T, number];
 
 // @public
 export function min<T>(map: Map<T, number>): [T, number];
+
+// @public
+export function values<T1, T2>(map: Map<T1, T2>): T2[];
 
 
 // (No @packageDocumentation comment for this package)

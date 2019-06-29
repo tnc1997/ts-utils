@@ -4,6 +4,6 @@
  * @returns an array of the entries of the map
  * @public
  */
-export function entries<T1, T2>(map: Map<T1, T2>): Array<[T1, T2]> {
+export function entries<T1, T2>(map: Map<T1, T2>): [T1, T2][] {
   return Array.from(map.entries());
 }
