@@ -1,7 +1,7 @@
 /**
- * Return the sum of the values of a numerical array.
- * @param {number[]} array the array to get the sum for
- * @return {number} the sum of the values
+ * Returns the sum of the values of a numerical array.
+ * @param array - the array to get the sum of
+ * @returns the sum of the values
  * @public
  */
 export function sum(array: number[]): number {

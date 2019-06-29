@@ -1,7 +1,7 @@
 /**
- * Return the maximum value of an array.
- * @param {number[]} array the array to get the maximum for
- * @return {number} the maximum value
+ * Returns the maximum value of an array.
+ * @param array - the array to get the maximum of
+ * @returns the maximum value
  * @public
  */
 export function max(array: number[]): number {

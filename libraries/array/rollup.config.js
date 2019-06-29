@@ -11,32 +11,22 @@ module.exports = [
       {file: pkg.main, format: 'cjs', sourcemap: true},
       {file: pkg.module, format: 'es', sourcemap: true}
     ],
+    onwarn: () => {},
     external: [
       ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {}),
-      'rxjs/observable/forkJoin',
-      'rxjs/operators'
+      ...Object.keys(pkg.peerDependencies || {})
     ]
   },
   // UMD (for browsers) build.
   {
     input: './lib/index.js',
     output: {name: 'array', file: pkg.browser, format: 'umd', sourcemap: true},
+    onwarn: () => {},
     plugins: [
       nodeResolve({
         browser: true
       }),
-      commonjs({
-        include: [
-          /node_modules/,
-          "../map/dist/index.umd.js"
-        ],
-        namedExports: {
-          "../map/dist/index.umd.js": [
-            "max"
-          ]
-        }
-      })
+      commonjs()
     ]
   }
 ];

@@ -4,7 +4,7 @@
 
 ## sum() function
 
-Return the sum of the values of a numerical array.
+Returns the sum of the values of a numerical array.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function sum(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to get the sum of |
 
 <b>Returns:</b>
 
 `number`
+
+the sum of the values
 

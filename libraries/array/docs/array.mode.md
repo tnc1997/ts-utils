@@ -4,7 +4,7 @@
 
 ## mode() function
 
-Return the mode of an array of numerical values.
+Returns the mode of an array of numerical values.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function mode(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to calculate the mode of |
 
 <b>Returns:</b>
 
 `number`
+
+the mode of the array
 

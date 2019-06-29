@@ -1,12 +1,10 @@
-import {max} from '@ts-utils/map';
-
-import {frequency} from './frequency';
+import {frequencies} from './frequencies';
 import {sum} from './sum';
 
 /**
- * Return the mean of an array of numerical values.
- * @param {number[]} array the array to calculate the mean for
- * @return {number} the mean of the array
+ * Returns the mean of an array of numerical values.
+ * @param array - the array to calculate the mean of
+ * @returns the mean of the array
  * @public
  */
 export function mean(array: number[]): number {
@@ -14,9 +12,9 @@ export function mean(array: number[]): number {
 }
 
 /**
- * Return the median of an array of numerical values.
- * @param {number[]} array the array to calculate the median for
- * @return {number} the median of the array
+ * Returns the median of an array of numerical values.
+ * @param array - the array to calculate the median of
+ * @returns the median of the array
  * @public
  */
 export function median(array: number[]): number {
@@ -35,19 +33,31 @@ export function median(array: number[]): number {
 }
 
 /**
- * Return the mode of an array of numerical values.
- * @param {number[]} array the array to calculate the mode for
- * @return {number} the mode of the array
+ * Returns the mode of an array of numerical values.
+ * @param array - the array to calculate the mode of
+ * @returns the mode of the array
  * @public
  */
 export function mode(array: number[]): number {
-  return max(frequency(array))[0];
+  const _frequencies: Map<number, number> = frequencies(array);
+
+  let _max: number = -1;
+  let _mode: number = -1;
+
+  _frequencies.forEach((value, key) => {
+    if (_max < value) {
+      _max = value;
+      _mode = key;
+    }
+  });
+
+  return _mode;
 }
 
 /**
- * Return the range of an array of numerical values.
- * @param {number[]} array the array to calculate the range for
- * @return {number} the range of the array
+ * Returns the range of an array of numerical values.
+ * @param array - the array to calculate the range of
+ * @returns the range of the array
  * @public
  */
 export function range(array: number[]): number {

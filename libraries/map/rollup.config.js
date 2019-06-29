@@ -11,6 +11,7 @@ module.exports = [
       {file: pkg.main, format: 'cjs', sourcemap: true},
       {file: pkg.module, format: 'es', sourcemap: true}
     ],
+    onwarn: () => {},
     external: [
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {})
@@ -20,6 +21,7 @@ module.exports = [
   {
     input: './lib/index.js',
     output: {name: 'array', file: pkg.browser, format: 'umd', sourcemap: true},
+    onwarn: () => {},
     plugins: [
       nodeResolve({
         browser: true

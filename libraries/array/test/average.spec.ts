@@ -1,6 +1,6 @@
 import {mean, median, mode, range} from '../src/average';
 
-describe('array-average', () => {
+describe('average', () => {
   it('should return the mean of the values of an array', () => {
     expect(mean([1, 2, 3, 4, 5])).toEqual(3);
 

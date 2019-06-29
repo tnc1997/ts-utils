@@ -4,7 +4,7 @@
 
 ## min() function
 
-Return the minimum value of an array.
+Returns the minimum value of an array.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function min(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to get the minimum of |
 
 <b>Returns:</b>
 
 `number`
+
+the minimum value
 

@@ -1,17 +1,13 @@
-import {Observable} from 'rxjs/Observable';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-
 /**
- * Asynchronously map the values in an array.
- * @param {T1[]} array the array to map
- * @param {function(value: T1, index: number, array: T1[]): Observable<T2>} callback the asynchronous map function
- * to be performed on every value in the array
- * @return {Observable<T2[]>} the mapped array
+ * Maps the values in an array asynchronously.
+ * @param array - the array to map
+ * @param callback - the asynchronous map function
+ * @returns the mapped array
  * @public
  */
-export function map<T1, T2>(
+export async function mapAsync<T1, T2>( // tslint:disable-line:export-name
   array: T1[],
-  callback: (value: T1, index: number, array: T1[]) => Observable<T2>
-): Observable<T2[]> {
-  return forkJoin(array.map(callback));
+  callback: (value: T1, index: number, array: T1[]) => Promise<T2>
+): Promise<T2[]> {
+  return Promise.all(array.map(callback));
 }
