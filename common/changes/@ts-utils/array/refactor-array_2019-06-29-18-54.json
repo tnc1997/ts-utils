@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@ts-utils/array",
+      "comment": "Refactor the package and replace `Observable` with `Promise`.",
+      "type": "major"
+    }
+  ],
+  "packageName": "@ts-utils/array",
+  "email": "tnc1997@virginmedia.com"
+}
