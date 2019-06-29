@@ -1,10 +1,10 @@
 import {min} from '../src/min';
 
-describe('map-min', () => {
+describe('min', () => {
   it('should return the entry with the minimum value of a map', () => {
-    const array: Array<[string, number]> = [['a', 3], ['b', 1], ['c', 2]];
+    const array: [string, number][] = [['a', 3], ['b', 1], ['c', 2]];
     const map: Map<string, number> = new Map<string, number>(array);
 
-    expect(min(map)).toEqual(['b', 1]);
+    expect(min<string>(map)).toEqual(['b', 1]);
   });
 });

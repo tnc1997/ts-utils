@@ -9,7 +9,7 @@ Returns a two dimensional array of the entries of a map.
 <b>Signature:</b>
 
 ```typescript
-export declare function entries<T1, T2>(map: Map<T1, T2>): Array<[T1, T2]>;
+export declare function entries<T1, T2>(map: Map<T1, T2>): [T1, T2][];
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function entries<T1, T2>(map: Map<T1, T2>): Array<[T1, T2]>;
 
 <b>Returns:</b>
 
-`Array<[T1, T2]>`
+`[T1, T2][]`
 
 an array of the entries of the map
 
