@@ -4,7 +4,7 @@
 
 ## mean() function
 
-Return the mean of an array of numerical values.
+Returns the mean of an array of numerical values.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function mean(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to calculate the mean of |
 
 <b>Returns:</b>
 
 `number`
+
+the mean of the array
 

@@ -4,7 +4,7 @@
 
 ## contains() function
 
-Check if an array contains a specified value.
+Determines if an array contains a specified value.
 
 <b>Signature:</b>
 
@@ -16,10 +16,12 @@ export declare function contains<T>(array: T[], value: T): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>T[]</code> |  |
-|  value | <code>T</code> |  |
+|  array | <code>T[]</code> | the array to search |
+|  value | <code>T</code> | the value to search for |
 
 <b>Returns:</b>
 
 `boolean`
+
+true if the array contains the value; otherwise, false
 

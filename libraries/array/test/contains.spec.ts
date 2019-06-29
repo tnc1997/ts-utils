@@ -1,6 +1,6 @@
 import {contains} from '../src/contains';
 
-describe('array-contains', () => {
+describe('contains', () => {
   it('should check if an array does contain a specified value', () => {
     expect(contains([1, 2, 3, 4, 5], 5)).toBeTruthy();
 

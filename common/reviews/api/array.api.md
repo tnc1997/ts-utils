@@ -4,25 +4,25 @@
 
 ```ts
 
-import { Observable } from 'rxjs/Observable';
-
 // @public
 export function contains<T>(array: T[], value: T): boolean;
 
 // @public
-export function countBy<T1, T2>(array: T1[], callback: (value: T1) => T2): Map<T2, number>;
+export function count<T>(array: T[]): number;
 
 // @public
-export function filter<T>(array: T[], callback: (value: T, index: number, array: T[]) => Observable<boolean>): Observable<T[]>;
-
-// @public (undocumented)
-export function frequency<T>(array: T[], value: T): number;
-
-// @public (undocumented)
-export function frequency<T>(array: T[], value?: T): Map<T, number>;
+export function count<T>(array: T[], callback: (value: T) => boolean): number;
 
 // @public
-export function map<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Observable<T2>): Observable<T2[]>;
+export function filterAsync<T>(// tslint:disable-line:export-name
+array: T[], callback: (value: T, index: number, array: T[]) => Promise<boolean>): Promise<T[]>;
+
+// @public
+export function frequencies<T>(array: T[]): Map<T, number>;
+
+// @public
+export function mapAsync<T1, T2>(// tslint:disable-line:export-name
+array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>): Promise<T2[]>;
 
 // @public
 export function max(array: number[]): number;

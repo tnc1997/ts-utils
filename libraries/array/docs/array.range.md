@@ -4,7 +4,7 @@
 
 ## range() function
 
-Return the range of an array of numerical values.
+Returns the range of an array of numerical values.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function range(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to calculate the range of |
 
 <b>Returns:</b>
 
 `number`
+
+the range of the array
 

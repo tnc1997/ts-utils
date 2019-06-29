@@ -1,24 +1,13 @@
-import {countBy} from '../src/count';
+import {count} from '../src/count';
 
-describe('array-countBy', () => {
-  it('should count instances of a value of an array', () => {
-    expect(countBy(
-      [1, 1, 2, 3, 3],
-      (value: number) => value
-    )).toEqual(new Map<number, number>([
-      [1, 2],
-      [2, 1],
-      [3, 2]
-    ]));
+describe('count', () => {
+  const array: number[] = [1, 2, 3, 4];
+
+  it('should count the number of values in an array', () => {
+    expect(count(array)).toEqual(4);
   });
 
-  it('should count instances of a value of an array by parity', () => {
-    expect(countBy(
-      [1, 2, 3, 4, 5],
-      (value: number) => value % 2 === 0 ? 'even' : 'odd'
-    )).toEqual(new Map<'even' | 'odd', number>([
-      ['even', 2],
-      ['odd', 3]
-    ]));
+  it('should count the number of values in an array that satisfy a condition', () => {
+    expect(count(array, value => value % 2 === 0)).toEqual(2);
   });
 });

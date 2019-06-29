@@ -4,7 +4,7 @@
 
 ## median() function
 
-Return the median of an array of numerical values.
+Returns the median of an array of numerical values.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function median(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to calculate the median of |
 
 <b>Returns:</b>
 
 `number`
+
+the median of the array
 

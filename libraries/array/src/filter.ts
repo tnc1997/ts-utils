@@ -1,23 +1,17 @@
-import {Observable} from 'rxjs/Observable';
-import {map as rxjsMap} from 'rxjs/operators';
-
-import {map} from './map';
+import {mapAsync} from './map';
 
 /**
- * Asynchronously filter the values in an array.
- * @param {T[]} array the array to filter
- * @param {function(value: T, index: number, array: T[]): Observable<boolean>} callback the asynchronous filter
- * function to be performed on every value in the array
- * @return {Observable<T[]>} the filtered array
+ * Filters the values in an array asynchronously.
+ * @param array - the array to filter
+ * @param callback - the asynchronous filter function
+ * @returns the filtered array
  * @public
  */
-export function filter<T>(
+export async function filterAsync<T>( // tslint:disable-line:export-name
   array: T[],
-  callback: (value: T, index: number, array: T[]) => Observable<boolean>
-): Observable<T[]> {
-  return map(array, callback).pipe(
-    rxjsMap((booleans: boolean[]) =>
-      array.filter((value: T, index: number) => booleans[index])
-    )
-  );
+  callback: (value: T, index: number, array: T[]) => Promise<boolean>
+): Promise<T[]> {
+  const booleans: boolean[] = await mapAsync(array, callback);
+
+  return array.filter((value, index) => booleans[index]);
 }

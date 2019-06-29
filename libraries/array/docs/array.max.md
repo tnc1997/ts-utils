@@ -4,7 +4,7 @@
 
 ## max() function
 
-Return the maximum value of an array.
+Returns the maximum value of an array.
 
 <b>Signature:</b>
 
@@ -16,9 +16,11 @@ export declare function max(array: number[]): number;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  array | <code>number[]</code> |  |
+|  array | <code>number[]</code> | the array to get the maximum of |
 
 <b>Returns:</b>
 
 `number`
+
+the maximum value
 

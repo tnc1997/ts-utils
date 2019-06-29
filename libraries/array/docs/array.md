@@ -8,17 +8,17 @@
 
 |  Function | Description |
 |  --- | --- |
-|  [contains(array, value)](./array.contains.md) | Check if an array contains a specified value. |
-|  [countBy(array, callback)](./array.countby.md) | Count instances of a value of an array by a callback function. |
-|  [filter(array, callback)](./array.filter.md) | Asynchronously filter the values in an array. |
-|  [frequency(array, value)](./array.frequency.md) |  |
-|  [frequency(array, value)](./array.frequency_1.md) |  |
-|  [map(array, callback)](./array.map.md) | Asynchronously map the values in an array. |
-|  [max(array)](./array.max.md) | Return the maximum value of an array. |
-|  [mean(array)](./array.mean.md) | Return the mean of an array of numerical values. |
-|  [median(array)](./array.median.md) | Return the median of an array of numerical values. |
-|  [min(array)](./array.min.md) | Return the minimum value of an array. |
-|  [mode(array)](./array.mode.md) | Return the mode of an array of numerical values. |
-|  [range(array)](./array.range.md) | Return the range of an array of numerical values. |
-|  [sum(array)](./array.sum.md) | Return the sum of the values of a numerical array. |
+|  [contains(array, value)](./array.contains.md) | Determines if an array contains a specified value. |
+|  [count(array)](./array.count.md) | Returns the number of values in an array. |
+|  [count(array, callback)](./array.count_1.md) | Returns the number of values in an array that satisfy a condition. |
+|  [filterAsync(array, callback)](./array.filterasync.md) | Filters the values in an array asynchronously. |
+|  [frequencies(array)](./array.frequencies.md) | Returns the frequency of each value in an array. |
+|  [mapAsync(array, callback)](./array.mapasync.md) | Maps the values in an array asynchronously. |
+|  [max(array)](./array.max.md) | Returns the maximum value of an array. |
+|  [mean(array)](./array.mean.md) | Returns the mean of an array of numerical values. |
+|  [median(array)](./array.median.md) | Returns the median of an array of numerical values. |
+|  [min(array)](./array.min.md) | Returns the minimum value of an array. |
+|  [mode(array)](./array.mode.md) | Returns the mode of an array of numerical values. |
+|  [range(array)](./array.range.md) | Returns the range of an array of numerical values. |
+|  [sum(array)](./array.sum.md) | Returns the sum of the values of a numerical array. |
 
