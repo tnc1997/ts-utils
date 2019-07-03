@@ -2,6 +2,18 @@
   "name": "@ts-utils/array",
   "entries": [
     {
+      "version": "2.0.1",
+      "tag": "@ts-utils/array_v2.0.1",
+      "date": "Wed, 03 Jul 2019 10:45:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix missing npm package types file."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.0",
       "tag": "@ts-utils/array_v2.0.0",
       "date": "Sat, 29 Jun 2019 19:33:18 GMT",
