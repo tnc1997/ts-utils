@@ -14,7 +14,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/array.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/tnc1997/ts-utils"
