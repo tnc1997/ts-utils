@@ -24,7 +24,7 @@
 ## Environment
 <!-- Check whether this is still an issue in the most recent version. -->
 <pre><code>
-TypeScript Utilities Version: X.Y.Z
+TypeScript Utils Version: X.Y.Z
 </code></pre>
 
 ## Other Information

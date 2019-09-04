@@ -1,19 +1,19 @@
-# Utils
+# TypeScript Utils
 
-## Commands
+[![Build Status](https://github.com/tnc1997/ts-utils/workflows/.github/workflows/main.yml/badge.svg)](https://github.com/tnc1997/ts-utils)
 
-### Update
+## Libraries
 
-`rush update`
+### [@ts-utils/array](./libraries/array)
 
-### Build
+`array` is a package which introduces utilities for the `Array` type.
 
-`rush build`
+[![npm version](https://badge.fury.io/js/%40ts-utils%2Farray.svg)](https://badge.fury.io/js/%40ts-utils%2Farray)
+[![Dependencies](https://david-dm.org/tnc1997/ts-utils%3Fpath%3Dlibraries%2Farray.svg)](https://david-dm.org/tnc1997/ts-utils?path=libraries/array)
 
-### Change
+### [@ts-utils/map](./libraries/map)
 
-`rush change`
+`map` is a package which introduces utilities for the `Map` type.
 
-### Publish
-
-`rush publish --apply --target-branch master --publish --set-access-level public`
+[![npm version](https://badge.fury.io/js/%40ts-utils%2Fmap.svg)](https://badge.fury.io/js/%40ts-utils%2Fmap)
+[![Dependencies](https://david-dm.org/tnc1997/ts-utils%3Fpath%3Dlibraries%2Fmap.svg)](https://david-dm.org/tnc1997/ts-utils?path=libraries/map)
