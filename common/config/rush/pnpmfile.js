@@ -34,21 +34,5 @@ function readPackage(packageJson, context) {
   //  context.log('Fixed up dependencies for @types/karma');
   // }
 
-  // https://github.com/Microsoft/web-build-tools/issues/1197.
-  // https://github.com/Microsoft/web-build-tools/blob/master/core-build/gulp-core-build/package.json.
-  if (packageJson.name === "@types/gulp") {
-    packageJson.dependencies["@types/node"] = "8.5.8";
-    packageJson.dependencies["@types/orchestrator"] = "0.0.30";
-    packageJson.dependencies["@types/vinyl"] = "1.2.30";
-    context.log("Fixed up dependencies for @types/gulp");
-  }
-
-  // https://github.com/Microsoft/web-build-tools/issues/1197.
-  // https://github.com/Microsoft/web-build-tools/blob/master/core-build/gulp-core-build/package.json.
-  if (packageJson.name === "@types/vinyl") {
-    packageJson.dependencies["@types/node"] = "8.5.8";
-    context.log("Fixed up dependencies for @types/vinyl");
-  }
-
   return packageJson;
 }
