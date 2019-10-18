@@ -16,7 +16,6 @@ jobs:
         run: |
           git config --global user.email "tnc1997@virginmedia.com"
           git config --global user.name "Thomas Clark"
-          git remote set-url origin https://tnc1997:"$GITHUB_TOKEN"@github.com/tnc1997/gulp-utils.git
       - name: Run rush install
         run: node ./common/scripts/install-run-rush.js install
       - name: Run rush rebuild
