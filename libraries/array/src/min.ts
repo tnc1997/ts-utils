@@ -5,5 +5,5 @@
  * @public
  */
 export function min(array: number[]): number {
-  return array.sort()[0];
+  return array.sort((a, b) => a - b)[0];
 }
