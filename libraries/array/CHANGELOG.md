@@ -1,6 +1,13 @@
 # Change Log - @ts-utils/array
 
-This log was last generated on Wed, 03 Jul 2019 10:45:19 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Oct 2019 19:19:27 GMT and should not be manually modified.
+
+## 2.0.2
+Fri, 18 Oct 2019 19:19:27 GMT
+
+### Patches
+
+- Fix the max and min functions.
 
 ## 2.0.1
 Wed, 03 Jul 2019 10:45:19 GMT

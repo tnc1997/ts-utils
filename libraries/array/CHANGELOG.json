@@ -2,6 +2,18 @@
   "name": "@ts-utils/array",
   "entries": [
     {
+      "version": "2.0.2",
+      "tag": "@ts-utils/array_v2.0.2",
+      "date": "Fri, 18 Oct 2019 19:19:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix the max and min functions."
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.1",
       "tag": "@ts-utils/array_v2.0.1",
       "date": "Wed, 03 Jul 2019 10:45:19 GMT",
