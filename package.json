@@ -1,0 +1,34 @@
+{
+  "name": "ts-utils",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/tnc1997/ts-utils#readme",
+  "bugs": {
+    "url": "https://github.com/tnc1997/ts-utils/issues"
+  },
+  "license": "MIT",
+  "author": "Thomas Clark",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tnc1997/ts-utils"
+  },
+  "scripts": {
+    "build": "npm exec --workspace packages -- microbundle",
+    "test": "npm exec --workspace packages -- jest --preset ts-jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.4.7",
+    "microbundle": "^0.14.2",
+    "ts-jest": "^27.1.3"
+  },
+  "workspaces": [
+    "./packages/*",
+    "./samples/*"
+  ]
+}

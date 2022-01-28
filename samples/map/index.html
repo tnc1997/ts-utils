@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+</head>
+<body>
+    <script src="../../node_modules/@ts-utils/map/dist/map.umd.js"></script>
+    <script>
+        console.log(
+            map.containsKey(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ]),
+                "a"
+            )
+        );
+
+        console.log(
+            map.containsValue(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ]),
+                1
+            )
+        );
+
+        console.log(
+            map.entries(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ])
+            )
+        );
+
+        console.log(
+            map.keys(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ])
+            )
+        );
+
+        console.log(
+            map.max(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ])
+            )
+        );
+
+        console.log(
+            map.min(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ])
+            )
+        );
+
+        console.log(
+            map.values(
+                new Map([
+                    ["a", 1],
+                    ["b", 2],
+                    ["c", 3],
+                ])
+            )
+        );
+    </script>
+</body>
+</html>

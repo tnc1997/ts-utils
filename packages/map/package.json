@@ -1,0 +1,25 @@
+{
+  "name": "@ts-utils/map",
+  "version": "1.1.1",
+  "description": "Map",
+  "homepage": "https://github.com/tnc1997/ts-utils#readme",
+  "bugs": {
+    "url": "https://github.com/tnc1997/ts-utils/issues"
+  },
+  "license": "MIT",
+  "author": "Thomas Clark",
+  "files": [
+    "./dist"
+  ],
+  "main": "./dist/map.js",
+  "module": "./dist/map.mjs",
+  "browser": "./dist/map.umd.js",
+  "types": "./dist/types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tnc1997/ts-utils"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

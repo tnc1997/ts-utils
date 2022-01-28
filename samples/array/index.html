@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array</title>
+</head>
+<body>
+    <script src="../../node_modules/@ts-utils/array/dist/array.umd.js"></script>
+    <script>
+        console.log(array.mean([1, 2, 3, 4]));
+
+        console.log(array.median([1, 2, 3, 4]));
+
+        console.log(array.mode([1, 2, 2, 4]));
+
+        console.log(array.range([1, 2, 3, 4]));
+
+        console.log(array.contains([1, 2, 3, 4], 1));
+
+        console.log(array.count([1, 2, 3, 4]));
+
+        console.log(array.count([1, 2, 3, 4], (i) => i % 2 === 0));
+
+        console.log(array.frequencies([1, 2, 2, 4]));
+
+        array.mapAsync([1, 2, 3, 4], (i) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(i * i);
+                }, 1000);
+            });
+        }).then((i) => console.log(i));
+
+        console.log(array.max([1, 2, 3, 4]));
+
+        console.log(array.min([1, 2, 3, 4]));
+
+        console.log(array.sum([1, 2, 3, 4]));
+    </script>
+</body>
+</html>
