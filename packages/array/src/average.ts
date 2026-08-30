@@ -19,11 +19,11 @@ export function median(array: number[]): number {
   if (array.length > 1) {
     array = array.sort();
 
-    return (array.length + 1) % 2 === 0
-      ? array[(array.length + 1) / 2 - 1]
-      : (array[Math.floor((array.length + 1) / 2) - 1] +
-          array[Math.ceil((array.length + 1) / 2) - 1]) /
-          2;
+    const middle = Math.floor(array.length / 2);
+
+    return array.length % 2 === 0
+      ? (array[middle - 1] + array[middle]) / 2
+      : array[middle];
   } else {
     throw new Error(
       "The array does not contain enough values to calculate the median."
