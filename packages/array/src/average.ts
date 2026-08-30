@@ -37,10 +37,16 @@ export function median(array: number[]): number {
  * @returns the mode of the array
  */
 export function mode(array: number[]): number {
+  if (array.length === 0) {
+    throw new Error(
+      "The array does not contain enough values to calculate the mode."
+    );
+  }
+
   const _frequencies: Map<number, number> = frequencies(array);
 
-  let _max = -1;
-  let _mode = -1;
+  let _max = 0;
+  let _mode!: number;
 
   _frequencies.forEach((value, key) => {
     if (_max < value) {
