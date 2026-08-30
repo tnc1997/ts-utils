@@ -25,7 +25,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^30.5.0",
     "microbundle": "^0.14.2",
-    "ts-jest": "^29.4.12"
+    "ts-jest": "^29.4.12",
+    "typescript": "~5.9.3"
   },
   "workspaces": [
     "./packages/*",
