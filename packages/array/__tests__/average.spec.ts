@@ -1,6 +1,22 @@
 import { mean, median, mode, range } from "../src";
 
 describe("average", () => {
+  it("should not mutate the input array when calculating the median", () => {
+    const array = [5, 3, 1, 4, 2];
+
+    median(array);
+
+    expect(array).toEqual([5, 3, 1, 4, 2]);
+  });
+
+  it("should not mutate the input array when calculating the range", () => {
+    const array = [5, 3, 1, 4, 2];
+
+    range(array);
+
+    expect(array).toEqual([5, 3, 1, 4, 2]);
+  });
+
   it("should return the mean of the values of an array", () => {
     expect(mean([1, 2, 3, 4, 5])).toEqual(3);
 
