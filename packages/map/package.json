@@ -11,10 +11,20 @@
   "files": [
     "./dist"
   ],
-  "main": "./dist/map.js",
+  "main": "./dist/map.cjs",
   "module": "./dist/map.mjs",
   "browser": "./dist/map.umd.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/map.d.cts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/map.d.mts",
+        "require": "./dist/map.d.cts"
+      },
+      "import": "./dist/map.mjs",
+      "require": "./dist/map.cjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tnc1997/ts-utils"

@@ -13,7 +13,7 @@
     "url": "https://github.com/tnc1997/ts-utils"
   },
   "scripts": {
-    "build": "npm exec --workspace packages -- microbundle",
+    "build": "npm exec --workspace packages -- tsdown",
     "test": "npm exec --workspace packages -- jest --preset ts-jest"
   },
   "devDependencies": {
@@ -24,8 +24,8 @@
     "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^30.5.0",
-    "microbundle": "^0.14.2",
     "ts-jest": "^29.4.12",
+    "tsdown": "^0.22.14",
     "typescript": "~5.9.3"
   },
   "workspaces": [
