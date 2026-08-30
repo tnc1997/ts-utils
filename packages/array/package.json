@@ -11,10 +11,20 @@
   "files": [
     "./dist"
   ],
-  "main": "./dist/array.js",
+  "main": "./dist/array.cjs",
   "module": "./dist/array.mjs",
   "browser": "./dist/array.umd.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/array.d.cts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/array.d.mts",
+        "require": "./dist/array.d.cts"
+      },
+      "import": "./dist/array.mjs",
+      "require": "./dist/array.cjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tnc1997/ts-utils"
