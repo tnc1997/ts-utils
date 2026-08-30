@@ -17,15 +17,15 @@
     "test": "npm exec --workspace packages -- jest --preset ts-jest"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
+    "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "jest": "^30.2.0",
+    "jest": "^30.5.0",
     "microbundle": "^0.14.2",
-    "ts-jest": "^27.1.3"
+    "ts-jest": "^29.4.12"
   },
   "workspaces": [
     "./packages/*",
