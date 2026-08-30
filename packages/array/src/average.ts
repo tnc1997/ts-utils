@@ -17,12 +17,12 @@ export function mean(array: number[]): number {
  */
 export function median(array: number[]): number {
   if (array.length > 1) {
-    array = array.sort();
+    const sorted = [...array].sort();
 
-    return (array.length + 1) % 2 === 0
-      ? array[(array.length + 1) / 2 - 1]
-      : (array[Math.floor((array.length + 1) / 2) - 1] +
-          array[Math.ceil((array.length + 1) / 2) - 1]) /
+    return (sorted.length + 1) % 2 === 0
+      ? sorted[(sorted.length + 1) / 2 - 1]
+      : (sorted[Math.floor((sorted.length + 1) / 2) - 1] +
+          sorted[Math.ceil((sorted.length + 1) / 2) - 1]) /
           2;
   } else {
     throw new Error(
@@ -59,9 +59,9 @@ export function mode(array: number[]): number {
  */
 export function range(array: number[]): number {
   if (array.length > 1) {
-    array = array.sort();
+    const sorted = [...array].sort();
 
-    return array[array.length - 1] - array[0];
+    return sorted[sorted.length - 1] - sorted[0];
   } else {
     throw new Error(
       "The array does not contain enough values to calculate the range."
