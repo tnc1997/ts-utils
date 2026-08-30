@@ -16,7 +16,7 @@ export function mean(array: number[]): number {
  * @returns the median of the array
  */
 export function median(array: number[]): number {
-  if (array.length > 1) {
+  if (array.length > 0) {
     array = array.sort();
 
     return (array.length + 1) % 2 === 0
@@ -58,7 +58,7 @@ export function mode(array: number[]): number {
  * @returns the range of the array
  */
 export function range(array: number[]): number {
-  if (array.length > 1) {
+  if (array.length > 0) {
     array = array.sort();
 
     return array[array.length - 1] - array[0];
