@@ -32,7 +32,9 @@ describe("average", () => {
 
     expect(median([2, 10, 33, 4])).toEqual(7);
 
-    expect(() => median([1])).toThrow(
+    expect(median([1])).toEqual(1);
+
+    expect(() => median([])).toThrow(
       "The array does not contain enough values to calculate the median."
     );
   });
@@ -50,7 +52,9 @@ describe("average", () => {
 
     expect(range([2, 10, 33, 4])).toEqual(31);
 
-    expect(() => range([1])).toThrow(
+    expect(range([1])).toEqual(0);
+
+    expect(() => range([])).toThrow(
       "The array does not contain enough values to calculate the range."
     );
   });
