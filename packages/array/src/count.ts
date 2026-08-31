@@ -8,6 +8,6 @@ export function count<T>(array: T[], callback?: (value: T) => boolean): number {
   if (!callback) {
     return array.length;
   } else {
-    return array.map(callback).filter((value) => value).length;
+    return array.filter(callback).length;
   }
 }
