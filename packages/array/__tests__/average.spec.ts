@@ -21,6 +21,10 @@ describe("average", () => {
     expect(mean([1, 2, 3, 4, 5])).toEqual(3);
 
     expect(mean([-1, -2, -3, -4, -5])).toEqual(-3);
+
+    expect(() => mean([])).toThrow(
+      "The array does not contain enough values to calculate the sum."
+    );
   });
 
   it("should return the median of the values of an array", () => {
