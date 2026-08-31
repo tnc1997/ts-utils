@@ -43,6 +43,12 @@ describe("average", () => {
     expect(mode([1, 2, 2, 3, 4])).toEqual(2);
 
     expect(mode([-1, -2, -2, -3, -4])).toEqual(-2);
+
+    expect(mode([-1, -1, -1, -1])).toEqual(-1);
+
+    expect(() => mode([])).toThrow(
+      "The array does not contain enough values to calculate the mode."
+    );
   });
 
   it("should return the range of the values of an array", () => {
