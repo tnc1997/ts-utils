@@ -4,5 +4,5 @@
  * @returns the maximum value
  */
 export function max(array: number[]): number {
-  return array.sort((a, b) => b - a)[0];
+  return array.reduce((a, b) => (b > a ? b : a));
 }

@@ -4,5 +4,5 @@
  * @returns the minimum value
  */
 export function min(array: number[]): number {
-  return array.sort((a, b) => a - b)[0];
+  return array.reduce((a, b) => (b < a ? b : a));
 }
