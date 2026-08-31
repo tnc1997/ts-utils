@@ -12,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/tnc1997/ts-utils"
   },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
   "scripts": {
     "build": "npm exec --workspace packages -- tsdown",
     "test": "npm exec --workspace packages -- jest --preset ts-jest"
