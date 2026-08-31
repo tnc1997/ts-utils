@@ -1,0 +1,64 @@
+name: Compatibility
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - if: matrix.node == '24'
+        name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            packages/array/package.json
+            packages/array/dist
+            packages/map/package.json
+            packages/map/dist
+    strategy:
+      matrix:
+        node: [ '22', '24', '26' ]
+
+  compatibility:
+    name: Compatibility
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Require @ts-utils/${{ matrix.package }}
+        run: node packages/${{ matrix.package }}/compatibility.js
+    strategy:
+      matrix:
+        node: [ '18', '20', '22', '24', '26' ]
+        package: [ 'array', 'map' ]

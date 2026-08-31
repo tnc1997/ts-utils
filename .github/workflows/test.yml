@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: Test
         run: npm test
     strategy:
       matrix:
-        node: [ '18', '20', '22' ]
+        node: [ '18', '20', '22', '24', '26' ]
