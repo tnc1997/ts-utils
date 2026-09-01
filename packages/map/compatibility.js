@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { keys } = require(__dirname);
 
 const result = keys(new Map([["a", 1], ["b", 2]]));

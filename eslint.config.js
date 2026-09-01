@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { FlatCompat } = require("@eslint/eslintrc");
 const js = require("@eslint/js");
 
@@ -27,10 +29,4 @@ module.exports = [
     },
     plugins: ["@typescript-eslint"],
   }),
-  {
-    files: ["eslint.config.js", "**/compatibility.js"],
-    rules: {
-      "@typescript-eslint/no-require-imports": "off",
-    },
-  },
 ];
