@@ -20,6 +20,8 @@
     "test": "npm exec --workspace packages -- jest --preset ts-jest"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^2.0.0",
+    "@eslint/js": "^8.0.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
