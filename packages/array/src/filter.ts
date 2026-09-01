@@ -8,7 +8,7 @@ import { mapAsync } from "./map";
  */
 export async function filterAsync<T>(
   array: T[],
-  callback: (value: T, index: number, array: T[]) => Promise<boolean>
+  callback: (value: T, index: number, array: T[]) => Promise<boolean>,
 ): Promise<T[]> {
   const booleans: boolean[] = await mapAsync(array, callback);
 

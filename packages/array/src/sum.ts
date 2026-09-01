@@ -6,11 +6,11 @@
 export function sum(array: number[]): number {
   if (array.length === 0) {
     throw new Error(
-      "The array does not contain enough values to calculate the sum."
+      "The array does not contain enough values to calculate the sum.",
     );
   }
 
   return array.reduce(
-    (previousValue, currentValue) => previousValue + currentValue
+    (previousValue, currentValue) => previousValue + currentValue,
   );
 }
