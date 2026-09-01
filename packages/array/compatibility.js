@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { sum } = require(__dirname);
 
 const result = sum([1, 2, 3]);
