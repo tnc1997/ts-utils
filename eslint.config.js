@@ -27,4 +27,10 @@ module.exports = [
     },
     plugins: ["@typescript-eslint"],
   }),
+  {
+    files: ["eslint.config.js", "**/compatibility.js"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ];
