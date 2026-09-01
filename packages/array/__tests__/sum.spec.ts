@@ -7,7 +7,7 @@ describe("sum", () => {
 
   it("should throw an error when the array is empty", () => {
     expect(() => sum([])).toThrow(
-      "The array does not contain enough values to calculate the sum."
+      "The array does not contain enough values to calculate the sum.",
     );
   });
 });

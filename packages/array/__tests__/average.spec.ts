@@ -23,7 +23,7 @@ describe("average", () => {
     expect(mean([-1, -2, -3, -4, -5])).toEqual(-3);
 
     expect(() => mean([])).toThrow(
-      "The array does not contain enough values to calculate the sum."
+      "The array does not contain enough values to calculate the sum.",
     );
   });
 
@@ -39,7 +39,7 @@ describe("average", () => {
     expect(median([1])).toEqual(1);
 
     expect(() => median([])).toThrow(
-      "The array does not contain enough values to calculate the median."
+      "The array does not contain enough values to calculate the median.",
     );
   });
 
@@ -51,7 +51,7 @@ describe("average", () => {
     expect(mode([-1, -1, -1, -1])).toEqual(-1);
 
     expect(() => mode([])).toThrow(
-      "The array does not contain enough values to calculate the mode."
+      "The array does not contain enough values to calculate the mode.",
     );
   });
 
@@ -65,7 +65,7 @@ describe("average", () => {
     expect(range([1])).toEqual(0);
 
     expect(() => range([])).toThrow(
-      "The array does not contain enough values to calculate the range."
+      "The array does not contain enough values to calculate the range.",
     );
   });
 });

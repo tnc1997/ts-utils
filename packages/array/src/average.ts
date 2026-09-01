@@ -26,7 +26,7 @@ export function median(array: number[]): number {
       : sorted[middle];
   } else {
     throw new Error(
-      "The array does not contain enough values to calculate the median."
+      "The array does not contain enough values to calculate the median.",
     );
   }
 }
@@ -39,7 +39,7 @@ export function median(array: number[]): number {
 export function mode(array: number[]): number {
   if (array.length === 0) {
     throw new Error(
-      "The array does not contain enough values to calculate the mode."
+      "The array does not contain enough values to calculate the mode.",
     );
   }
 
@@ -70,7 +70,7 @@ export function range(array: number[]): number {
     return sorted[sorted.length - 1] - sorted[0];
   } else {
     throw new Error(
-      "The array does not contain enough values to calculate the range."
+      "The array does not contain enough values to calculate the range.",
     );
   }
 }
