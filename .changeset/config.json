@@ -4,6 +4,5 @@
   "changelog": [
     "@changesets/changelog-github",
     { "repo": "tnc1997/ts-utils" }
-  ],
-  "ignore": ["array", "map"]
+  ]
 }
