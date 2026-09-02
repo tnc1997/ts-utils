@@ -12,14 +12,14 @@ concurrency:
 
 jobs:
   pack:
-    name: Pack
     if: needs.select-mode.outputs.mode == 'publish'
+    name: Pack
     needs: select-mode
-    runs-on: ubuntu-latest
     outputs:
       pack-dir-artifact-id: ${{ steps.pack.outputs.pack-dir-artifact-id }}
     permissions:
       contents: read
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,10 +46,10 @@ jobs:
   publish:
     name: Publish
     needs: pack
-    runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,12 +71,12 @@ jobs:
 
   select-mode:
     name: Select mode
-    runs-on: ubuntu-latest
     outputs:
       mode: ${{ steps.select-mode.outputs.mode }}
       publish-plan-artifact-id: ${{ steps.select-mode.outputs.publish-plan-artifact-id }}
     permissions:
       contents: read
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -97,13 +97,13 @@ jobs:
         uses: changesets/action/select-mode@v2
 
   version:
-    name: Version
     if: needs.select-mode.outputs.mode == 'version'
+    name: Version
     needs: select-mode
-    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
