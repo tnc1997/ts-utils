@@ -27,6 +27,12 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - if: matrix.node == '24'
+        name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
     strategy:
       matrix:
         node: [ '18', '20', '22', '24', '26' ]
