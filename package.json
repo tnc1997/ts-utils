@@ -18,7 +18,7 @@
   "scripts": {
     "build": "npm exec --workspace packages -- tsdown",
     "lint": "eslint .",
-    "test": "npm exec --workspace packages -- jest --preset ts-jest"
+    "test": "npm exec --workspace packages -- jest --coverage"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.0.0",

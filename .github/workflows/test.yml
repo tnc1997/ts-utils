@@ -27,6 +27,15 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - if: matrix.node == '24'
+        name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            packages/array/coverage
+            packages/map/coverage
     strategy:
       matrix:
         node: [ '18', '20', '22', '24', '26' ]
