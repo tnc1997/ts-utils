@@ -19,9 +19,7 @@
     "build": "npm exec --workspace packages -- tsdown",
     "changeset": "changeset",
     "lint": "eslint .",
-    "release": "npm run build && changeset publish",
-    "test": "npm exec --workspace packages -- jest --coverage",
-    "version": "changeset version"
+    "test": "npm exec --workspace packages -- jest --coverage"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.0",
