@@ -44,8 +44,11 @@ jobs:
           publish-plan-artifact-id: ${{ needs.select-mode.outputs.publish-plan-artifact-id }}
 
   publish:
+    if: needs.select-mode.outputs.mode == 'publish'
     name: Publish
-    needs: pack
+    needs:
+      - pack
+      - select-mode
     permissions:
       contents: write
       id-token: write
