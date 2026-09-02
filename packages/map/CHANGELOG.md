@@ -1,6 +1,4 @@
-# Change Log - @ts-utils/map
-
-This log was last generated on Wed, 03 Jul 2019 10:45:19 GMT and should not be manually modified.
+# @ts-utils/map
 
 ## 1.1.1
 Wed, 03 Jul 2019 10:45:19 GMT
