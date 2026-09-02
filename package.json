@@ -17,10 +17,13 @@
   },
   "scripts": {
     "build": "npm exec --workspace packages -- tsdown",
+    "changeset": "changeset",
     "lint": "eslint .",
     "test": "npm exec --workspace packages -- jest --coverage"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^1.0.0",
+    "@changesets/cli": "^3.0.1",
     "@eslint/eslintrc": "^2.0.0",
     "@eslint/js": "^8.0.0",
     "@types/jest": "^30.0.0",

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "access": "public",
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "tnc1997/ts-utils" }
+  ]
+}

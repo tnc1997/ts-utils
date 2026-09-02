@@ -1,6 +1,4 @@
-# Change Log - @ts-utils/array
-
-This log was last generated on Fri, 18 Oct 2019 19:19:27 GMT and should not be manually modified.
+# @ts-utils/array
 
 ## 2.0.2
 Fri, 18 Oct 2019 19:19:27 GMT

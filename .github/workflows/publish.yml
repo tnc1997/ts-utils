@@ -1,0 +1,128 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  pack:
+    if: needs.select-mode.outputs.mode == 'publish'
+    name: Pack
+    needs: select-mode
+    outputs:
+      pack-dir-artifact-id: ${{ steps.pack.outputs.pack-dir-artifact-id }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Pack packages
+        id: pack
+        uses: changesets/action/pack@v2
+        with:
+          publish-plan-artifact-id: ${{ needs.select-mode.outputs.publish-plan-artifact-id }}
+
+  publish:
+    if: needs.select-mode.outputs.mode == 'publish'
+    name: Publish
+    needs:
+      - pack
+      - select-mode
+    permissions:
+      contents: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish packages
+        uses: changesets/action/publish@v2
+        with:
+          pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
+
+  select-mode:
+    name: Select mode
+    outputs:
+      mode: ${{ steps.select-mode.outputs.mode }}
+      publish-plan-artifact-id: ${{ steps.select-mode.outputs.publish-plan-artifact-id }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Select mode
+        id: select-mode
+        uses: changesets/action/select-mode@v2
+
+  version:
+    if: needs.select-mode.outputs.mode == 'version'
+    name: Version
+    needs: select-mode
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Version packages
+        uses: changesets/action/version@v2
