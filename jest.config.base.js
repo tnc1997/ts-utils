@@ -1,6 +1,5 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: "ts-jest",
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.ts"],
   coverageThreshold: {
@@ -11,4 +10,5 @@ module.exports = {
       statements: 100,
     },
   },
+  preset: "ts-jest",
 };
