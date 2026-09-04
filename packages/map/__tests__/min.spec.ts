@@ -11,4 +11,10 @@ describe("min", () => {
 
     expect(min<string>(map)).toEqual(["b", 1]);
   });
+
+  it("should return undefined for an empty map", () => {
+    const map: Map<string, number> = new Map<string, number>();
+
+    expect(min<string>(map)).toBeUndefined();
+  });
 });
