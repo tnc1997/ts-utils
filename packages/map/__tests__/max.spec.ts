@@ -11,4 +11,10 @@ describe("max", () => {
 
     expect(max<string>(map)).toEqual(["b", 3]);
   });
+
+  it("should return undefined for an empty map", () => {
+    const map: Map<string, number> = new Map<string, number>();
+
+    expect(max<string>(map)).toBeUndefined();
+  });
 });
