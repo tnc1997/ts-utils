@@ -4,7 +4,11 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
-const { main, module, browser } = require("./package.json");
+const {
+  main: mainPath,
+  module: modulePath,
+  browser: browserPath,
+} = require("./package.json");
 
 const entries = new Map([
   ["a", 1],
@@ -12,7 +16,7 @@ const entries = new Map([
 ]);
 
 // CJS (`main`)
-const { keys: cjsKeys } = require(path.join(__dirname, main));
+const { keys: cjsKeys } = require(path.join(__dirname, mainPath));
 
 const cjsResult = cjsKeys(entries);
 
@@ -23,7 +27,7 @@ if (cjsResult.length !== 2 || cjsResult[0] !== "a" || cjsResult[1] !== "b") {
 }
 
 // ESM (`module`)
-import(path.join(__dirname, module)).then(({ keys: esmKeys }) => {
+import(path.join(__dirname, modulePath)).then(({ keys: esmKeys }) => {
   const esmResult = esmKeys(entries);
 
   if (esmResult.length !== 2 || esmResult[0] !== "a" || esmResult[1] !== "b") {
@@ -39,7 +43,7 @@ const context = {};
 vm.createContext(context);
 
 vm.runInContext(
-  fs.readFileSync(path.join(__dirname, browser), "utf8"),
+  fs.readFileSync(path.join(__dirname, browserPath), "utf8"),
   context,
 );
 
