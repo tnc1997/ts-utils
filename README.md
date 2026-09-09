@@ -1,6 +1,6 @@
 # TypeScript Utilities
 
-[![Build Status](https://github.com/tnc1997/ts-utils/workflows/.github/workflows/main.yml/badge.svg)](https://github.com/tnc1997/ts-utils)
+[![Build Status](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml)
 
 ## Packages
 
