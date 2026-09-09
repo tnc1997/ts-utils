@@ -1,3 +1,4 @@
+import { InsufficientValuesError } from "./errors";
 import { frequencies } from "./frequencies";
 import { sum } from "./sum";
 
@@ -25,7 +26,7 @@ export function median(array: number[]): number {
       ? (sorted[middle - 1] + sorted[middle]) / 2
       : sorted[middle];
   } else {
-    throw new Error(
+    throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the median.",
     );
   }
@@ -40,7 +41,7 @@ export function median(array: number[]): number {
  */
 export function mode(array: number[]): number {
   if (array.length === 0) {
-    throw new Error(
+    throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the mode.",
     );
   }
@@ -71,7 +72,7 @@ export function range(array: number[]): number {
 
     return sorted[sorted.length - 1] - sorted[0];
   } else {
-    throw new Error(
+    throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the range.",
     );
   }

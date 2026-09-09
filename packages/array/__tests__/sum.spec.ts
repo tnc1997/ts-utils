@@ -1,4 +1,4 @@
-import { sum } from "../src";
+import { InsufficientValuesError, sum } from "../src";
 
 describe("sum", () => {
   it("should return the sum of the values of an array", () => {
@@ -6,6 +6,7 @@ describe("sum", () => {
   });
 
   it("should throw an error when the array is empty", () => {
+    expect(() => sum([])).toThrow(InsufficientValuesError);
     expect(() => sum([])).toThrow(
       "The array does not contain enough values to calculate the sum.",
     );
