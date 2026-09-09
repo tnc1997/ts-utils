@@ -1,3 +1,5 @@
+import { InsufficientValuesError } from "./errors";
+
 /**
  * Returns the sum of the values of a numerical array.
  * @param array - the array to get the sum of
@@ -5,7 +7,7 @@
  */
 export function sum(array: number[]): number {
   if (array.length === 0) {
-    throw new Error(
+    throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the sum.",
     );
   }
