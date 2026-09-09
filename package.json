@@ -19,7 +19,8 @@
     "build": "npm exec --workspace packages -- tsdown",
     "changeset": "changeset",
     "lint": "eslint .",
-    "test": "npm exec --workspace packages -- jest --coverage"
+    "test": "npm exec --workspace packages -- jest --coverage",
+    "validate-samples": "node samples/array/index.js && node samples/map/index.js"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.0",

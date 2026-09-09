@@ -29,6 +29,14 @@ jobs:
         run: npm test
 
       - if: matrix.node == '24'
+        name: Build
+        run: npm run build
+
+      - if: matrix.node == '24'
+        name: Validate samples
+        run: npm run validate-samples
+
+      - if: matrix.node == '24'
         name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
