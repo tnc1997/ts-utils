@@ -1,4 +1,4 @@
-import { min } from "../src";
+import { InsufficientValuesError, min } from "../src";
 
 describe("min", () => {
   it("should return the entry with the minimum value of a map", () => {
@@ -12,9 +12,12 @@ describe("min", () => {
     expect(min<string>(map)).toEqual(["b", 1]);
   });
 
-  it("should return undefined for an empty map", () => {
+  it("should throw an error when the map is empty", () => {
     const map: Map<string, number> = new Map<string, number>();
 
-    expect(min<string>(map)).toBeUndefined();
+    expect(() => min<string>(map)).toThrow(InsufficientValuesError);
+    expect(() => min<string>(map)).toThrow(
+      "The map does not contain enough values to calculate the minimum.",
+    );
   });
 });
