@@ -21,9 +21,11 @@ export function median(array: number[]): number {
 
     const middle = Math.floor(sorted.length / 2);
 
+    // `sorted` has the same length as `array`, which is checked to be
+    // non-empty above, so `middle` and `middle - 1` are always valid indexes.
     return sorted.length % 2 === 0
-      ? (sorted[middle - 1] + sorted[middle]) / 2
-      : sorted[middle];
+      ? (sorted[middle - 1]! + sorted[middle]!) / 2
+      : sorted[middle]!;
   } else {
     throw new Error(
       "The array does not contain enough values to calculate the median.",
@@ -67,9 +69,7 @@ export function mode(array: number[]): number {
  */
 export function range(array: number[]): number {
   if (array.length > 0) {
-    const sorted = [...array].sort((a, b) => a - b);
-
-    return sorted[sorted.length - 1] - sorted[0];
+    return Math.max(...array) - Math.min(...array);
   } else {
     throw new Error(
       "The array does not contain enough values to calculate the range.",
