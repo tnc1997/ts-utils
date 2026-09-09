@@ -16,4 +16,14 @@ describe("filterAsync", () => {
 
     expect(await filterAsync([1, 2, 3, 4], callback)).toEqual([2, 4]);
   });
+
+  it("should throw a type error if the callback does not resolve to a boolean value", async () => {
+    function callback(value: number): Promise<boolean> {
+      return Promise.resolve(value as unknown as boolean);
+    }
+
+    await expect(filterAsync([1, 2, 3, 4], callback)).rejects.toThrow(
+      new TypeError("The callback did not resolve to a boolean value."),
+    );
+  });
 });

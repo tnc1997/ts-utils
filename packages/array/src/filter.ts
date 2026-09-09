@@ -12,5 +12,11 @@ export async function filterAsync<T>(
 ): Promise<T[]> {
   const booleans: boolean[] = await mapAsync(array, callback);
 
+  for (const boolean of booleans) {
+    if (typeof boolean !== "boolean") {
+      throw new TypeError("The callback did not resolve to a boolean value.");
+    }
+  }
+
   return array.filter((value, index) => booleans[index]);
 }
