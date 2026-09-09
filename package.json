@@ -19,6 +19,7 @@
     "build": "npm exec --workspace packages -- tsdown",
     "changeset": "changeset",
     "lint": "eslint .",
+    "size": "size-limit",
     "test": "npm exec --workspace packages -- jest --coverage"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "@changesets/cli": "^3.0.1",
     "@eslint/eslintrc": "^2.0.0",
     "@eslint/js": "^8.0.0",
+    "@size-limit/preset-small-lib": "^13.0.3",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.69.0",
@@ -34,6 +36,7 @@
     "eslint-plugin-prettier": "^5.5.6",
     "jest": "^30.5.0",
     "prettier": "~3.9.6",
+    "size-limit": "^13.0.3",
     "ts-jest": "^29.4.12",
     "tsdown": "^0.22.14",
     "typescript": "~5.9.3"
@@ -41,5 +44,17 @@
   "workspaces": [
     "./packages/*",
     "./samples/*"
+  ],
+  "size-limit": [
+    {
+      "name": "@ts-utils/array",
+      "path": "packages/array/dist/array.mjs",
+      "limit": "2 KB"
+    },
+    {
+      "name": "@ts-utils/map",
+      "path": "packages/map/dist/map.mjs",
+      "limit": "1 KB"
+    }
   ]
 }
