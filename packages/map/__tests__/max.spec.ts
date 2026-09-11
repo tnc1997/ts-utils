@@ -1,4 +1,4 @@
-import { max } from "../src";
+import { InsufficientValuesError, max } from "../src";
 
 describe("max", () => {
   it("should return the entry with the maximum value of a map", () => {
@@ -12,9 +12,12 @@ describe("max", () => {
     expect(max<string>(map)).toEqual(["b", 3]);
   });
 
-  it("should return undefined for an empty map", () => {
+  it("should throw an error when the map is empty", () => {
     const map: Map<string, number> = new Map<string, number>();
 
-    expect(max<string>(map)).toBeUndefined();
+    expect(() => max<string>(map)).toThrow(InsufficientValuesError);
+    expect(() => max<string>(map)).toThrow(
+      "The map does not contain enough values to calculate the maximum.",
+    );
   });
 });
