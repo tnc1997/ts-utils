@@ -20,7 +20,9 @@ export async function mapAsync<T1, T2>(
   async function worker(): Promise<void> {
     while (nextIndex < array.length) {
       const index = nextIndex++;
-      results[index] = await callback(array[index], index, array);
+      // `index` is always less than `array.length` here, so `array[index]`
+      // is always defined.
+      results[index] = await callback(array[index]!, index, array);
     }
   }
 
