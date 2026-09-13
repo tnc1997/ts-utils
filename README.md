@@ -1,6 +1,9 @@
 # TypeScript Utilities
 
-[![Build Status](https://github.com/tnc1997/ts-utils/workflows/.github/workflows/main.yml/badge.svg)](https://github.com/tnc1997/ts-utils)
+[![Compatibility](https://github.com/tnc1997/ts-utils/actions/workflows/compatibility.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/compatibility.yml)
+[![Lint](https://github.com/tnc1997/ts-utils/actions/workflows/lint.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/lint.yml)
+[![Publish](https://github.com/tnc1997/ts-utils/actions/workflows/publish.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/publish.yml)
+[![Test](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml)
 
 ## Packages
 
