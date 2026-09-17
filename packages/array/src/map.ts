@@ -4,6 +4,10 @@
  * @param callback - the asynchronous map function
  * @param concurrency - the maximum number of callback invocations to run at once. Defaults to `Infinity`, i.e. all invocations run concurrently
  * @returns the mapped array
+ * @example
+ * ```ts
+ * await mapAsync([1, 2, 3], async (value) => value * 2); // [2, 4, 6]
+ * ```
  */
 export async function mapAsync<T1, T2>(
   array: T1[],

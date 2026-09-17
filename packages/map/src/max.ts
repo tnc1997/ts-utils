@@ -5,6 +5,10 @@ import { InsufficientValuesError } from "./errors";
  * Returns the entry with the maximum value of a map.
  * @param map - map the map to get the maximum value of
  * @returns the entry with the maximum value
+ * @example
+ * ```ts
+ * max(new Map([["a", 1], ["b", 5], ["c", 3]])); // ["b", 5]
+ * ```
  */
 export function max<T>(map: Map<T, number>): [T, number] {
   if (map.size === 0) {

@@ -6,6 +6,10 @@ import { sum } from "./sum";
  * Returns the mean of an array of numerical values.
  * @param array - the array to calculate the mean of
  * @returns the mean of the array
+ * @example
+ * ```ts
+ * mean([1, 2, 3, 4]); // 2.5
+ * ```
  */
 export function mean(array: number[]): number {
   return sum(array) / array.length;
@@ -15,6 +19,10 @@ export function mean(array: number[]): number {
  * Returns the median of an array of numerical values.
  * @param array - the array to calculate the median of
  * @returns the median of the array
+ * @example
+ * ```ts
+ * median([1, 3, 2, 4]); // 2.5
+ * ```
  */
 export function median(array: number[]): number {
   if (array.length > 0) {
@@ -40,6 +48,10 @@ export function median(array: number[]): number {
  * reach that frequency is returned.
  * @param array - the array to calculate the mode of
  * @returns the mode of the array
+ * @example
+ * ```ts
+ * mode([1, 2, 2, 3]); // 2
+ * ```
  */
 export function mode(array: number[]): number {
   if (array.length === 0) {
@@ -67,6 +79,10 @@ export function mode(array: number[]): number {
  * Returns the range of an array of numerical values.
  * @param array - the array to calculate the range of
  * @returns the range of the array
+ * @example
+ * ```ts
+ * range([1, 5, 3, 9]); // 8
+ * ```
  */
 export function range(array: number[]): number {
   if (array.length > 0) {

@@ -3,6 +3,10 @@
  * @param array - the array to search
  * @param value - the value to search for
  * @returns true if the array contains the value; otherwise, false
+ * @example
+ * ```ts
+ * contains([1, 2, 3], 2); // true
+ * ```
  */
 export function contains<T>(array: T[], value: T): boolean {
   return array.indexOf(value) >= 0;

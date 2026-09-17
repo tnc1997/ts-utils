@@ -6,6 +6,10 @@ import { mapAsync } from "./map";
  * @param callback - the asynchronous filter function
  * @param concurrency - the maximum number of callback invocations to run at once. Defaults to `Infinity`, i.e. all invocations run concurrently
  * @returns the filtered array
+ * @example
+ * ```ts
+ * await filterAsync([1, 2, 3, 4], async (value) => value % 2 === 0); // [2, 4]
+ * ```
  */
 export async function filterAsync<T>(
   array: T[],

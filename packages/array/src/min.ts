@@ -2,6 +2,10 @@
  * Returns the minimum value of an array.
  * @param array - the array to get the minimum of
  * @returns the minimum value
+ * @example
+ * ```ts
+ * min([1, 5, 3]); // 1
+ * ```
  */
 export function min(array: number[]): number {
   if (array.length === 0) {
