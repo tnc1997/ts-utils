@@ -2,6 +2,10 @@
  * Returns the maximum value of an array.
  * @param array - the array to get the maximum of
  * @returns the maximum value
+ * @example
+ * ```ts
+ * max([1, 5, 3]); // 5
+ * ```
  */
 export function max(array: number[]): number {
   if (array.length === 0) {

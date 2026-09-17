@@ -5,6 +5,10 @@ import { InsufficientValuesError } from "./errors";
  * Returns the entry with the minimum value of a map.
  * @param map - map the map to get the minimum value of
  * @returns the entry with the minimum value
+ * @example
+ * ```ts
+ * min(new Map([["a", 1], ["b", 5], ["c", 3]])); // ["a", 1]
+ * ```
  */
 export function min<T>(map: Map<T, number>): [T, number] {
   if (map.size === 0) {
