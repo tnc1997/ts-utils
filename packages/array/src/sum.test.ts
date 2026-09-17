@@ -1,4 +1,4 @@
-import { InsufficientValuesError, sum } from "../src";
+import { InsufficientValuesError, sum } from "./index";
 
 describe("sum", () => {
   it("should return the sum of the values of an array", () => {

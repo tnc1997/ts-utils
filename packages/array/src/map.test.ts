@@ -1,4 +1,4 @@
-import { mapAsync } from "../src";
+import { mapAsync } from "./index";
 
 describe("mapAsync", () => {
   it("should map the values in an array asynchronously", async () => {

@@ -1,4 +1,4 @@
-import { count } from "../src";
+import { count } from "./index";
 
 describe("count", () => {
   const array: number[] = [1, 2, 3, 4];

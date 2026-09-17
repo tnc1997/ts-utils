@@ -1,4 +1,4 @@
-import { max } from "../src";
+import { max } from "./index";
 
 describe("max", () => {
   it("should not mutate the input array", () => {

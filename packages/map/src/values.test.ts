@@ -1,7 +1,7 @@
-import { keys } from "../src";
+import { values } from "./index";
 
-describe("keys", () => {
-  it("should return the keys of a map", () => {
+describe("values", () => {
+  it("should return the values of a map", () => {
     const array: [string, number][] = [
       ["a", 1],
       ["b", 2],
@@ -9,6 +9,6 @@ describe("keys", () => {
     ];
     const map: Map<string, number> = new Map<string, number>(array);
 
-    expect(keys<string, number>(map)).toEqual(["a", "b", "c"]);
+    expect(values<string, number>(map)).toEqual([1, 2, 3]);
   });
 });

@@ -1,4 +1,4 @@
-import { filterAsync } from "../src";
+import { filterAsync } from "./index";
 
 describe("filterAsync", () => {
   it("should filter the values in an array asynchronously", async () => {

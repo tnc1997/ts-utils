@@ -1,4 +1,4 @@
-import { InsufficientValuesError, min } from "../src";
+import { InsufficientValuesError, min } from "./index";
 
 describe("min", () => {
   it("should return the entry with the minimum value of a map", () => {

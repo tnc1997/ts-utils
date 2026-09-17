@@ -1,4 +1,4 @@
-import { min } from "../src";
+import { min } from "./index";
 
 describe("min", () => {
   it("should not mutate the input array", () => {

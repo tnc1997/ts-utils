@@ -1,4 +1,4 @@
-import { InsufficientValuesError, mean, median, mode, range } from "../src";
+import { InsufficientValuesError, mean, median, mode, range } from "./index";
 
 describe("mean", () => {
   it("should not mutate the input array", () => {

@@ -1,4 +1,4 @@
-import { InsufficientValuesError, max } from "../src";
+import { InsufficientValuesError, max } from "./index";
 
 describe("max", () => {
   it("should return the entry with the maximum value of a map", () => {
