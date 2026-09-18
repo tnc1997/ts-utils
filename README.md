@@ -18,3 +18,7 @@
 `map` is a package that introduces utilities for the `Map` type.
 
 [![npm version](https://badge.fury.io/js/%40ts-utils%2Fmap.svg)](https://badge.fury.io/js/%40ts-utils%2Fmap)
+
+## IDE Configuration
+
+This repository intentionally commits the project-level `.idea/` files (such as `misc.xml`, `modules.xml`, `vcs.xml`, run configurations, and inspection profiles), while user-specific files like `.idea/workspace.xml` remain gitignored. This is a deliberate choice rather than an oversight: it allows IntelliJ IDEA and WebStorm users to share consistent run configurations and inspection profiles without needing to recreate them individually.
