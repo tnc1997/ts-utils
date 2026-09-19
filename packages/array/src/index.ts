@@ -1,6 +1,7 @@
 export { mean, median, mode, range } from "./average";
 export { contains } from "./contains";
 export { count } from "./count";
+export { InsufficientValuesError } from "./errors";
 export { filterAsync } from "./filter";
 export { frequencies } from "./frequencies";
 export { mapAsync } from "./map";

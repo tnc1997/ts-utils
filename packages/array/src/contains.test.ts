@@ -1,4 +1,4 @@
-import { contains } from "../src";
+import { contains } from "./index";
 
 describe("contains", () => {
   it("should check if an array does contain a specified value", () => {

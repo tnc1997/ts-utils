@@ -1,6 +1,9 @@
 # TypeScript Utilities
 
-[![Build Status](https://github.com/tnc1997/ts-utils/workflows/.github/workflows/main.yml/badge.svg)](https://github.com/tnc1997/ts-utils)
+[![Compatibility](https://github.com/tnc1997/ts-utils/actions/workflows/compatibility.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/compatibility.yml)
+[![Lint](https://github.com/tnc1997/ts-utils/actions/workflows/lint.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/lint.yml)
+[![Publish](https://github.com/tnc1997/ts-utils/actions/workflows/publish.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/publish.yml)
+[![Test](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml/badge.svg)](https://github.com/tnc1997/ts-utils/actions/workflows/test.yml)
 
 ## Packages
 
@@ -56,3 +59,7 @@ max(map); // ["b", 2]
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get started.
+
+## Configuration
+
+This repository intentionally commits the project-level `.idea/` files (such as `misc.xml`, `modules.xml`, `vcs.xml`, run configurations, and inspection profiles), while user-specific files like `.idea/workspace.xml` remain gitignored. This is a deliberate choice rather than an oversight: it allows IntelliJ IDEA and WebStorm users to share consistent run configurations and inspection profiles without needing to recreate them individually.

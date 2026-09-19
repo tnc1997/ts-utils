@@ -1,4 +1,4 @@
-import { containsKey, containsValue } from "../src";
+import { containsKey, containsValue } from "./index";
 
 describe("containsKey", () => {
   it("should check if a map does contain a specified key", () => {
