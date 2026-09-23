@@ -1,4 +1,4 @@
-import { frequencies } from "../src";
+import { frequencies } from "./index";
 
 describe("frequencies", () => {
   it("should return an empty map for an empty array", () => {

@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.ts"],
+  collectCoverageFrom: ["src/**/*.ts", "!src/**/*.test.ts"],
   coverageThreshold: {
     global: {
       branches: 100,

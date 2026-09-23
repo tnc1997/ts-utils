@@ -1,4 +1,4 @@
-import { max } from "../src";
+import { max } from "./index";
 
 describe("max", () => {
   it("should not mutate the input array", () => {
@@ -11,5 +11,11 @@ describe("max", () => {
 
   it("should return the maximum value of an array", () => {
     expect(max([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).toEqual(10);
+  });
+
+  it("should throw an error when the array is empty", () => {
+    expect(() => max([])).toThrow(
+      "The array does not contain enough values to calculate the maximum.",
+    );
   });
 });
