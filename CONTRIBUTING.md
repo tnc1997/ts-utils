@@ -1,7 +1,7 @@
 # Contributing
 
 Thanks for your interest in contributing to `ts-utils`. This document explains how the repository is
-organised and how to build, test, and run things locally.
+organized and how to build, test, and run things locally.
 
 ## Repository structure
 
@@ -83,7 +83,7 @@ CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` across mult
 (Compatibility), and a bundle size check on pull requests to `main` (Size), so it's worth running all of
 these locally before opening a PR.
 
-If your change affects the public behaviour of a package, add a changeset (see
+If your change affects the public behavior of a package, add a changeset (see
 [Changesets and releases](#changesets-and-releases)).
 
 ## Checking bundle size
@@ -108,7 +108,7 @@ Versioning, changelogs, and publishing are managed by
 
 ### Adding a changeset
 
-Any change that affects a package's published behaviour needs a changeset. Changes that only touch tests,
+Any change that affects a package's published behavior needs a changeset. Changes that only touch tests,
 documentation outside a package, CI, or root tooling don't. To add one, run:
 
 ```sh
@@ -147,7 +147,7 @@ Contributors don't need to bump versions, edit changelogs, or publish manually.
 
 ## Adding or changing a function
 
-When adding a new function to a package, or changing the behaviour of an existing one:
+When adding a new function to a package, or changing the behavior of an existing one:
 
 1. Export it from the package's `src/index.ts`.
 2. Document it with a JSDoc comment including `@param`, `@returns`, and an `@example`, following the
@@ -167,7 +167,7 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
   function, named after the function (e.g. `describe("mean", ...)`).
 - Import the functions under test from `./index` rather than from the module file, so the tests exercise
   the package's public exports.
-- Title each test in the form `should <expected behaviour>`, e.g.
+- Title each test in the form `should <expected behavior>`, e.g.
   `it("should return the sum of the values of an array", ...)`.
 - Sort `it` blocks alphabetically by title within each `describe` block, and insert new tests in
   alphabetical position rather than appending them.
@@ -196,6 +196,6 @@ code in `src/` is left untested.
    areas.
 4. Before opening a pull request, make sure `npm run build`, `npm test`, `npm run lint`, and
    `npm run size` all pass locally, and add a changeset (`npm run changeset`) if the change affects a
-   package's published behaviour.
+   package's published behavior.
 5. Open a pull request against `main` describing the change and referencing the issue it resolves. A
    review will be requested from the code owners automatically.
