@@ -1,7 +1,8 @@
 # Contributing
 
 Thanks for your interest in contributing to `ts-utils`. This document explains how the repository is
-organized and how to build, test, and run things locally.
+organized, how to build and test it locally, the conventions to follow when changing a package, and how
+changes are released.
 
 ## Repository structure
 
