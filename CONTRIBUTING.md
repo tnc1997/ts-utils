@@ -41,6 +41,13 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
 - `.idea/` – project-level IntelliJ IDEA/WebStorm files (run configurations, inspection profiles, etc.)
   are intentionally committed, while user-specific files such as `.idea/workspace.xml` are gitignored.
 
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) `^22.18.0`, `^24.11.0`, or `>=26.0.0`, matching the `engines` field in
+  the root `package.json`. CI tests every package against each of these release lines.
+- npm, which ships with Node.js. The repository relies on npm workspaces and a committed
+  `package-lock.json`, so use npm rather than another package manager.
+
 ## Building and testing locally
 
 1. Install dependencies from the repository root:
@@ -72,12 +79,8 @@ CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` across mult
 (Compatibility), and a bundle size check on pull requests to `main` (Size), so it's worth running all of
 these locally before opening a PR.
 
-If your change affects the public behaviour of a package, add a changeset so the release notes and
-version bump are generated correctly:
-
-```sh
-npm run changeset
-```
+If your change affects the public behaviour of a package, add a changeset (see
+[Changesets and releases](#changesets-and-releases)).
 
 ## Checking bundle size
 
@@ -94,6 +97,50 @@ The Size workflow runs on every pull request to `main` and comments with the siz
 to the base branch. If a change legitimately needs to exceed a budget, update the limit in
 `.size-limit.js` as part of the same pull request and explain why in the description.
 
+## Changesets and releases
+
+Versioning, changelogs, and publishing are managed by
+[Changesets](https://github.com/changesets/changesets).
+
+### Adding a changeset
+
+Any change that affects a package's published behaviour needs a changeset. Changes that only touch tests,
+documentation outside a package, CI, or root tooling don't. To add one, run:
+
+```sh
+npm run changeset
+```
+
+Then select the affected packages, choose a bump type for each, and write a one or two sentence summary.
+The summary is copied verbatim into the package's `CHANGELOG.md`, so write it for users of the package:
+describe what changed and why, not how it was implemented. The command creates a Markdown file in
+`.changeset/`; commit it with your change.
+
+### Choosing a bump type
+
+Packages follow [Semantic Versioning](https://semver.org/):
+
+- **patch** – bug fixes and other changes that don't alter the public API, e.g. correcting a function
+  that returns the wrong result, throwing a more specific error subclass, or improving JSDoc comments.
+- **minor** – backwards-compatible additions, e.g. a new function, a new optional parameter, or a newly
+  exported error class.
+- **major** – changes that could break existing callers, e.g. removing or renaming an export, adding a
+  required parameter, narrowing accepted types, or changing a function's return value or thrown error for
+  inputs that previously worked.
+
+If you're unsure, choose the larger bump and say why in the pull request description.
+
+### How releases happen
+
+The Publish workflow runs on every push to `main`:
+
+1. If there are pending changesets, it opens (or updates) a "Version Packages" pull request that consumes
+   them, bumps the package versions, and updates each `CHANGELOG.md`.
+2. When that pull request is merged, the workflow builds the packages and publishes the new versions to
+   npm.
+
+Contributors don't need to bump versions, edit changelogs, or publish manually.
+
 ## Adding or changing a function
 
 When adding a new function to a package, or changing the behaviour of an existing one:
@@ -103,9 +150,34 @@ When adding a new function to a package, or changing the behaviour of an existin
    existing functions (e.g. `packages/array/src/sum.ts`). Document any errors it throws, and prefer the
    package's `InsufficientValuesError` (from `src/errors.ts`) over a bare `Error` for empty-collection
    cases.
-3. Add tests in a colocated `src/<module>.test.ts` file, keeping coverage at 100%.
+3. Add tests in a colocated `src/<module>.test.ts` file, keeping coverage at 100% (see
+   [Writing tests](#writing-tests)).
 4. Add or update the function's entry in the package's `README.md` function reference, including its
    signature, a short description, and a usage example.
+
+## Writing tests
+
+Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
+
+- Put tests for `src/<module>.ts` in `src/<module>.test.ts`, with one `describe` block per exported
+  function, named after the function (e.g. `describe("mean", ...)`).
+- Import the functions under test from `./index` rather than from the module file, so the tests exercise
+  the package's public exports.
+- Title each test in the form `should <expected behaviour>`, e.g.
+  `it("should return the sum of the values of an array", ...)`.
+- Sort `it` blocks alphabetically by title within each `describe` block, and insert new tests in
+  alphabetical position rather than appending them.
+- Cover edge cases alongside the happy path, such as empty and single-element inputs, negative numbers,
+  and duplicates, and check that functions don't mutate their inputs.
+- When testing that a function throws, assert both the error class and the message:
+
+  ```ts
+  expect(() => sum([])).toThrow(InsufficientValuesError);
+  expect(() => sum([])).toThrow("The array does not contain enough values to calculate the sum.");
+  ```
+
+Coverage is enforced at 100% for branches, functions, lines, and statements, so `npm test` fails if any
+code in `src/` is left untested.
 
 ## Contribution flow
 
