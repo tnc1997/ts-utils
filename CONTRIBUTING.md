@@ -38,8 +38,12 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
 - `.size-limit.js` – the bundle size budget for each package's ESM build (see
   [Checking bundle size](#checking-bundle-size)).
 - `.github/CODEOWNERS` – pull requests automatically request a review from the code owners.
-- `.idea/` – project-level IntelliJ IDEA/WebStorm files (run configurations, inspection profiles, etc.)
-  are intentionally committed, while user-specific files such as `.idea/workspace.xml` are gitignored.
+- `.idea/` – the project-level IntelliJ IDEA/WebStorm files (such as `misc.xml`, `modules.xml`,
+  `vcs.xml`, run configurations, and inspection profiles) are intentionally committed, while
+  user-specific files such as `.idea/workspace.xml` remain gitignored. This is a deliberate choice rather
+  than an oversight (see [#96](https://github.com/tnc1997/ts-utils/issues/96)): it allows IntelliJ IDEA
+  and WebStorm users to share consistent run configurations and inspection profiles without needing to
+  recreate them individually.
 
 ## Prerequisites
 
