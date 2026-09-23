@@ -76,10 +76,24 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
    npm test
    ```
 
+   The packages don't define their own `test` scripts, so to run a single package's tests, run Jest in
+   that workspace instead:
+
+   ```sh
+   npm exec --workspace packages/array -- jest
+   ```
+
 4. Lint the repository:
 
    ```sh
    npm run lint
+   ```
+
+   Formatting is checked by Prettier through ESLint, so most issues, including formatting, can be fixed
+   automatically with:
+
+   ```sh
+   npm run lint -- --fix
    ```
 
 CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` on Node 18 to 26 (Test),
