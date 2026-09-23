@@ -218,20 +218,38 @@ code in `src/` is left untested.
 
 1. Find the [issue](https://github.com/tnc1997/ts-utils/issues) that describes the change, or open one if
    none exists, so there's an issue number to reference.
-2. Create a branch named `type/issue-number`, where `type` is one of the
+2. [Fork the repository](https://github.com/tnc1997/ts-utils/fork) on GitHub, clone your fork, and add
+   the original repository as the `upstream` remote so you can keep your fork up to date:
+
+   ```sh
+   git clone https://github.com/<your-username>/ts-utils.git
+   cd ts-utils
+   git remote add upstream https://github.com/tnc1997/ts-utils.git
+   ```
+
+   Before starting new work, update your local `main` from `upstream`:
+
+   ```sh
+   git switch main
+   git pull upstream main
+   ```
+
+   If you have write access to the repository, you can skip forking and create branches in it directly.
+3. Create a branch from `main` named `type/issue-number`, where `type` is one of the
    [Conventional Commits](https://www.conventionalcommits.org/) types used in this repository (`feat`,
    `fix`, `build`, `ci`, `docs`, `refactor`, `test`, etc.) and `issue-number` is the number of the issue
    the change addresses, e.g. `feat/12`.
-3. Make your changes, following the existing code style (enforced by ESLint/Prettier via `npm run
+4. Make your changes, following the existing code style (enforced by ESLint/Prettier via `npm run
    lint`).
-4. Write commit messages in Conventional Commits format (`type(scope): description`), where `scope` is
+5. Write commit messages in Conventional Commits format (`type(scope): description`), where `scope` is
    the feature area affected (e.g. `array`, `map`) and can be omitted if the change spans multiple
    areas.
-5. Before opening a pull request, make sure `npm run build`, `npm test`, `npm run lint`, and
+6. Before opening a pull request, make sure `npm run build`, `npm test`, `npm run lint`, and
    `npm run size` all pass locally, and add a changeset (`npm run changeset`) if the change affects a
    package's published behavior.
-6. Open a pull request against `main` describing the change and referencing the issue it resolves (e.g.
-   `Closes #12`). A review will be requested from the code owners automatically.
-7. Give the pull request a Conventional Commits title, e.g.
+7. Push your branch to your fork and open a pull request against `main` in `tnc1997/ts-utils`,
+   describing the change and referencing the issue it resolves (e.g. `Closes #12`). A review will be
+   requested from the code owners automatically.
+8. Give the pull request a Conventional Commits title, e.g.
    `fix(array): throw InsufficientValuesError from max and min`. Pull requests are squash-merged, so the
    title becomes the commit message on `main`, with the pull request number appended.
