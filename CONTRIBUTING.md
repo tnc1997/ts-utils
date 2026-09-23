@@ -15,7 +15,9 @@ changes are released.
 - [Runtime support](#runtime-support)
 - [Adding or changing a function](#adding-or-changing-a-function)
 - [Writing tests](#writing-tests)
+- [Finding something to work on](#finding-something-to-work-on)
 - [Contribution flow](#contribution-flow)
+- [Getting help](#getting-help)
 
 ## Quick start
 
@@ -244,6 +246,17 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
 Coverage is enforced at 100% for branches, functions, lines, and statements, so `npm test` fails if any
 code in `src/` is left untested.
 
+## Finding something to work on
+
+Issues labeled [`good first issue`](https://github.com/tnc1997/ts-utils/labels/good%20first%20issue) are
+small, self-contained changes suited to someone new to the repository, and issues labeled
+[`help wanted`](https://github.com/tnc1997/ts-utils/labels/help%20wanted) are ones where contributions
+are particularly welcome. If you'd like to work on something that doesn't have an issue yet, open one
+first so the change can be discussed before you start.
+
+Before starting work on an issue, leave a comment saying you'd like to pick it up, so that two people
+don't end up working on the same thing.
+
 ## Contribution flow
 
 1. Find the [issue](https://github.com/tnc1997/ts-utils/issues) that describes the change, or open one if
@@ -283,3 +296,10 @@ code in `src/` is left untested.
 8. Give the pull request a Conventional Commits title, e.g.
    `fix(array): throw InsufficientValuesError from max and min`. Pull requests are squash-merged, so the
    title becomes the commit message on `main`, with the pull request number appended.
+
+## Getting help
+
+- For questions about using or contributing to the packages, start a thread in
+  [Discussions](https://github.com/tnc1997/ts-utils/discussions).
+- To report a bug or suggest a change, [open an issue](https://github.com/tnc1997/ts-utils/issues/new).
+- If you're stuck on a pull request, ask in the pull request itself so the context stays in one place.
