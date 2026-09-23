@@ -55,7 +55,3 @@ entries(map); // [["a", 1], ["b", 2]]
 
 max(map); // ["b", 2]
 ```
-
-## Contributing
-
-Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get started.
