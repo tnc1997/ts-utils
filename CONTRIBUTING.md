@@ -4,6 +4,36 @@ Thanks for your interest in contributing to `ts-utils`. This document explains h
 organized, how to build and test it locally, the conventions to follow when changing a package, and how
 changes are released.
 
+## Contents
+
+- [Quick start](#quick-start)
+- [Repository structure](#repository-structure)
+- [Prerequisites](#prerequisites)
+- [Building and testing locally](#building-and-testing-locally)
+- [Checking bundle size](#checking-bundle-size)
+- [Changesets and releases](#changesets-and-releases)
+- [Runtime support](#runtime-support)
+- [Adding or changing a function](#adding-or-changing-a-function)
+- [Writing tests](#writing-tests)
+- [Contribution flow](#contribution-flow)
+
+## Quick start
+
+If you're new to the repository, these commands get you from a fresh clone to a passing build and test
+run (see [Prerequisites](#prerequisites) for the required Node.js version):
+
+```sh
+git clone https://github.com/tnc1997/ts-utils.git
+cd ts-utils
+npm install
+npm run build
+npm test
+```
+
+When you're ready to make a change, follow the [Contribution flow](#contribution-flow), which covers
+forking (clone your fork instead of the repository above), branching, and opening a pull request. The
+rest of this document is a reference for the repository's structure, tooling, and conventions.
+
 ## Repository structure
 
 This repository is an npm workspaces monorepo. The root `package.json` declares a single workspace glob:
