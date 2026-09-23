@@ -51,7 +51,8 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) `^22.18.0`, `^24.11.0`, or `>=26.0.0`, matching the `engines` field in
-  the root `package.json`. CI tests every package against each of these release lines.
+  the root `package.json`. This is the version needed to develop in the repository; the published
+  packages support a wider range (see [Runtime support](#runtime-support)).
 - npm, which ships with Node.js. The repository relies on npm workspaces and a committed
   `package-lock.json`, so use npm rather than another package manager.
 
@@ -81,10 +82,10 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
    npm run lint
    ```
 
-CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` across multiple Node versions
-(Test), `npm run build` followed by each package's `compatibility.js` across multiple Node versions
-(Compatibility), and a bundle size check on pull requests to `main` (Size), so it's worth running all of
-these locally before opening a PR.
+CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` on Node 18 to 26 (Test),
+`npm run build` followed by each package's `compatibility.js` on Node 18 to 26 (Compatibility), and a
+bundle size check on pull requests to `main` (Size), so it's worth running all of these locally before
+opening a PR.
 
 If your change affects the public behavior of a package, add a changeset (see
 [Changesets and releases](#changesets-and-releases)).
@@ -147,6 +148,19 @@ The Publish workflow runs on every push to `main`:
    npm.
 
 Contributors don't need to bump versions, edit changelogs, or publish manually.
+
+## Runtime support
+
+The published packages declare `"engines": { "node": ">=18.0.0" }` and are also shipped as a UMD build
+for browsers, so package source must run on Node 18 even though developing in the repository requires a
+newer version (see [Prerequisites](#prerequisites)).
+
+The TypeScript target is ES2020, so newer syntax is compiled down at build time, but built-in APIs are
+not polyfilled. Avoid built-ins that aren't available in Node 18, such as `Array.prototype.toSorted`
+(Node 20) or `Object.groupBy` (Node 21), and check [node.green](https://node.green/) or MDN's browser
+compatibility tables when in doubt. Because the Test workflow runs the full test suite on Node 18 with
+100% coverage, an unsupported built-in will usually fail CI, but browsers aren't tested, so it's better
+to avoid them in the first place.
 
 ## Adding or changing a function
 
