@@ -1,4 +1,4 @@
-import { max } from "./index";
+import { InsufficientValuesError, max } from "./index";
 
 describe("max", () => {
   it("should not mutate the input array", () => {
@@ -14,6 +14,7 @@ describe("max", () => {
   });
 
   it("should throw an error when the array is empty", () => {
+    expect(() => max([])).toThrow(InsufficientValuesError);
     expect(() => max([])).toThrow(
       "The array does not contain enough values to calculate the maximum.",
     );
