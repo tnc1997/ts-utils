@@ -17,6 +17,7 @@ changes are released.
 - [Writing tests](#writing-tests)
 - [Finding something to work on](#finding-something-to-work-on)
 - [Contribution flow](#contribution-flow)
+- [Troubleshooting](#troubleshooting)
 - [Getting help](#getting-help)
 
 ## Quick start
@@ -296,6 +297,42 @@ don't end up working on the same thing.
 8. Give the pull request a Conventional Commits title, e.g.
    `fix(array): throw InsufficientValuesError from max and min`. Pull requests are squash-merged, so the
    title becomes the commit message on `main`, with the pull request number appended.
+
+## Troubleshooting
+
+**`npm test` fails even though every test passes.** Coverage must be 100% for branches, functions, lines,
+and statements, so untested code fails the run with a message such as:
+
+```text
+Jest: Coverage for branches (87.5%) does not meet "global" threshold (100%)
+```
+
+Check the coverage table printed above the message, or open
+`packages/<name>/coverage/lcov-report/index.html`, to find the uncovered lines, and add tests for them.
+
+**`npm run size` or `compatibility.js` can't find the build output.** Both run against `dist/`, which
+isn't committed, so they fail with messages such as:
+
+```text
+Size Limit can’t find files at packages/array/dist/array.mjs
+Error: Cannot find module '.../packages/array/dist/array.cjs'
+```
+
+Run `npm run build` first, and again after any change to `src/`.
+
+**A test can't import a new function.** Tests import from `./index`, so a function that hasn't been
+exported from the package's `src/index.ts` fails to compile with an error such as:
+
+```text
+error TS2305: Module '"./index"' has no exported member 'max'.
+```
+
+Add the export to `src/index.ts`.
+
+**npm prints `EBADENGINE` warnings or commands fail unexpectedly.** npm only warns, rather than failing,
+when your Node.js version is outside the `engines` range in the root `package.json`, which can lead to
+confusing errors later. Check `node --version` against [Prerequisites](#prerequisites) and switch to a
+supported version (e.g. with a version manager such as `nvm`).
 
 ## Getting help
 
