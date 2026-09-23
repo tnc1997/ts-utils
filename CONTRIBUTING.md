@@ -202,17 +202,22 @@ code in `src/` is left untested.
 
 ## Contribution flow
 
-1. Create a branch named `type/issue-number`, where `type` is one of the
+1. Find the [issue](https://github.com/tnc1997/ts-utils/issues) that describes the change, or open one if
+   none exists, so there's an issue number to reference.
+2. Create a branch named `type/issue-number`, where `type` is one of the
    [Conventional Commits](https://www.conventionalcommits.org/) types used in this repository (`feat`,
    `fix`, `build`, `ci`, `docs`, `refactor`, `test`, etc.) and `issue-number` is the number of the issue
    the change addresses, e.g. `feat/12`.
-2. Make your changes, following the existing code style (enforced by ESLint/Prettier via `npm run
+3. Make your changes, following the existing code style (enforced by ESLint/Prettier via `npm run
    lint`).
-3. Write commit messages in Conventional Commits format (`type(scope): description`), where `scope` is
+4. Write commit messages in Conventional Commits format (`type(scope): description`), where `scope` is
    the feature area affected (e.g. `array`, `map`) and can be omitted if the change spans multiple
    areas.
-4. Before opening a pull request, make sure `npm run build`, `npm test`, `npm run lint`, and
+5. Before opening a pull request, make sure `npm run build`, `npm test`, `npm run lint`, and
    `npm run size` all pass locally, and add a changeset (`npm run changeset`) if the change affects a
    package's published behavior.
-5. Open a pull request against `main` describing the change and referencing the issue it resolves. A
-   review will be requested from the code owners automatically.
+6. Open a pull request against `main` describing the change and referencing the issue it resolves (e.g.
+   `Closes #12`). A review will be requested from the code owners automatically.
+7. Give the pull request a Conventional Commits title, e.g.
+   `fix(array): throw InsufficientValuesError from max and min`. Pull requests are squash-merged, so the
+   title becomes the commit message on `main`, with the pull request number appended.
