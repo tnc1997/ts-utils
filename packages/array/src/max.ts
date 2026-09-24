@@ -1,3 +1,5 @@
+import { InsufficientValuesError } from "./errors";
+
 /**
  * Returns the maximum value of an array.
  * @param array - the array to get the maximum of
@@ -9,7 +11,7 @@
  */
 export function max(array: number[]): number {
   if (array.length === 0) {
-    throw new Error(
+    throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the maximum.",
     );
   }

@@ -1,4 +1,4 @@
-import { min } from "./index";
+import { InsufficientValuesError, min } from "./index";
 
 describe("min", () => {
   it("should not mutate the input array", () => {
@@ -14,6 +14,7 @@ describe("min", () => {
   });
 
   it("should throw an error when the array is empty", () => {
+    expect(() => min([])).toThrow(InsufficientValuesError);
     expect(() => min([])).toThrow(
       "The array does not contain enough values to calculate the minimum.",
     );
