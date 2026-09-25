@@ -1,7 +1,9 @@
 import { mapAsync } from "./map";
 
 /**
- * Filters the values in an array asynchronously.
+ * Filters the values in an array asynchronously. Like
+ * `Array.prototype.filter`, a value is kept when the callback resolves to a
+ * truthy value.
  * @param array - the array to filter
  * @param callback - the asynchronous filter function
  * @param concurrency - the maximum number of callback invocations to run at once. Defaults to `Infinity`, i.e. all invocations run concurrently
@@ -13,16 +15,10 @@ import { mapAsync } from "./map";
  */
 export async function filterAsync<T>(
   array: T[],
-  callback: (value: T, index: number, array: T[]) => Promise<boolean>,
+  callback: (value: T, index: number, array: T[]) => Promise<unknown>,
   concurrency: number = Infinity,
 ): Promise<T[]> {
-  const booleans: boolean[] = await mapAsync(array, callback, concurrency);
+  const results: unknown[] = await mapAsync(array, callback, concurrency);
 
-  for (const boolean of booleans) {
-    if (typeof boolean !== "boolean") {
-      throw new TypeError("The callback did not resolve to a boolean value.");
-    }
-  }
-
-  return array.filter((value, index) => booleans[index]);
+  return array.filter((value, index) => results[index]);
 }
