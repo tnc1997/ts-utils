@@ -93,9 +93,10 @@ describe("mode", () => {
     expect(array).toEqual([2, 10, 1, 10]);
   });
 
-  it("should return the first value to reach the maximum frequency when there is a tie", () => {
+  it("should return the tied value that appears first in the array when there is a tie", () => {
     expect(mode([1, 1, 2, 2])).toEqual(1);
     expect(mode([2, 2, 1, 1])).toEqual(2);
+    expect(mode([1, 2, 2, 1])).toEqual(1);
   });
 
   it("should return the mode of a single-element array", () => {
