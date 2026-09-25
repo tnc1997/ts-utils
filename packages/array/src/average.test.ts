@@ -36,7 +36,7 @@ describe("mean", () => {
   it("should throw when the array is empty", () => {
     expect(() => mean([])).toThrow(InsufficientValuesError);
     expect(() => mean([])).toThrow(
-      "The array does not contain enough values to calculate the sum.",
+      "The array does not contain enough values to calculate the mean.",
     );
   });
 });
