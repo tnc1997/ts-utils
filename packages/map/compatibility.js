@@ -1,56 +1,70 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
-const fs = require("node:fs");
-const path = require("node:path");
-const vm = require("node:vm");
+const { check } = require("../../compatibility.base.js");
 
-const {
-  main: mainPath,
-  module: modulePath,
-  browser: browserPath,
-} = require("./package.json");
-
-const entries = new Map([
+const map = new Map([
   ["a", 1],
-  ["b", 2],
+  ["b", 3],
+  ["c", 2],
 ]);
 
-// CJS (`main`)
-const { keys: cjsKeys } = require(path.join(__dirname, mainPath));
+check(__dirname, "map", [
+  {
+    name: "containsKey",
+    run: ({ containsKey }) => [containsKey(map, "b"), containsKey(map, "d")],
+    expected: [true, false],
+  },
+  {
+    name: "containsValue",
+    run: ({ containsValue }) => [containsValue(map, 3), containsValue(map, 4)],
+    expected: [true, false],
+  },
+  {
+    name: "entries",
+    run: ({ entries }) => entries(map),
+    expected: [
+      ["a", 1],
+      ["b", 3],
+      ["c", 2],
+    ],
+  },
+  {
+    name: "InsufficientValuesError",
+    run: ({ InsufficientValuesError }) => {
+      const error = new InsufficientValuesError("message");
 
-const cjsResult = cjsKeys(entries);
-
-if (cjsResult.length !== 2 || cjsResult[0] !== "a" || cjsResult[1] !== "b") {
-  throw new Error(
-    `keys(...) returned ${JSON.stringify(cjsResult)}, expected ["a", "b"]`,
-  );
-}
-
-// ESM (`module`)
-import(path.join(__dirname, modulePath)).then(({ keys: esmKeys }) => {
-  const esmResult = esmKeys(entries);
-
-  if (esmResult.length !== 2 || esmResult[0] !== "a" || esmResult[1] !== "b") {
-    throw new Error(
-      `keys(...) returned ${JSON.stringify(esmResult)}, expected ["a", "b"]`,
-    );
-  }
-});
-
-// UMD (`browser`)
-const context = {};
-
-vm.createContext(context);
-
-vm.runInContext(
-  fs.readFileSync(path.join(__dirname, browserPath), "utf8"),
-  context,
-);
-
-const umdResult = context.map.keys(entries);
-
-if (umdResult.length !== 2 || umdResult[0] !== "a" || umdResult[1] !== "b") {
-  throw new Error(
-    `keys(...) returned ${JSON.stringify(umdResult)}, expected ["a", "b"]`,
-  );
-}
+      return [Object.prototype.toString.call(error), error.name, error.message];
+    },
+    expected: ["[object Error]", "InsufficientValuesError", "message"],
+  },
+  {
+    name: "keys",
+    run: ({ keys }) => keys(map),
+    expected: ["a", "b", "c"],
+  },
+  {
+    name: "max",
+    run: ({ max }) => max(map),
+    expected: ["b", 3],
+  },
+  {
+    name: "max",
+    run: ({ max }) => max(new Map()),
+    throws: "InsufficientValuesError",
+  },
+  {
+    name: "min",
+    run: ({ min }) => min(map),
+    expected: ["a", 1],
+  },
+  {
+    name: "min",
+    run: ({ min }) => min(new Map()),
+    throws: "InsufficientValuesError",
+  },
+  {
+    name: "values",
+    run: ({ values }) => values(map),
+    expected: [1, 3, 2],
+  },
+]);

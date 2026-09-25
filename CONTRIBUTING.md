@@ -58,8 +58,9 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
   and not committed to source control.
 - `compatibility.js` – a plain Node script, run in CI, that loads each of the built package's entry
   points (the CJS build via `main` with `require`, the ESM build via `module` with `import()`, and the
-  UMD build via `browser` in a `vm` context) and checks the result of calling one of its functions, to
-  catch packaging/compatibility regressions across Node versions.
+  UMD build via `browser` in a `vm` context) and runs a case for every export against each of them, to
+  catch packaging/compatibility regressions and unsupported built-ins across Node versions. The shared
+  runner is `compatibility.base.js` at the repository root.
 - `package.json`, `tsconfig.json`, `tsdown.config.mts`, `jest.config.js` – per-package configuration.
   Packages are marked `"sideEffects": false`, so modules must not have top-level side effects.
 - `README.md`, `CHANGELOG.md`, `LICENSE` – published alongside the package to npm.
@@ -68,6 +69,8 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
 
 - `tsconfig.base.json` – the base TypeScript configuration extended by every package. It enables
   `strict`, `noUncheckedIndexedAccess`, `noImplicitReturns`, and `noFallthroughCasesInSwitch`.
+- `compatibility.base.js` – the runner shared by every package's `compatibility.js`. It fails if an
+  export has no case, or if a case returns an unexpected value or throws, in any of the builds.
 - `jest.config.base.js` – the base Jest configuration extended by every package. It collects coverage
   from `src/**/*.ts` (excluding `*.test.ts` files) and enforces a 100% coverage threshold for branches,
   functions, lines, and statements.
@@ -206,9 +209,10 @@ The TypeScript target is ES2020, so newer syntax is compiled down at build time,
 not polyfilled. Avoid built-ins that aren't available in Node 18, such as `Array.prototype.toSorted`
 (Node 20) or `Object.groupBy` (Node 21), and check [node.green](https://node.green/) or MDN's browser
 compatibility tables when in doubt. The Test workflow only runs the test suite on the Node versions
-allowed by the root `engines` field, and the Compatibility workflow runs the built output on Node 18 and
-20 but only calls one function per package, so an unsupported built-in may not fail CI. Browsers aren't
-tested either, so it's important to avoid them in the first place.
+allowed by the root `engines` field, so it's the Compatibility workflow, which runs every export of the
+built output on Node 18 to 26, that catches an unsupported built-in. It only exercises the code paths
+that the cases in `compatibility.js` reach, and browsers aren't tested, so it's still better to avoid
+such built-ins in the first place.
 
 ## Adding or changing a function
 
@@ -221,7 +225,10 @@ When adding a new function to a package, or changing the behavior of an existing
    cases.
 3. Add tests in a colocated `src/<module>.test.ts` file, keeping coverage at 100% (see
    [Writing tests](#writing-tests)).
-4. Add or update the function's entry in the package's `README.md` function reference, including its
+4. Add a case for it to the package's `compatibility.js`, so that the built output is run on every
+   supported Node version (the Compatibility workflow fails for an export without a case). Cover any
+   separate code paths, such as with and without an optional argument.
+5. Add or update the function's entry in the package's `README.md` function reference, including its
    signature, a short description, and a usage example.
 
 ## Writing tests
