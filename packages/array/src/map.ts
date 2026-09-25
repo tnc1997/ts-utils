@@ -24,23 +24,31 @@ export async function mapAsync<T1, T2>(
     );
   }
 
-  if (concurrency >= array.length) {
-    return Promise.all(array.map(callback));
-  }
-
   const results: T2[] = new Array(array.length);
   let nextIndex = 0;
 
   async function worker(): Promise<void> {
     while (nextIndex < array.length) {
       const index = nextIndex++;
-      // `index` is always less than `array.length` here, so `array[index]`
-      // is always defined.
+
+      // Like `Array.prototype.map`, skip holes in sparse arrays, leaving the
+      // corresponding slots in `results` empty.
+      if (!(index in array)) {
+        continue;
+      }
+
+      // `index` is an own index of `array` here, so `array[index]` is a
+      // value of type `T1`.
       results[index] = await callback(array[index]!, index, array);
     }
   }
 
-  await Promise.all(Array.from({ length: concurrency }, worker));
+  // Unlimited concurrency is achieved by starting a worker per value, so
+  // that every callback is invoked synchronously, in order, as with
+  // `Array.prototype.map`, and holes are handled the same way either way.
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, array.length) }, worker),
+  );
 
   return results;
 }
