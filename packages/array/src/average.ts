@@ -12,6 +12,12 @@ import { sum } from "./sum";
  * ```
  */
 export function mean(array: number[]): number {
+  if (array.length === 0) {
+    throw new InsufficientValuesError(
+      "The array does not contain enough values to calculate the mean.",
+    );
+  }
+
   return sum(array) / array.length;
 }
 
