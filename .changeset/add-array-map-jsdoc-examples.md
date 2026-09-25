@@ -3,4 +3,4 @@
 "@ts-utils/map": patch
 ---
 
-Added an `@example` block to the JSDoc comment of every exported function, showing a minimal usage snippet with the expected return value.
+Added `@example` usage snippets to the JSDoc of every exported function.
