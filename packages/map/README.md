@@ -91,6 +91,8 @@ console.log(max(map));
 // [ 'c', 3 ]
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the map is empty.
+
 ### `min<T>(map: Map<T, number>): [T, number]`
 
 Returns the entry with the minimum value of a map.
@@ -108,6 +110,8 @@ console.log(min(map));
 // [ 'a', 1 ]
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the map is empty.
+
 ### `values<T1, T2>(map: Map<T1, T2>): T2[]`
 
 Returns an array of the values of a map.
@@ -123,4 +127,23 @@ const map = new Map([
 
 console.log(values(map));
 // [ 1, 2, 3 ]
+```
+
+## Errors
+
+### `InsufficientValuesError`
+
+Thrown when a map does not contain enough values to perform the requested calculation, e.g. by `max` and `min` when the map is empty. It extends `Error`, so you can catch it with `instanceof` without matching the message.
+
+```ts
+import { InsufficientValuesError, max } from "@ts-utils/map";
+
+try {
+  max(new Map());
+} catch (error) {
+  if (error instanceof InsufficientValuesError) {
+    console.log(error.message);
+    // The map does not contain enough values to calculate the maximum.
+  }
+}
 ```

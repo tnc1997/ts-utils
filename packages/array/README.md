@@ -28,14 +28,18 @@ console.log(count([1, 2, 3, 4, 5], (value) => value % 2 === 0));
 // 2
 ```
 
-### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>): Promise<T[]>`
+### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>, concurrency: number = Infinity): Promise<T[]>`
 
-Filters the values in an array asynchronously.
+Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently.
 
 ```ts
 import { filterAsync } from "@ts-utils/array";
 
 console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0));
+// [ 2, 4 ]
+
+// Run at most two callbacks at once.
+console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0, 2));
 // [ 2, 4 ]
 ```
 
@@ -50,14 +54,18 @@ console.log(frequencies(["a", "b", "a", "c", "b", "a"]));
 // Map(3) { 'a' => 3, 'b' => 2, 'c' => 1 }
 ```
 
-### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>): Promise<T2[]>`
+### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, concurrency: number = Infinity): Promise<T2[]>`
 
-Maps the values in an array asynchronously.
+Maps the values in an array asynchronously. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently. The results are returned in the same order as the input regardless of the concurrency.
 
 ```ts
 import { mapAsync } from "@ts-utils/array";
 
 console.log(await mapAsync([1, 2, 3], async (value) => value * 2));
+// [ 2, 4, 6 ]
+
+// Run at most two callbacks at once, e.g. to avoid overwhelming an API.
+console.log(await mapAsync([1, 2, 3], async (value) => value * 2, 2));
 // [ 2, 4, 6 ]
 ```
 
@@ -72,6 +80,8 @@ console.log(max([1, 5, 3, 2]));
 // 5
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
+
 ### `mean(array: number[]): number`
 
 Returns the mean of an array of numerical values.
@@ -82,6 +92,8 @@ import { mean } from "@ts-utils/array";
 console.log(mean([1, 2, 3, 4, 5]));
 // 3
 ```
+
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
 
 ### `median(array: number[]): number`
 
@@ -97,6 +109,8 @@ console.log(median([1, 2, 3, 4]));
 // 2.5
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
+
 ### `min(array: number[]): number`
 
 Returns the minimum value of an array.
@@ -107,6 +121,8 @@ import { min } from "@ts-utils/array";
 console.log(min([1, 5, 3, 2]));
 // 1
 ```
+
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
 
 ### `mode(array: number[]): number`
 
@@ -119,6 +135,8 @@ console.log(mode([1, 2, 2, 3, 3, 3]));
 // 3
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
+
 ### `range(array: number[]): number`
 
 Returns the range of an array of numerical values.
@@ -130,6 +148,8 @@ console.log(range([4, 1, 7, 3]));
 // 6
 ```
 
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
+
 ### `sum(array: number[]): number`
 
 Returns the sum of the values of a numerical array.
@@ -139,4 +159,25 @@ import { sum } from "@ts-utils/array";
 
 console.log(sum([1, 2, 3, 4, 5]));
 // 15
+```
+
+Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is empty.
+
+## Errors
+
+### `InsufficientValuesError`
+
+Thrown when an array does not contain enough values to perform the requested calculation, e.g. by `max`, `mean`, `median`, `min`, `mode`, `range`, and `sum` when the array is empty. It extends `Error`, so you can catch it with `instanceof` without matching the message.
+
+```ts
+import { InsufficientValuesError, max } from "@ts-utils/array";
+
+try {
+  max([]);
+} catch (error) {
+  if (error instanceof InsufficientValuesError) {
+    console.log(error.message);
+    // The array does not contain enough values to calculate the maximum.
+  }
+}
 ```
