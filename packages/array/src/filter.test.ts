@@ -1,6 +1,31 @@
 import { filterAsync } from "./index";
 
 describe("filterAsync", () => {
+  it("should filter the values by the truthiness of the resolved values", async () => {
+    const array: unknown[] = [
+      0,
+      1,
+      "",
+      "a",
+      null,
+      {},
+      undefined,
+      NaN,
+      [],
+      false,
+      true,
+    ];
+
+    async function callback(value: unknown): Promise<unknown> {
+      return value;
+    }
+
+    const expected: unknown[] = [1, "a", {}, [], true];
+
+    expect(await filterAsync(array, callback)).toEqual(expected);
+    expect(await filterAsync(array, callback, 2)).toEqual(expected);
+  });
+
   it("should filter the values in an array asynchronously", async () => {
     function callback(value: number): Promise<boolean> {
       function executor(resolve: (value: boolean) => void): void {
@@ -81,15 +106,5 @@ describe("filterAsync", () => {
 
     expect(await filterAsync(array, callback)).toEqual([2, 4, 6]);
     expect(maxActive).toEqual(array.length);
-  });
-
-  it("should throw a type error if the callback does not resolve to a boolean value", async () => {
-    function callback(value: number): Promise<boolean> {
-      return Promise.resolve(value as unknown as boolean);
-    }
-
-    await expect(filterAsync([1, 2, 3, 4], callback)).rejects.toThrow(
-      new TypeError("The callback did not resolve to a boolean value."),
-    );
   });
 });

@@ -28,7 +28,7 @@ console.log(count([1, 2, 3, 4, 5], (value) => value % 2 === 0));
 // 2
 ```
 
-### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<boolean>): Promise<T[]>`
+### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>): Promise<T[]>`
 
 Filters the values in an array asynchronously.
 
