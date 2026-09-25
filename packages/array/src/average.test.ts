@@ -164,6 +164,12 @@ describe("range", () => {
     expect(range([1, 2, 3, 4, 5])).toEqual(4);
   });
 
+  it("should return the range of a large array", () => {
+    const array = Array.from({ length: 200_000 }, (_, index) => index);
+
+    expect(range(array)).toEqual(199_999);
+  });
+
   it("should throw when the array is empty", () => {
     expect(() => range([])).toThrow(InsufficientValuesError);
     expect(() => range([])).toThrow(
