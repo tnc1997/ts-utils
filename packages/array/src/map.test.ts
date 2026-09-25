@@ -84,4 +84,19 @@ describe("mapAsync", () => {
     expect(await mapAsync(array, callback)).toEqual([1, 4, 9, 16, 25]);
     expect(maxActive).toEqual(array.length);
   });
+
+  it.each([NaN, 0, -1, 1.5, -Infinity])(
+    "should throw a range error when the concurrency is %p",
+    async (concurrency) => {
+      const callback = jest.fn(async (value: number) => value * value);
+
+      await expect(mapAsync([1, 2, 3], callback, concurrency)).rejects.toThrow(
+        RangeError,
+      );
+      await expect(mapAsync([], callback, concurrency)).rejects.toThrow(
+        "The concurrency must be a positive integer or Infinity.",
+      );
+      expect(callback).not.toHaveBeenCalled();
+    },
+  );
 });
