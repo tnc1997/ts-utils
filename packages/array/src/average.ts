@@ -1,5 +1,7 @@
 import { InsufficientValuesError } from "./errors";
 import { frequencies } from "./frequencies";
+import { max } from "./max";
+import { min } from "./min";
 import { sum } from "./sum";
 
 /**
@@ -86,7 +88,7 @@ export function mode(array: number[]): number {
  */
 export function range(array: number[]): number {
   if (array.length > 0) {
-    return Math.max(...array) - Math.min(...array);
+    return max(array) - min(array);
   } else {
     throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the range.",
