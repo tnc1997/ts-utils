@@ -2,8 +2,9 @@
  * Maps the values in an array asynchronously.
  * @param array - the array to map
  * @param callback - the asynchronous map function
- * @param concurrency - the maximum number of callback invocations to run at once. Defaults to `Infinity`, i.e. all invocations run concurrently
+ * @param concurrency - the maximum number of callback invocations to run at once, which must be a positive integer or `Infinity`. Defaults to `Infinity`, i.e. all invocations run concurrently
  * @returns the mapped array
+ * @throws {RangeError} if `concurrency` is not a positive integer or `Infinity`
  * @example
  * ```ts
  * await mapAsync([1, 2, 3], async (value) => value * 2); // [2, 4, 6]
@@ -14,7 +15,16 @@ export async function mapAsync<T1, T2>(
   callback: (value: T1, index: number, array: T1[]) => Promise<T2>,
   concurrency: number = Infinity,
 ): Promise<T2[]> {
-  if (!Number.isFinite(concurrency) || concurrency >= array.length) {
+  if (
+    concurrency !== Infinity &&
+    !(Number.isInteger(concurrency) && concurrency > 0)
+  ) {
+    throw new RangeError(
+      "The concurrency must be a positive integer or Infinity.",
+    );
+  }
+
+  if (concurrency >= array.length) {
     return Promise.all(array.map(callback));
   }
 
@@ -30,9 +40,7 @@ export async function mapAsync<T1, T2>(
     }
   }
 
-  const workerCount = Math.max(1, Math.floor(concurrency));
-
-  await Promise.all(Array.from({ length: workerCount }, worker));
+  await Promise.all(Array.from({ length: concurrency }, worker));
 
   return results;
 }

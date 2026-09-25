@@ -6,8 +6,9 @@ import { mapAsync } from "./map";
  * truthy value.
  * @param array - the array to filter
  * @param callback - the asynchronous filter function
- * @param concurrency - the maximum number of callback invocations to run at once. Defaults to `Infinity`, i.e. all invocations run concurrently
+ * @param concurrency - the maximum number of callback invocations to run at once, which must be a positive integer or `Infinity`. Defaults to `Infinity`, i.e. all invocations run concurrently
  * @returns the filtered array
+ * @throws {RangeError} if `concurrency` is not a positive integer or `Infinity`
  * @example
  * ```ts
  * await filterAsync([1, 2, 3, 4], async (value) => value % 2 === 0); // [2, 4]

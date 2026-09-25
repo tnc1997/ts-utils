@@ -107,4 +107,14 @@ describe("filterAsync", () => {
     expect(await filterAsync(array, callback)).toEqual([2, 4, 6]);
     expect(maxActive).toEqual(array.length);
   });
+
+  it("should throw a range error when the concurrency is invalid", async () => {
+    async function callback(value: number): Promise<boolean> {
+      return value % 2 === 0;
+    }
+
+    await expect(filterAsync([1, 2, 3], callback, NaN)).rejects.toThrow(
+      RangeError,
+    );
+  });
 });
