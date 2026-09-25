@@ -110,7 +110,7 @@ console.log(min([1, 5, 3, 2]));
 
 ### `mode(array: number[]): number`
 
-Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the first of the tied values to reach that frequency is returned.
+Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned.
 
 ```ts
 import { mode } from "@ts-utils/array";

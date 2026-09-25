@@ -46,8 +46,8 @@ export function median(array: number[]): number {
 
 /**
  * Returns the mode of an array of numerical values. When multiple values
- * are tied for the highest frequency, the first of the tied values to
- * reach that frequency is returned.
+ * are tied for the highest frequency, the tied value that appears first in
+ * the array is returned.
  * @param array - the array to calculate the mode of
  * @returns the mode of the array
  * @example
