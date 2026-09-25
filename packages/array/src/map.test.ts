@@ -85,6 +85,23 @@ describe("mapAsync", () => {
     expect(maxActive).toEqual(array.length);
   });
 
+  it("should skip holes in sparse arrays regardless of concurrency", async () => {
+    // eslint-disable-next-line no-sparse-arrays
+    const array = [1, , 3];
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async (value: number | undefined) => value);
+
+      const result = await mapAsync(array, callback, concurrency);
+
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(3);
+      expect(1 in result).toBe(false);
+      expect(result[0]).toEqual(1);
+      expect(result[2]).toEqual(3);
+    }
+  });
+
   it.each([NaN, 0, -1, 1.5, -Infinity])(
     "should throw a range error when the concurrency is %p",
     async (concurrency) => {
