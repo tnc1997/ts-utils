@@ -171,6 +171,32 @@ describe("range", () => {
     expect(range(array)).toEqual(199_999);
   });
 
+  it("should return NaN when the array contains NaN", () => {
+    expect(range([1, NaN, 3])).toBeNaN();
+    expect(range([NaN, 1, 3])).toBeNaN();
+  });
+
+  it.each([[[Infinity]], [[-Infinity, -Infinity]], [[5, 5, 5]]])(
+    "should return 0 when all of the values in %j are equal",
+    (array) => {
+      expect(range(array)).toBe(0);
+    },
+  );
+
+  it.each([[[-Infinity, Infinity]], [[1, Infinity]], [[-Infinity, 1]]])(
+    "should return Infinity when %j contains an infinite extreme",
+    (array) => {
+      expect(range(array)).toBe(Infinity);
+    },
+  );
+
+  it.each([[[-0]], [[-0, 0]], [[0, -0]]])(
+    "should return 0 rather than -0 for %j",
+    (array) => {
+      expect(range(array)).toBe(0);
+    },
+  );
+
   it("should throw when the array is empty", () => {
     expect(() => range([])).toThrow(InsufficientValuesError);
     expect(() => range([])).toThrow(
