@@ -76,7 +76,7 @@ console.log(keys(map));
 
 ### `max<T>(map: Map<T, number>): [T, number]`
 
-Returns the entry with the maximum value of a map.
+Returns the entry with the maximum value of a map. Like [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max), the first entry whose value is `NaN` is returned if the map contains `NaN`, and `-0` is considered to be less than `0`. When multiple entries are tied for the maximum value, the entry that was inserted first is returned.
 
 ```ts
 import { max } from "@ts-utils/map";
@@ -95,7 +95,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the map is em
 
 ### `min<T>(map: Map<T, number>): [T, number]`
 
-Returns the entry with the minimum value of a map.
+Returns the entry with the minimum value of a map. Like [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min), the first entry whose value is `NaN` is returned if the map contains `NaN`, and `-0` is considered to be less than `0`. When multiple entries are tied for the minimum value, the entry that was inserted first is returned.
 
 ```ts
 import { min } from "@ts-utils/map";
