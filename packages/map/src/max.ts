@@ -1,8 +1,12 @@
-import { entries } from "./entries";
 import { InsufficientValuesError } from "./errors";
 
 /**
  * Returns the entry with the maximum value of a map.
+ *
+ * Like `Math.max`, the first entry whose value is `NaN` is returned if the
+ * map contains `NaN`, and `-0` is considered to be less than `0`. When
+ * multiple entries are tied for the maximum value, the entry that was
+ * inserted first is returned.
  * @param map - map the map to get the maximum value of
  * @returns the entry with the maximum value
  * @example
@@ -17,7 +21,22 @@ export function max<T>(map: Map<T, number>): [T, number] {
     );
   }
 
-  // `map` is checked to be non-empty above, so the sorted entries always
-  // contain at least one element.
-  return entries(map).sort((a: [T, number], b: [T, number]) => b[1] - a[1])[0]!;
+  let result: [T, number] | undefined;
+
+  for (const [key, value] of map) {
+    if (Number.isNaN(value)) {
+      return [key, value];
+    }
+
+    if (
+      result === undefined ||
+      value > result[1] ||
+      (Object.is(value, 0) && Object.is(result[1], -0))
+    ) {
+      result = [key, value];
+    }
+  }
+
+  // `map` is checked to be non-empty above, so `result` is always assigned.
+  return result!;
 }
