@@ -85,6 +85,9 @@ export function mode(array: number[]): number {
 
 /**
  * Returns the range of an array of numerical values.
+ *
+ * The result is `NaN` if the array contains `NaN` (or an empty slot), as
+ * for `max` and `min`.
  * @param array - the array to calculate the range of
  * @returns the range of the array
  * @example

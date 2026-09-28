@@ -171,6 +171,11 @@ describe("range", () => {
     expect(range(array)).toEqual(199_999);
   });
 
+  it("should return NaN when the array contains NaN", () => {
+    expect(range([1, NaN, 3])).toBeNaN();
+    expect(range([NaN, 1, 3])).toBeNaN();
+  });
+
   it("should throw when the array is empty", () => {
     expect(() => range([])).toThrow(InsufficientValuesError);
     expect(() => range([])).toThrow(

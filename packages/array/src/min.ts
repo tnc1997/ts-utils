@@ -2,6 +2,9 @@ import { InsufficientValuesError } from "./errors";
 
 /**
  * Returns the minimum value of an array.
+ *
+ * Like `Math.min`, the result is `NaN` if the array contains `NaN` (or an
+ * empty slot), and `-0` is considered to be less than `0`.
  * @param array - the array to get the minimum of
  * @returns the minimum value
  * @example
@@ -16,5 +19,21 @@ export function min(array: number[]): number {
     );
   }
 
-  return array.reduce((a, b) => (b < a ? b : a));
+  let result = Infinity;
+
+  // An index loop is used instead of `Math.min(...array)`, which throws a
+  // `RangeError` for arrays too large to spread into function arguments.
+  for (let i = 0; i < array.length; i++) {
+    const value = array[i];
+
+    if (value === undefined || Number.isNaN(value)) {
+      return NaN;
+    }
+
+    if (value < result || (value === result && Object.is(value, -0))) {
+      result = value;
+    }
+  }
+
+  return result;
 }

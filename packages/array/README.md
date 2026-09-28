@@ -71,7 +71,7 @@ console.log(await mapAsync([1, 2, 3], async (value) => value * 2, 2));
 
 ### `max(array: number[]): number`
 
-Returns the maximum value of an array.
+Returns the maximum value of an array. Like [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max), the result is `NaN` if the array contains `NaN` (or an empty slot), and `-0` is considered to be less than `0`.
 
 ```ts
 import { max } from "@ts-utils/array";
@@ -113,7 +113,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `min(array: number[]): number`
 
-Returns the minimum value of an array.
+Returns the minimum value of an array. Like [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min), the result is `NaN` if the array contains `NaN` (or an empty slot), and `-0` is considered to be less than `0`.
 
 ```ts
 import { min } from "@ts-utils/array";
@@ -139,7 +139,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `range(array: number[]): number`
 
-Returns the range of an array of numerical values.
+Returns the range of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { range } from "@ts-utils/array";
