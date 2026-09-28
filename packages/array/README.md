@@ -139,7 +139,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `range(array: number[]): number`
 
-Returns the range of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
+Returns the range of an array of numerical values. The result is `0` if all of the values are equal, including when they are infinite, and `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { range } from "@ts-utils/array";

@@ -86,8 +86,9 @@ export function mode(array: number[]): number {
 /**
  * Returns the range of an array of numerical values.
  *
- * The result is `NaN` if the array contains `NaN` (or an empty slot), as
- * for `max` and `min`.
+ * The result is `0` if all of the values are equal, including when they are
+ * infinite, and `NaN` if the array contains `NaN` (or an empty slot), as for
+ * `max` and `min`.
  * @param array - the array to calculate the range of
  * @returns the range of the array
  * @example
@@ -97,7 +98,13 @@ export function mode(array: number[]): number {
  */
 export function range(array: number[]): number {
   if (array.length > 0) {
-    return max(array) - min(array);
+    const _max = max(array);
+    const _min = min(array);
+
+    // Subtracting equal infinities gives `NaN`, but an array whose values are
+    // all equal has a range of `0`. `NaN` is never equal to itself, so arrays
+    // containing `NaN` still fall through to the subtraction.
+    return _max === _min ? 0 : _max - _min;
   } else {
     throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the range.",
