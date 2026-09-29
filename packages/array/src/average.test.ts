@@ -76,6 +76,29 @@ describe("median", () => {
     expect(median([1, 2, 3, 4, 5])).toEqual(3);
   });
 
+  it.each([
+    [[3, NaN, 1]],
+    [[NaN, 1, 3]],
+    [[1, 3, NaN]],
+    [[1, 2, NaN, 3, 4]],
+    [[NaN, 1, 2, 3]],
+    [[1, 2, 3, NaN]],
+    [[NaN]],
+    [[NaN, NaN]],
+  ])("should return NaN when %j contains NaN", (array) => {
+    expect(median(array)).toBeNaN();
+  });
+
+  it.each([
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole in the middle", [1, , 3] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole at the end", [1, 2, ,] as number[]],
+    ["only holes", new Array<number>(3)],
+  ])("should return NaN for a sparse array with %s", (_, array) => {
+    expect(median(array)).toBeNaN();
+  });
+
   it("should throw when the array is empty", () => {
     expect(() => median([])).toThrow(InsufficientValuesError);
     expect(() => median([])).toThrow(

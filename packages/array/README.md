@@ -97,7 +97,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `median(array: number[]): number`
 
-Returns the median of an array of numerical values.
+Returns the median of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { median } from "@ts-utils/array";
