@@ -25,6 +25,9 @@ export function mean(array: number[]): number {
 
 /**
  * Returns the median of an array of numerical values.
+ *
+ * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
+ * `max` and `min`.
  * @param array - the array to calculate the median of
  * @returns the median of the array
  * @example
@@ -34,6 +37,18 @@ export function mean(array: number[]): number {
  */
 export function median(array: number[]): number {
   if (array.length > 0) {
+    // The comparator returns `NaN` for `NaN` values, which makes the sort
+    // inconsistent, and empty slots are sorted to the end without being
+    // compared, so either would otherwise give a result that depends on the
+    // order of the values.
+    for (let i = 0; i < array.length; i++) {
+      const value = array[i];
+
+      if (value === undefined || Number.isNaN(value)) {
+        return NaN;
+      }
+    }
+
     const sorted = [...array].sort((a, b) => a - b);
 
     const middle = Math.floor(sorted.length / 2);
