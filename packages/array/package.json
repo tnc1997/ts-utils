@@ -32,7 +32,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tnc1997/ts-utils"
+    "url": "git+https://github.com/tnc1997/ts-utils.git",
+    "directory": "packages/array"
   },
   "publishConfig": {
     "access": "public"
