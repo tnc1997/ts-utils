@@ -10,7 +10,7 @@
   "author": "Thomas Clark",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tnc1997/ts-utils"
+    "url": "git+https://github.com/tnc1997/ts-utils.git"
   },
   "engines": {
     "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
