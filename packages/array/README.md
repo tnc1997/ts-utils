@@ -32,6 +32,8 @@ console.log(count([1, 2, 3, 4, 5], (value) => value % 2 === 0));
 
 Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently.
 
+Like `Array.prototype.filter`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and the value kept is the one passed to the callback, even if the array is changed afterwards. Unlike `Array.prototype.filter`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
+
 ```ts
 import { filterAsync } from "@ts-utils/array";
 
@@ -57,6 +59,8 @@ console.log(frequencies(["a", "b", "a", "c", "b", "a"]));
 ### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, concurrency: number = Infinity): Promise<T2[]>`
 
 Maps the values in an array asynchronously. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently. The results are returned in the same order as the input regardless of the concurrency.
+
+Like `Array.prototype.map`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and each value is read when its callback is invoked. Unlike `Array.prototype.map`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
 
 ```ts
 import { mapAsync } from "@ts-utils/array";

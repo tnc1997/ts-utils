@@ -102,6 +102,51 @@ describe("mapAsync", () => {
     }
   });
 
+  it("should not visit values appended to the array regardless of concurrency", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      const callback = jest.fn(
+        async (value: number, index: number, array: number[]) => {
+          if (array.length < 4) {
+            array.push(9);
+          }
+
+          return value * value;
+        },
+      );
+
+      const result = await mapAsync(array, callback, concurrency);
+
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(result).toEqual([1, 4]);
+      expect(array).toEqual([1, 2, 9, 9]);
+    }
+  });
+
+  it("should not visit values removed from the array regardless of concurrency", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2, 3];
+
+      const callback = jest.fn(
+        async (value: number, index: number, array: number[]) => {
+          if (index === 0) {
+            array.pop();
+          }
+
+          return value * value;
+        },
+      );
+
+      const result = await mapAsync(array, callback, concurrency);
+
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(3);
+      expect(2 in result).toBe(false);
+      expect(result.slice(0, 2)).toEqual([1, 4]);
+    }
+  });
+
   it.each([NaN, 0, -1, 1.5, -Infinity])(
     "should throw a range error when the concurrency is %p",
     async (concurrency) => {

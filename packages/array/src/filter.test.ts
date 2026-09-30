@@ -108,6 +108,48 @@ describe("filterAsync", () => {
     expect(maxActive).toEqual(array.length);
   });
 
+  it("should not visit values appended to the array regardless of concurrency", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      const callback = jest.fn(
+        async (value: number, index: number, array: number[]) => {
+          if (array.length < 4) {
+            array.push(4);
+          }
+
+          return value % 2 === 0;
+        },
+      );
+
+      expect(await filterAsync(array, callback, concurrency)).toEqual([2]);
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(array).toEqual([1, 2, 4, 4]);
+    }
+  });
+
+  it("should keep the values passed to the callback even if the array is changed afterwards", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2, 3, 4];
+
+      const callback = jest.fn(
+        async (value: number, index: number, array: number[]) => {
+          if (index === 1) {
+            array[1] = 5;
+            array.length = 3;
+          }
+
+          return value % 2 === 0;
+        },
+      );
+
+      // Like `Array.prototype.filter`, the changed value at index 1 is kept
+      // as it was when visited, and the removed index 3 is not visited.
+      expect(await filterAsync(array, callback, concurrency)).toEqual([2]);
+      expect(callback).toHaveBeenCalledTimes(3);
+    }
+  });
+
   it("should throw a range error when the concurrency is invalid", async () => {
     async function callback(value: number): Promise<boolean> {
       return value % 2 === 0;
