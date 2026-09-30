@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "author": "Thomas Clark",
+  "type": "commonjs",
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
