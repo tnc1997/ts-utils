@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "author": "Thomas Clark",
+  "type": "commonjs",
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
@@ -31,7 +32,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tnc1997/ts-utils"
+    "url": "git+https://github.com/tnc1997/ts-utils.git",
+    "directory": "packages/array"
   },
   "publishConfig": {
     "access": "public"
