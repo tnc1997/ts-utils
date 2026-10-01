@@ -7,7 +7,7 @@ import { InsufficientValuesError } from "./errors";
  * map contains `NaN`, and `-0` is considered to be less than `0`. When
  * multiple entries are tied for the minimum value, the entry that was
  * inserted first is returned.
- * @param map - map the map to get the minimum value of
+ * @param map - the map to get the minimum value of
  * @returns the entry with the minimum value
  * @example
  * ```ts
