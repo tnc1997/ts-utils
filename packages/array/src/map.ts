@@ -1,4 +1,33 @@
 /**
+ * Options for `mapAsync` and `filterAsync`.
+ */
+export interface AsyncOptions {
+  /**
+   * The maximum number of callback invocations to run at once, which must be
+   * a positive integer or `Infinity`. Defaults to `Infinity`, i.e. all
+   * invocations run concurrently.
+   */
+  concurrency?: number;
+
+  /**
+   * Whether to stop starting new callback invocations once one has
+   * rejected. Defaults to `true`.
+   *
+   * When `true`, the returned promise rejects with the first rejection
+   * reason as soon as it happens. Callbacks that are already running are not
+   * cancelled, and any later rejections are ignored. With unlimited
+   * concurrency, every callback has already been invoked before any can
+   * reject, so this only makes a difference when `concurrency` is set.
+   *
+   * When `false`, every callback is invoked, and once all of them have
+   * settled, the returned promise rejects with an `AggregateError` whose
+   * `errors` are every rejection reason, in the order that the rejections
+   * happened.
+   */
+  stopOnError?: boolean;
+}
+
+/**
  * Maps the values in an array asynchronously.
  *
  * Like `Array.prototype.map`, only the indexes below the array's initial
@@ -9,19 +38,25 @@
  * been invoked.
  * @param array - the array to map
  * @param callback - the asynchronous map function
- * @param concurrency - the maximum number of callback invocations to run at once, which must be a positive integer or `Infinity`. Defaults to `Infinity`, i.e. all invocations run concurrently
+ * @param options - the maximum number of callback invocations to run at once (`concurrency`, defaulting to `Infinity`), and whether to stop starting new ones once one has rejected (`stopOnError`, defaulting to `true`)
  * @returns the mapped array
  * @throws {RangeError} if `concurrency` is not a positive integer or `Infinity`
+ * @throws {AggregateError} if `stopOnError` is `false` and any callback rejects, with every rejection reason in its `errors`
  * @example
  * ```ts
  * await mapAsync([1, 2, 3], async (value) => value * 2); // [2, 4, 6]
+ *
+ * // Run at most two callbacks at once.
+ * await mapAsync([1, 2, 3], async (value) => value * 2, { concurrency: 2 }); // [2, 4, 6]
  * ```
  */
 export async function mapAsync<T1, T2>(
   array: T1[],
   callback: (value: T1, index: number, array: T1[]) => Promise<T2>,
-  concurrency: number = Infinity,
+  options: AsyncOptions = {},
 ): Promise<T2[]> {
+  const { concurrency = Infinity, stopOnError = true } = options;
+
   if (
     concurrency !== Infinity &&
     !(Number.isInteger(concurrency) && concurrency > 0)
@@ -35,10 +70,15 @@ export async function mapAsync<T1, T2>(
   // length, so that values appended by the callback are not processed.
   const length = array.length;
   const results: T2[] = new Array(length);
+  const errors: unknown[] = [];
+  let failed = false;
+  let invoked = 0;
   let nextIndex = 0;
 
   async function worker(): Promise<void> {
-    while (nextIndex < length) {
+    // Once a callback has rejected with `stopOnError`, the workers exit
+    // instead of taking the next index, so no further callbacks are started.
+    while (!failed && nextIndex < length) {
       const index = nextIndex++;
 
       // Like `Array.prototype.map`, skip holes in sparse arrays, leaving the
@@ -47,18 +87,39 @@ export async function mapAsync<T1, T2>(
         continue;
       }
 
-      // `index` is an own index of `array` here, so `array[index]` is a
-      // value of type `T1`.
-      results[index] = await callback(array[index]!, index, array);
+      invoked++;
+
+      try {
+        // `index` is an own index of `array` here, so `array[index]` is a
+        // value of type `T1`.
+        results[index] = await callback(array[index]!, index, array);
+      } catch (error) {
+        if (stopOnError) {
+          failed = true;
+
+          throw error;
+        }
+
+        errors.push(error);
+      }
     }
   }
 
   // Unlimited concurrency is achieved by starting a worker per value, so
   // that every callback is invoked synchronously, in order, as with
   // `Array.prototype.map`, and holes are handled the same way either way.
+  // `Promise.all` rejects as soon as any worker does, and handles the
+  // rejections of the others, so later rejections are ignored.
   await Promise.all(
     Array.from({ length: Math.min(concurrency, length) }, worker),
   );
+
+  if (errors.length > 0) {
+    throw new AggregateError(
+      errors,
+      `${errors.length} of ${invoked} callbacks rejected.`,
+    );
+  }
 
   return results;
 }

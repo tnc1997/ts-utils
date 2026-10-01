@@ -40,9 +40,9 @@ console.log(count([1, 2, 3, 4, 5], (value) => value % 2 === 0));
 // 2
 ```
 
-### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>, concurrency: number = Infinity): Promise<T[]>`
+### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>, options: AsyncOptions = {}): Promise<T[]>`
 
-Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently.
+Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `options` are the same as for [`mapAsync`](#mapasynct1-t2array-t1-callback-value-t1-index-number-array-t1--promiset2-options-asyncoptions---promiset2): `concurrency` limits how many callback invocations run at once, and `stopOnError` controls what happens when a callback rejects.
 
 Like `Array.prototype.filter`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and the value kept is the one passed to the callback, even if the array is changed afterwards. Unlike `Array.prototype.filter`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
 
@@ -53,7 +53,7 @@ console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0)
 // [ 2, 4 ]
 
 // Run at most two callbacks at once.
-console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0, 2));
+console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0, { concurrency: 2 }));
 // [ 2, 4 ]
 ```
 
@@ -68,9 +68,12 @@ console.log(frequencies(["a", "b", "a", "c", "b", "a"]));
 // Map(3) { 'a' => 3, 'b' => 2, 'c' => 1 }
 ```
 
-### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, concurrency: number = Infinity): Promise<T2[]>`
+### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, options: AsyncOptions = {}): Promise<T2[]>`
 
-Maps the values in an array asynchronously. The optional `concurrency` limits how many callback invocations run at once; by default, they all run concurrently. The results are returned in the same order as the input regardless of the concurrency.
+Maps the values in an array asynchronously. The results are returned in the same order as the input regardless of the concurrency. The optional `options` object accepts:
+
+- `concurrency` (default `Infinity`): the maximum number of callback invocations to run at once, which must be a positive integer or `Infinity`. By default, they all run concurrently. Any other value throws a `RangeError`.
+- `stopOnError` (default `true`): whether to stop starting new callback invocations once one has rejected. When `true`, the returned promise rejects with the first rejection reason as soon as it happens. Callbacks that are already running are not cancelled, and any later rejections are ignored. With unlimited concurrency, every callback has already been invoked before any can reject, so this only makes a difference when `concurrency` is set. When `false`, every callback is invoked, and once all of them have settled, the returned promise rejects with an [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) whose `errors` are every rejection reason, in the order that the rejections happened.
 
 Like `Array.prototype.map`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and each value is read when its callback is invoked. Unlike `Array.prototype.map`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
 
@@ -81,8 +84,22 @@ console.log(await mapAsync([1, 2, 3], async (value) => value * 2));
 // [ 2, 4, 6 ]
 
 // Run at most two callbacks at once, e.g. to avoid overwhelming an API.
-console.log(await mapAsync([1, 2, 3], async (value) => value * 2, 2));
+console.log(await mapAsync([1, 2, 3], async (value) => value * 2, { concurrency: 2 }));
 // [ 2, 4, 6 ]
+
+// Invoke every callback even if some reject, and collect the rejection reasons.
+try {
+  await mapAsync([1, 2, 3], async (value) => {
+    if (value % 2 !== 0) {
+      throw new Error(`Failed to process ${value}`);
+    }
+
+    return value * 2;
+  }, { stopOnError: false });
+} catch (error) {
+  console.log(error.errors.map(({ message }) => message));
+  // [ 'Failed to process 1', 'Failed to process 3' ]
+}
 ```
 
 ### `max(array: number[]): number`
