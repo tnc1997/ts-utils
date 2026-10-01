@@ -16,6 +16,8 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 </script>
 ```
 
+The UMD build requires a browser that supports ES2020, and `mapAsync` and `filterAsync` with `stopOnError: false` also require [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) (ES2021).
+
 ## Functions
 
 ### `contains<T>(array: T[], value: T): boolean`

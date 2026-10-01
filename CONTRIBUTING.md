@@ -205,14 +205,16 @@ The published packages declare `"engines": { "node": ">=18.0.0" }` and are also 
 for browsers, so package source must run on Node 18 even though developing in the repository requires a
 newer version (see [Prerequisites](#prerequisites)).
 
-The TypeScript target is ES2020, so newer syntax is compiled down at build time, but built-in APIs are
-not polyfilled. Avoid built-ins that aren't available in Node 18, such as `Array.prototype.toSorted`
-(Node 20) or `Object.groupBy` (Node 21), and check [node.green](https://node.green/) or MDN's browser
-compatibility tables when in doubt. The Test workflow only runs the test suite on the Node versions
-allowed by the root `engines` field, so it's the Compatibility workflow, which runs every export of the
-built output on Node 18 to 26, that catches an unsupported built-in. It only exercises the code paths
-that the cases in `compatibility.js` reach, and browsers aren't tested, so it's still better to avoid
-such built-ins in the first place.
+The builds target ES2020, set by `target` in each package's `tsdown.config.mts`, so newer syntax is
+compiled down at build time, but built-in APIs are not polyfilled. The `target` in `tsconfig.base.json`
+only affects type checking and the tests: tsdown doesn't read it, and would otherwise derive a Node 18 target from
+`engines`, leaving ES2021 and ES2022 syntax as written. Avoid built-ins that aren't available in Node 18,
+such as `Array.prototype.toSorted` (Node 20) or `Object.groupBy` (Node 21), and check
+[node.green](https://node.green/) or MDN's browser compatibility tables when in doubt. The Test workflow
+only runs the test suite on the Node versions allowed by the root `engines` field, so it's the
+Compatibility workflow, which runs every export of the built output on Node 18 to 26, that catches an
+unsupported built-in. It only exercises the code paths that the cases in `compatibility.js` reach, and
+browsers aren't tested, so it's still better to avoid such built-ins in the first place.
 
 ## Adding or changing a function
 

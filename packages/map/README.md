@@ -24,6 +24,8 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 </script>
 ```
 
+The UMD build requires a browser that supports ES2020.
+
 ## Functions
 
 ### `containsKey<T1, T2>(map: Map<T1, T2>, key: T1): boolean`

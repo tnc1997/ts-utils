@@ -6,4 +6,5 @@ export default defineConfig({
   entry: { map: "./src/index.ts" },
   format: ["esm", "cjs", "umd"],
   globalName: "tsUtils.map",
+  target: "es2020",
 });
