@@ -7,6 +7,7 @@ import { InsufficientValuesError } from "./errors";
  * empty slot), and `-0` is considered to be less than `0`.
  * @param array - the array to get the minimum of
  * @returns the minimum value
+ * @throws {InsufficientValuesError} if the array is empty
  * @example
  * ```ts
  * min([1, 5, 3]); // 1

@@ -9,6 +9,7 @@ import { InsufficientValuesError } from "./errors";
  * inserted first is returned.
  * @param map - the map to get the minimum value of
  * @returns the entry with the minimum value
+ * @throws {InsufficientValuesError} if the map is empty
  * @example
  * ```ts
  * min(new Map([["a", 1], ["b", 5], ["c", 3]])); // ["a", 1]

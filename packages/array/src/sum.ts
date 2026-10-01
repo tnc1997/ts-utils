@@ -4,6 +4,7 @@ import { InsufficientValuesError } from "./errors";
  * Returns the sum of the values of a numerical array.
  * @param array - the array to get the sum of
  * @returns the sum of the values
+ * @throws {InsufficientValuesError} if the array is empty
  * @example
  * ```ts
  * sum([1, 2, 3, 4]); // 10

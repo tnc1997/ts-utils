@@ -9,6 +9,7 @@ import { InsufficientValuesError } from "./errors";
  * inserted first is returned.
  * @param map - the map to get the maximum value of
  * @returns the entry with the maximum value
+ * @throws {InsufficientValuesError} if the map is empty
  * @example
  * ```ts
  * max(new Map([["a", 1], ["b", 5], ["c", 3]])); // ["b", 5]
