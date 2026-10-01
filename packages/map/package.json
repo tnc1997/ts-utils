@@ -28,7 +28,8 @@
       },
       "import": "./dist/map.mjs",
       "require": "./dist/map.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
