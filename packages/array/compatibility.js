@@ -5,7 +5,7 @@ const { check } = require("../../compatibility.base.js");
 const double = async (value) => value * 2;
 const isEven = async (value) => value % 2 === 0;
 
-check(__dirname, "array", [
+check(__dirname, "tsUtils.array", [
   {
     name: "contains",
     run: ({ contains }) => [contains([1, 2, 3], 2), contains([1, 2, 3], 4)],

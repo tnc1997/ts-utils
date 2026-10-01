@@ -5,5 +5,5 @@ export default defineConfig({
   dts: true,
   entry: { array: "./src/index.ts" },
   format: ["esm", "cjs", "umd"],
-  globalName: "array",
+  globalName: "tsUtils.array",
 });

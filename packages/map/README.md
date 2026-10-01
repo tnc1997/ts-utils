@@ -4,6 +4,26 @@
 
 [![npm version](https://badge.fury.io/js/%40ts-utils%2Fmap.svg)](https://badge.fury.io/js/%40ts-utils%2Fmap)
 
+## Using a `<script>` tag
+
+The package includes a UMD build, which registers the functions on the `tsUtils.map` global when it is loaded with a `<script>` tag, e.g. from a CDN such as jsDelivr:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@ts-utils/map@2/dist/map.umd.js"></script>
+<script>
+  console.log(
+    tsUtils.map.max(
+      new Map([
+        ["a", 1],
+        ["b", 5],
+        ["c", 3],
+      ]),
+    ),
+  );
+  // [ 'b', 5 ]
+</script>
+```
+
 ## Functions
 
 ### `containsKey<T1, T2>(map: Map<T1, T2>, key: T1): boolean`

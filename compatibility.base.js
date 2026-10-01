@@ -28,7 +28,7 @@ function serialize(value) {
  * throw an instance of the exported error class named by `throws`.
  *
  * @param {string} directory - the directory of the package
- * @param {string} name - the global name of the UMD build
+ * @param {string} name - the global name of the UMD build, which may be a dotted path such as `tsUtils.array`
  * @param {{ name: string, run: (exports: object) => unknown, expected?: unknown, throws?: string }[]} cases - the cases to check
  */
 async function check(directory, name, cases) {
@@ -48,7 +48,9 @@ async function check(directory, name, cases) {
   const builds = {
     cjs: require(path.join(directory, mainPath)),
     esm: await import(path.join(directory, modulePath)),
-    umd: context[name],
+    // The global name may be a dotted path into a namespace, e.g.
+    // `tsUtils.array`.
+    umd: name.split(".").reduce((object, key) => object?.[key], context),
   };
 
   const failures = [];

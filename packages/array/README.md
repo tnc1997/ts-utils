@@ -4,6 +4,18 @@
 
 [![npm version](https://badge.fury.io/js/%40ts-utils%2Farray.svg)](https://badge.fury.io/js/%40ts-utils%2Farray)
 
+## Using a `<script>` tag
+
+The package includes a UMD build, which registers the functions on the `tsUtils.array` global when it is loaded with a `<script>` tag, e.g. from a CDN such as jsDelivr:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@ts-utils/array@3/dist/array.umd.js"></script>
+<script>
+  console.log(tsUtils.array.max([1, 5, 3]));
+  // 5
+</script>
+```
+
 ## Functions
 
 ### `contains<T>(array: T[], value: T): boolean`
