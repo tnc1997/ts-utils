@@ -185,3 +185,5 @@ try {
   }
 }
 ```
+
+`instanceof` can fail if more than one copy of the package is loaded, for example when the same program `import`s and `require`s it (so both the ESM and CommonJS builds are used), when two versions are installed, or across realms such as iframes. In that case, check `error.name === "InsufficientValuesError"` instead.
