@@ -20,7 +20,7 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 
 ### `contains<T>(array: T[], value: T): boolean`
 
-Determines if an array contains a specified value.
+Determines if an array contains a specified value. Like [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), values are compared using SameValueZero, so `NaN` is found and `-0` is equal to `0`, and empty slots in sparse arrays are read as `undefined`.
 
 ```ts
 import { contains } from "@ts-utils/array";

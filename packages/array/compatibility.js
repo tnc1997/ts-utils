@@ -8,8 +8,12 @@ const isEven = async (value) => value % 2 === 0;
 check(__dirname, "tsUtils.array", [
   {
     name: "contains",
-    run: ({ contains }) => [contains([1, 2, 3], 2), contains([1, 2, 3], 4)],
-    expected: [true, false],
+    run: ({ contains }) => [
+      contains([1, 2, 3], 2),
+      contains([1, 2, 3], 4),
+      contains([1, NaN, 3], NaN),
+    ],
+    expected: [true, false, true],
   },
   {
     name: "count",

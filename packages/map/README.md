@@ -28,7 +28,7 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 
 ### `containsKey<T1, T2>(map: Map<T1, T2>, key: T1): boolean`
 
-Determines whether a map contains a specified key.
+Determines whether a map contains a specified key. Like [`Map.prototype.has`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has), keys are compared using SameValueZero, so `NaN` is found and `-0` is equal to `0`.
 
 ```ts
 import { containsKey } from "@ts-utils/map";
@@ -45,7 +45,7 @@ console.log(containsKey(map, "b"));
 
 ### `containsValue<T1, T2>(map: Map<T1, T2>, value: T2): boolean`
 
-Determines whether a map contains a specified value.
+Determines whether a map contains a specified value. Like [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), values are compared using SameValueZero, so `NaN` is found and `-0` is equal to `0`.
 
 ```ts
 import { containsValue } from "@ts-utils/map";
