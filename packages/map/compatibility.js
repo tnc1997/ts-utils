@@ -8,7 +8,7 @@ const map = new Map([
   ["c", 2],
 ]);
 
-check(__dirname, "map", [
+check(__dirname, "tsUtils.map", [
   {
     name: "containsKey",
     run: ({ containsKey }) => [containsKey(map, "b"), containsKey(map, "d")],
