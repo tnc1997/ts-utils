@@ -16,13 +16,13 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 </script>
 ```
 
-The UMD build requires a browser that supports ES2020, and `mapAsync` and `filterAsync` with `stopOnError: false` also require [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) (ES2021).
+The UMD build requires a browser that supports ES2015.
 
 ## Functions
 
 ### `contains<T>(array: T[], value: T): boolean`
 
-Determines if an array contains a specified value. Like [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), values are compared using SameValueZero, so `NaN` is found and `-0` is equal to `0`, and empty slots in sparse arrays are read as `undefined`.
+Determines if an array contains a specified value. Values are compared using SameValueZero, with the same results as [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), so `NaN` is found and `-0` is equal to `0`, and empty slots in sparse arrays are read as `undefined`.
 
 ```ts
 import { contains } from "@ts-utils/array";
@@ -75,7 +75,7 @@ console.log(frequencies(["a", "b", "a", "c", "b", "a"]));
 Maps the values in an array asynchronously. The results are returned in the same order as the input regardless of the concurrency. The optional `options` object accepts:
 
 - `concurrency` (default `Infinity`): the maximum number of callback invocations to run at once, which must be a positive integer or `Infinity`. By default, they all run concurrently. Any other value throws a `RangeError`.
-- `stopOnError` (default `true`): whether to stop starting new callback invocations once one has rejected. When `true`, the returned promise rejects with the first rejection reason as soon as it happens. Callbacks that are already running are not cancelled, and any later rejections are ignored. With unlimited concurrency, every callback has already been invoked before any can reject, so this only makes a difference when `concurrency` is set. When `false`, every callback is invoked, and once all of them have settled, the returned promise rejects with an [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) whose `errors` are every rejection reason, in the order that the rejections happened.
+- `stopOnError` (default `true`): whether to stop starting new callback invocations once one has rejected. When `true`, the returned promise rejects with the first rejection reason as soon as it happens. Callbacks that are already running are not cancelled, and any later rejections are ignored. With unlimited concurrency, every callback has already been invoked before any can reject, so this only makes a difference when `concurrency` is set. When `false`, every callback is invoked, and once all of them have settled, the returned promise rejects with an [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) whose `errors` are every rejection reason, in the order that the rejections happened. Where `AggregateError` isn't available, it rejects with an `Error` with the same `name`, `errors`, and message instead, so check `error.name === "AggregateError"` rather than using `instanceof`.
 
 Like `Array.prototype.map`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and each value is read when its callback is invoked. Unlike `Array.prototype.map`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
 
