@@ -1,5 +1,9 @@
 import { filterAsync } from "./index";
 
+function delay(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
 describe("filterAsync", () => {
   it("should filter the values by the truthiness of the resolved values", async () => {
     const array: unknown[] = [
@@ -23,7 +27,9 @@ describe("filterAsync", () => {
     const expected: unknown[] = [1, "a", {}, [], true];
 
     expect(await filterAsync(array, callback)).toEqual(expected);
-    expect(await filterAsync(array, callback, 2)).toEqual(expected);
+    expect(await filterAsync(array, callback, { concurrency: 2 })).toEqual(
+      expected,
+    );
   });
 
   it("should filter the values in an array asynchronously", async () => {
@@ -59,7 +65,9 @@ describe("filterAsync", () => {
 
     const array = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    expect(await filterAsync(array, callback, 3)).toEqual([2, 4, 6, 8]);
+    expect(await filterAsync(array, callback, { concurrency: 3 })).toEqual([
+      2, 4, 6, 8,
+    ]);
     expect(maxActive).toBeLessThanOrEqual(3);
     expect(maxActive).toEqual(3);
   });
@@ -82,9 +90,15 @@ describe("filterAsync", () => {
     const array = [1, 2, 3, 4, 5, 6];
     const expected = [2, 4, 6];
 
-    expect(await filterAsync(array, callback, 1)).toEqual(expected);
-    expect(await filterAsync(array, callback, 2)).toEqual(expected);
-    expect(await filterAsync(array, callback, Infinity)).toEqual(expected);
+    expect(await filterAsync(array, callback, { concurrency: 1 })).toEqual(
+      expected,
+    );
+    expect(await filterAsync(array, callback, { concurrency: 2 })).toEqual(
+      expected,
+    );
+    expect(
+      await filterAsync(array, callback, { concurrency: Infinity }),
+    ).toEqual(expected);
   });
 
   it("should run all callbacks concurrently by default", async () => {
@@ -122,7 +136,7 @@ describe("filterAsync", () => {
         },
       );
 
-      expect(await filterAsync(array, callback, concurrency)).toEqual([2]);
+      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
       expect(callback).toHaveBeenCalledTimes(2);
       expect(array).toEqual([1, 2, 4, 4]);
     }
@@ -145,9 +159,53 @@ describe("filterAsync", () => {
 
       // Like `Array.prototype.filter`, the changed value at index 1 is kept
       // as it was when visited, and the removed index 3 is not visited.
-      expect(await filterAsync(array, callback, concurrency)).toEqual([2]);
+      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
       expect(callback).toHaveBeenCalledTimes(3);
     }
+  });
+
+  it("should reject with an aggregate error of every rejection reason when stopOnError is false", async () => {
+    const callback = jest.fn(async (value: number) => {
+      await delay(value === 1 ? 20 : 5);
+
+      if (value === 1 || value === 3) {
+        throw new Error(`boom ${value}`);
+      }
+
+      return value % 2 === 0;
+    });
+
+    const promise = filterAsync([1, 2, 3, 4, 5, 6], callback, {
+      concurrency: 2,
+      stopOnError: false,
+    });
+
+    await expect(promise).rejects.toThrow(AggregateError);
+    await expect(promise).rejects.toHaveProperty("errors", [
+      new Error("boom 3"),
+      new Error("boom 1"),
+    ]);
+    expect(callback).toHaveBeenCalledTimes(6);
+  });
+
+  it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
+    const callback = jest.fn(async (value: number) => {
+      await delay(value === 1 ? 5 : 10);
+
+      if (value === 1) {
+        throw new Error("boom");
+      }
+
+      return value % 2 === 0;
+    });
+
+    await expect(
+      filterAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }),
+    ).rejects.toThrow("boom");
+
+    await delay(30);
+
+    expect(callback).toHaveBeenCalledTimes(2);
   });
 
   it("should throw a range error when the concurrency is invalid", async () => {
@@ -155,8 +213,8 @@ describe("filterAsync", () => {
       return value % 2 === 0;
     }
 
-    await expect(filterAsync([1, 2, 3], callback, NaN)).rejects.toThrow(
-      RangeError,
-    );
+    await expect(
+      filterAsync([1, 2, 3], callback, { concurrency: NaN }),
+    ).rejects.toThrow(RangeError);
   });
 });

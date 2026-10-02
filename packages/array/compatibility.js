@@ -5,6 +5,27 @@ const { check } = require("../../compatibility.base.js");
 const double = async (value) => value * 2;
 const isEven = async (value) => value % 2 === 0;
 
+/**
+ * Returns the name of the error that `promise` rejects with, and the messages
+ * of its `errors` for an `AggregateError`, or of the error itself otherwise.
+ */
+const rejection = (promise) =>
+  promise.then(
+    () => "resolved",
+    (error) => [
+      error.name,
+      error.errors ? error.errors.map(({ message }) => message) : error.message,
+    ],
+  );
+
+const rejectOdd = async (value) => {
+  if (value % 2 !== 0) {
+    throw new Error(`boom ${value}`);
+  }
+
+  return value;
+};
+
 check(__dirname, "tsUtils.array", [
   {
     name: "contains",
@@ -27,7 +48,7 @@ check(__dirname, "tsUtils.array", [
     name: "filterAsync",
     run: async ({ filterAsync }) => [
       await filterAsync([1, 2, 3, 4, 5], isEven),
-      await filterAsync([1, 2, 3, 4, 5], isEven, 2),
+      await filterAsync([1, 2, 3, 4, 5], isEven, { concurrency: 2 }),
       await filterAsync([0, 1, "", "a", null], async (value) => value),
     ],
     expected: [
@@ -57,11 +78,15 @@ check(__dirname, "tsUtils.array", [
     name: "mapAsync",
     run: async ({ mapAsync }) => [
       await mapAsync([1, 2, 3], double),
-      await mapAsync([1, 2, 3], double, 2),
+      await mapAsync([1, 2, 3], double, { concurrency: 2 }),
+      await rejection(mapAsync([1, 2, 3], rejectOdd, { concurrency: 1 })),
+      await rejection(mapAsync([1, 2, 3], rejectOdd, { stopOnError: false })),
     ],
     expected: [
       [2, 4, 6],
       [2, 4, 6],
+      ["Error", "boom 1"],
+      ["AggregateError", ["boom 1", "boom 3"]],
     ],
   },
   {
