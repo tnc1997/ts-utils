@@ -28,7 +28,8 @@
       },
       "import": "./dist/array.mjs",
       "require": "./dist/array.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
