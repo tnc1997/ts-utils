@@ -1,4 +1,5 @@
-import { type AsyncOptions, mapAsync } from "./map";
+import { mapAsync } from "./map";
+import { type AsyncOptions } from "./types";
 
 /**
  * Filters the values in an array asynchronously. Like
