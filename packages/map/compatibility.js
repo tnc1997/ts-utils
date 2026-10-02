@@ -8,16 +8,24 @@ const map = new Map([
   ["c", 2],
 ]);
 
-check(__dirname, "map", [
+check(__dirname, "tsUtils.map", [
   {
     name: "containsKey",
-    run: ({ containsKey }) => [containsKey(map, "b"), containsKey(map, "d")],
-    expected: [true, false],
+    run: ({ containsKey }) => [
+      containsKey(map, "b"),
+      containsKey(map, "d"),
+      containsKey(new Map([[NaN, 1]]), NaN),
+    ],
+    expected: [true, false, true],
   },
   {
     name: "containsValue",
-    run: ({ containsValue }) => [containsValue(map, 3), containsValue(map, 4)],
-    expected: [true, false],
+    run: ({ containsValue }) => [
+      containsValue(map, 3),
+      containsValue(map, 4),
+      containsValue(new Map([["a", NaN]]), NaN),
+    ],
+    expected: [true, false, true],
   },
   {
     name: "entries",
