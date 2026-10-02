@@ -18,8 +18,8 @@ export function containsKey<T1, T2>(map: Map<T1, T2>, key: T1): boolean {
 /**
  * Determines whether a map contains a specified value.
  *
- * Like `Array.prototype.includes`, values are compared using SameValueZero,
- * so `NaN` is found and `-0` is equal to `0`.
+ * Values are compared using SameValueZero, with the same results as
+ * `Array.prototype.includes`, so `NaN` is found and `-0` is equal to `0`.
  * @param map - the map to search
  * @param value - the value to search for
  * @returns true if the map contains the value; otherwise, false

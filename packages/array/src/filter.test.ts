@@ -180,12 +180,46 @@ describe("filterAsync", () => {
       stopOnError: false,
     });
 
-    await expect(promise).rejects.toThrow(AggregateError);
+    await expect(promise).rejects.toHaveProperty("name", "AggregateError");
     await expect(promise).rejects.toHaveProperty("errors", [
       new Error("boom 3"),
       new Error("boom 1"),
     ]);
     expect(callback).toHaveBeenCalledTimes(6);
+  });
+
+  it("should reject with an error named AggregateError when AggregateError is not available", async () => {
+    const global = globalThis as { AggregateError?: unknown };
+    const { AggregateError } = global;
+
+    delete global.AggregateError;
+
+    try {
+      const promise = filterAsync(
+        [1, 2, 3],
+        async (value: number) => {
+          if (value !== 2) {
+            throw new Error(`boom ${value}`);
+          }
+
+          return true;
+        },
+        { stopOnError: false },
+      );
+
+      await expect(promise).rejects.toBeInstanceOf(Error);
+      await expect(promise).rejects.toHaveProperty("name", "AggregateError");
+      await expect(promise).rejects.toHaveProperty(
+        "message",
+        "2 of 3 callbacks rejected.",
+      );
+      await expect(promise).rejects.toHaveProperty("errors", [
+        new Error("boom 1"),
+        new Error("boom 3"),
+      ]);
+    } finally {
+      global.AggregateError = AggregateError;
+    }
   });
 
   it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {

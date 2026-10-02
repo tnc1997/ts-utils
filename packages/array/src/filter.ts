@@ -21,7 +21,7 @@ export type FilterAsyncOptions = MapAsyncOptions;
  * @param options - the maximum number of callback invocations to run at once (`concurrency`, defaulting to `Infinity`), and whether to stop starting new ones once one has rejected (`stopOnError`, defaulting to `true`), as for `mapAsync`
  * @returns the filtered array
  * @throws {RangeError} if `concurrency` is not a positive integer or `Infinity`
- * @throws {AggregateError} if `stopOnError` is `false` and any callback rejects, with every rejection reason in its `errors`
+ * @throws {AggregateError} if `stopOnError` is `false` and any callback rejects, with every rejection reason in its `errors` (an `Error` with the `name` `"AggregateError"` where `AggregateError` isn't available)
  * @example
  * ```ts
  * await filterAsync([1, 2, 3, 4], async (value) => value % 2 === 0); // [2, 4]
