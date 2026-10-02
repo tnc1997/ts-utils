@@ -8,3 +8,5 @@ Added an optional `options` object to `mapAsync` and `filterAsync`, with two opt
 - `stopOnError` controls what happens when a callback rejects. By default (`true`), the returned promise rejects with the first rejection reason as soon as it happens, and no further callbacks are started; callbacks that are already running are not cancelled. When `false`, every callback is invoked, and the returned promise then rejects with an `AggregateError` containing every rejection reason.
 
 For example, `mapAsync(array, callback, { concurrency: 2 })` runs at most two callbacks at once.
+
+The options types are exported as `MapAsyncOptions` and `FilterAsyncOptions`.

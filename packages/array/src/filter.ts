@@ -1,5 +1,9 @@
-import { mapAsync } from "./map";
-import { type AsyncOptions } from "./types";
+import { mapAsync, type MapAsyncOptions } from "./map";
+
+/**
+ * Options for `filterAsync`, which are the same as for `mapAsync`.
+ */
+export type FilterAsyncOptions = MapAsyncOptions;
 
 /**
  * Filters the values in an array asynchronously. Like
@@ -29,7 +33,7 @@ import { type AsyncOptions } from "./types";
 export async function filterAsync<T>(
   array: T[],
   callback: (value: T, index: number, array: T[]) => Promise<unknown>,
-  options: AsyncOptions = {},
+  options: FilterAsyncOptions = {},
 ): Promise<T[]> {
   // Keep the value passed to the callback rather than reading it from the
   // array afterwards, which the callback may have changed.

@@ -40,9 +40,9 @@ console.log(count([1, 2, 3, 4, 5], (value) => value % 2 === 0));
 // 2
 ```
 
-### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>, options: AsyncOptions = {}): Promise<T[]>`
+### `filterAsync<T>(array: T[], callback: (value: T, index: number, array: T[]) => Promise<unknown>, options: FilterAsyncOptions = {}): Promise<T[]>`
 
-Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `options` are the same as for [`mapAsync`](#mapasynct1-t2array-t1-callback-value-t1-index-number-array-t1--promiset2-options-asyncoptions---promiset2): `concurrency` limits how many callback invocations run at once, and `stopOnError` controls what happens when a callback rejects.
+Filters the values in an array asynchronously. Like `Array.prototype.filter`, a value is kept when the callback resolves to a truthy value. The optional `options` are the same as for [`mapAsync`](#mapasynct1-t2array-t1-callback-value-t1-index-number-array-t1--promiset2-options-mapasyncoptions---promiset2): `concurrency` limits how many callback invocations run at once, and `stopOnError` controls what happens when a callback rejects.
 
 Like `Array.prototype.filter`, only the indexes below the array's initial length are visited, holes in sparse arrays are skipped, and the value kept is the one passed to the callback, even if the array is changed afterwards. Unlike `Array.prototype.filter`, callbacks run concurrently, so a change made to the array by a callback after it has awaited may not be seen by callbacks for later indexes that have already been invoked.
 
@@ -68,7 +68,7 @@ console.log(frequencies(["a", "b", "a", "c", "b", "a"]));
 // Map(3) { 'a' => 3, 'b' => 2, 'c' => 1 }
 ```
 
-### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, options: AsyncOptions = {}): Promise<T2[]>`
+### `mapAsync<T1, T2>(array: T1[], callback: (value: T1, index: number, array: T1[]) => Promise<T2>, options: MapAsyncOptions = {}): Promise<T2[]>`
 
 Maps the values in an array asynchronously. The results are returned in the same order as the input regardless of the concurrency. The optional `options` object accepts:
 
