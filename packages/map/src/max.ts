@@ -7,7 +7,7 @@ import { InsufficientValuesError } from "./errors";
  * map contains `NaN`, and `-0` is considered to be less than `0`. When
  * multiple entries are tied for the maximum value, the entry that was
  * inserted first is returned.
- * @param map - map the map to get the maximum value of
+ * @param map - the map to get the maximum value of
  * @returns the entry with the maximum value
  * @example
  * ```ts
