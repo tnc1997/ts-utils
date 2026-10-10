@@ -180,6 +180,10 @@ describe("filterAsync", () => {
       stopOnError: false,
     });
 
+    await expect(promise).rejects.toBeInstanceOf(
+      (globalThis as unknown as { AggregateError: ErrorConstructor })
+        .AggregateError,
+    );
     await expect(promise).rejects.toHaveProperty("name", "AggregateError");
     await expect(promise).rejects.toHaveProperty("errors", [
       new Error("boom 3"),
