@@ -205,16 +205,32 @@ The published packages declare `"engines": { "node": ">=18.0.0" }` and are also 
 for browsers, so package source must run on Node 18 even though developing in the repository requires a
 newer version (see [Prerequisites](#prerequisites)).
 
-The builds target ES2020, set by `target` in each package's `tsdown.config.mts`, so newer syntax is
-compiled down at build time, but built-in APIs are not polyfilled. The `target` in `tsconfig.base.json`
-only affects type checking and the tests: tsdown doesn't read it, and would otherwise derive a Node 18 target from
-`engines`, leaving ES2021 and ES2022 syntax as written. Avoid built-ins that aren't available in Node 18,
-such as `Array.prototype.toSorted` (Node 20) or `Object.groupBy` (Node 21), and check
-[node.green](https://node.green/) or MDN's browser compatibility tables when in doubt. The Test workflow
-only runs the test suite on the Node versions allowed by the root `engines` field, so it's the
-Compatibility workflow, which runs every export of the built output on Node 18 to 26, that catches an
-unsupported built-in. It only exercises the code paths that the cases in `compatibility.js` reach, and
-browsers aren't tested, so it's still better to avoid such built-ins in the first place.
+The builds target ES2015, set by `target` in each package's `tsdown.config.mts`, so newer syntax (such
+as `async`/`await`) is compiled down at build time, but built-in APIs are not polyfilled. The `target` in
+`tsconfig.base.json` only affects type checking and the tests: tsdown doesn't read it, and would
+otherwise derive a Node 18 target from `engines`, leaving ES2021 and ES2022 syntax as written.
+
+Built-ins newer than ES2015 (such as `Array.prototype.includes`, `Object.entries`, or `AggregateError`)
+are caught in package source by the `eslint-plugin-es-x` rules in `eslint.config.js`, which run as part of
+`npm run lint`. The rules use type information, so they can tell `Array.prototype.includes` (ES2016) from
+`String.prototype.includes` (ES2015), and the rules for newer syntax are turned off, since tsdown compiles
+it down. `lib` in `tsconfig.base.json` is restricted to `es2015` too, but that doesn't catch them on its
+own, because `@types/node` includes `lib es2020`.
+
+Prefer an ES2015 equivalent where there is one. If a newer built-in is really needed, declare it locally
+in the module that uses it, typed as possibly `undefined`, and check it with `typeof` before using it,
+with a fallback for runtimes without it, as `mapAsync` in `packages/array/src/map.ts` does for
+`AggregateError`. The rules only check the global, so the local declaration doesn't need a disable
+comment. Tests aren't checked by the rules, but they share the same `lib`, so a test that needs a
+built-in that isn't typed there can reach it through a cast, e.g.
+`(globalThis as { AggregateError?: unknown }).AggregateError`. Check [node.green](https://node.green/) or
+MDN's browser compatibility tables when in doubt.
+
+The Test workflow only runs the test suite on the Node versions allowed by the root `engines` field, and
+the Compatibility workflow, which runs every export of the built output on Node 18 to 26, only exercises
+the code paths that the cases in `compatibility.js` reach. Node 18 supports far more than ES2015, and
+browsers aren't tested, so neither workflow catches a built-in newer than ES2015: the Lint workflow is
+what keeps them out of the package source.
 
 ## Adding or changing a function
 

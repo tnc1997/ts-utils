@@ -6,5 +6,5 @@ export default defineConfig({
   entry: { array: "./src/index.ts" },
   format: ["esm", "cjs", "umd"],
   globalName: "tsUtils.array",
-  target: "es2020",
+  target: "es2015",
 });

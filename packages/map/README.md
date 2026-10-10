@@ -24,7 +24,7 @@ The package includes a UMD build, which registers the functions on the `tsUtils.
 </script>
 ```
 
-The UMD build requires a browser that supports ES2020.
+The UMD build requires a browser that supports ES2015.
 
 ## Functions
 
@@ -47,7 +47,7 @@ console.log(containsKey(map, "b"));
 
 ### `containsValue<T1, T2>(map: Map<T1, T2>, value: T2): boolean`
 
-Determines whether a map contains a specified value. Like [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), values are compared using SameValueZero, so `NaN` is found and `-0` is equal to `0`.
+Determines whether a map contains a specified value. Values are compared using SameValueZero, with the same results as [`Array.prototype.includes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes), so `NaN` is found and `-0` is equal to `0`.
 
 ```ts
 import { containsValue } from "@ts-utils/map";

@@ -1,4 +1,15 @@
 /**
+ * The global `AggregateError` constructor, which is only available in ES2021
+ * and later, so it's declared here rather than included from `lib`.
+ *
+ * It may be missing at runtime, so it must only be checked with `typeof`:
+ * reading an undeclared global any other way throws a `ReferenceError`.
+ */
+declare const AggregateError:
+  | (new (errors: unknown[], message?: string) => Error & { errors: unknown[] })
+  | undefined;
+
+/**
  * Options for `mapAsync`.
  */
 export interface MapAsyncOptions {
@@ -22,7 +33,9 @@ export interface MapAsyncOptions {
    * When `false`, every callback is invoked, and once all of them have
    * settled, the returned promise rejects with an `AggregateError` whose
    * `errors` are every rejection reason, in the order that the rejections
-   * happened.
+   * happened. Where `AggregateError` isn't available, it rejects with an
+   * `Error` with the same `name`, `errors`, and message instead, so check
+   * `error.name === "AggregateError"` rather than using `instanceof`.
    */
   stopOnError?: boolean;
 }
@@ -41,7 +54,7 @@ export interface MapAsyncOptions {
  * @param options - the maximum number of callback invocations to run at once (`concurrency`, defaulting to `Infinity`), and whether to stop starting new ones once one has rejected (`stopOnError`, defaulting to `true`)
  * @returns the mapped array
  * @throws {RangeError} if `concurrency` is not a positive integer or `Infinity`
- * @throws {AggregateError} if `stopOnError` is `false` and any callback rejects, with every rejection reason in its `errors`
+ * @throws {AggregateError} if `stopOnError` is `false` and any callback rejects, with every rejection reason in its `errors` (an `Error` with the `name` `"AggregateError"` where `AggregateError` isn't available)
  * @example
  * ```ts
  * await mapAsync([1, 2, 3], async (value) => value * 2); // [2, 4, 6]
@@ -115,10 +128,15 @@ export async function mapAsync<T1, T2>(
   );
 
   if (errors.length > 0) {
-    throw new AggregateError(
-      errors,
-      `${errors.length} of ${invoked} callbacks rejected.`,
-    );
+    const message = `${errors.length} of ${invoked} callbacks rejected.`;
+
+    // Fall back to an `Error` with the same `name` and `errors` where
+    // `AggregateError` isn't available.
+    if (typeof AggregateError !== "undefined") {
+      throw new AggregateError(errors, message);
+    }
+
+    throw Object.assign(new Error(message), { name: "AggregateError", errors });
   }
 
   return results;
