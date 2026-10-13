@@ -33,6 +33,28 @@ describe("mean", () => {
     expect(mean([1, 2, 3, 4, 5])).toEqual(3);
   });
 
+  it.each([
+    [[1, NaN, 3]],
+    [[NaN, 1, 3]],
+    [[1, 3, NaN]],
+    [[1, NaN, 1]],
+    [[NaN]],
+  ])("should return NaN when %j contains NaN", (array) => {
+    expect(mean(array)).toBeNaN();
+  });
+
+  it.each([
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole in the middle", [1, , 3] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole between equal values", [1, , 1] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole at the end", [1, 2, ,] as number[]],
+    ["only holes", new Array<number>(3)],
+  ])("should return NaN for a sparse array with %s", (_, array) => {
+    expect(mean(array)).toBeNaN();
+  });
+
   it("should throw when the array is empty", () => {
     expect(() => mean([])).toThrow(InsufficientValuesError);
     expect(() => mean([])).toThrow(
@@ -144,6 +166,28 @@ describe("mode", () => {
 
   it("should return the mode of an odd-length array", () => {
     expect(mode([1, 2, 2, 3, 4])).toEqual(2);
+  });
+
+  it.each([
+    [[1, NaN, 3]],
+    [[NaN, 1, 3]],
+    [[1, 3, NaN]],
+    [[1, NaN, 1]],
+    [[NaN]],
+  ])("should return NaN when %j contains NaN", (array) => {
+    expect(mode(array)).toBeNaN();
+  });
+
+  it.each([
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole in the middle", [1, , 3] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole between equal values", [1, , 1] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole at the end", [1, 2, ,] as number[]],
+    ["only holes", new Array<number>(3)],
+  ])("should return NaN for a sparse array with %s", (_, array) => {
+    expect(mode(array)).toBeNaN();
   });
 
   it("should throw when the array is empty", () => {

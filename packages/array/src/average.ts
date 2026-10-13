@@ -6,6 +6,9 @@ import { sum } from "./sum";
 
 /**
  * Returns the mean of an array of numerical values.
+ *
+ * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
+ * `max` and `min`.
  * @param array - the array to calculate the mean of
  * @returns the mean of the array
  * @throws {InsufficientValuesError} if the array is empty
@@ -71,6 +74,9 @@ export function median(array: number[]): number {
  * Returns the mode of an array of numerical values. When multiple values
  * are tied for the highest frequency, the tied value that appears first in
  * the array is returned.
+ *
+ * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
+ * `max` and `min`.
  * @param array - the array to calculate the mode of
  * @returns the mode of the array
  * @throws {InsufficientValuesError} if the array is empty
@@ -84,6 +90,17 @@ export function mode(array: number[]): number {
     throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the mode.",
     );
+  }
+
+  // `frequencies` skips empty slots, and `NaN` is counted like any other
+  // value, so either would otherwise give a result that depends on how often
+  // the other values appear.
+  for (let i = 0; i < array.length; i++) {
+    const value = array[i];
+
+    if (value === undefined || Number.isNaN(value)) {
+      return NaN;
+    }
   }
 
   const _frequencies: Map<number, number> = frequencies(array);
