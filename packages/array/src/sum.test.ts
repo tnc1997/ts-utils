@@ -17,7 +17,7 @@ describe("sum", () => {
     [[1, 3, NaN]],
     [[1, NaN, 1]],
     [[NaN]],
-  ])("should return NaN when %j contains NaN", (array) => {
+  ])("should return NaN when %p contains NaN", (array) => {
     expect(sum(array)).toBeNaN();
   });
 
