@@ -119,7 +119,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `mean(array: number[]): number`
 
-Returns the mean of an array of numerical values.
+Returns the mean of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { mean } from "@ts-utils/array";
@@ -161,7 +161,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `mode(array: number[]): number`
 
-Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned.
+Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { mode } from "@ts-utils/array";
@@ -187,7 +187,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `sum(array: number[]): number`
 
-Returns the sum of the values of a numerical array.
+Returns the sum of the values of a numerical array. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { sum } from "@ts-utils/array";
