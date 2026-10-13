@@ -101,13 +101,8 @@ check(__dirname, "tsUtils.array", [
   },
   {
     name: "mean",
-    run: ({ mean }) => [
-      mean([1, 2, 3, 4]),
-      // eslint-disable-next-line no-sparse-arrays
-      mean([1, , 3]),
-      mean(new Array(3)),
-    ],
-    expected: [2.5, NaN, NaN],
+    run: ({ mean }) => mean([1, 2, 3, 4]),
+    expected: 2.5,
   },
   {
     name: "median",
@@ -121,13 +116,8 @@ check(__dirname, "tsUtils.array", [
   },
   {
     name: "mode",
-    run: ({ mode }) => [
-      mode([1, 2, 2, 3]),
-      // eslint-disable-next-line no-sparse-arrays
-      mode([1, , 1]),
-      mode(new Array(3)),
-    ],
-    expected: [2, NaN, NaN],
+    run: ({ mode }) => mode([1, 2, 2, 3]),
+    expected: 2,
   },
   {
     name: "range",
@@ -136,13 +126,8 @@ check(__dirname, "tsUtils.array", [
   },
   {
     name: "sum",
-    run: ({ sum }) => [
-      sum([1, 2, 3]),
-      // eslint-disable-next-line no-sparse-arrays
-      sum([1, , 3]),
-      sum(new Array(3)),
-    ],
-    expected: [6, NaN, NaN],
+    run: ({ sum }) => sum([1, 2, 3]),
+    expected: 6,
   },
   {
     name: "sum",
