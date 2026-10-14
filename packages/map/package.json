@@ -1,7 +1,12 @@
 {
   "name": "@ts-utils/map",
   "version": "1.1.1",
-  "description": "Map",
+  "description": "Utilities for the Map type: containsKey, containsValue, entries, keys, values, and max and min by value.",
+  "keywords": [
+    "map",
+    "utilities",
+    "typescript"
+  ],
   "homepage": "https://github.com/tnc1997/ts-utils#readme",
   "bugs": {
     "url": "https://github.com/tnc1997/ts-utils/issues"
