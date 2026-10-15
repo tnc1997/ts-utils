@@ -171,3 +171,12 @@ try {
 ```
 
 `instanceof` can fail if more than one copy of the package is loaded, for example when the same program `import`s and `require`s it (so both the ESM and CommonJS builds are used), when two versions are installed, or across realms such as iframes. In that case, check `error.name === "InsufficientValuesError"` instead.
+
+## Upgrading
+
+### Upgrading to 2.x
+
+- Node.js 18 or later is required, and the builds use ES2015 syntax, so browsers without ES2015 support (e.g. Internet Explorer 11) need the package transpiled and polyfilled in your bundler, or should stay on 1.x.
+- `max` and `min` now throw an [`InsufficientValuesError`](#insufficientvalueserror) for an empty map instead of returning `undefined`.
+- The package has an `exports` map, so only the package root and `package.json` can be imported, and deep imports into `dist` (e.g. `@ts-utils/map/dist/index.js`) no longer resolve. The built files were renamed from `dist/index.*` to `dist/map.*`, the UMD global changed from `array` (registered by mistake in 1.x, overwriting `@ts-utils/array` if both were loaded) to `tsUtils.map`, and source maps are no longer included.
+- Behaviour changes worth checking, although they're fixes: `containsKey` and `containsValue` find `NaN`, and `max` and `min` return the first entry whose value is `NaN` if there is one.
