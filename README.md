@@ -55,3 +55,10 @@ entries(map); // [["a", 1], ["b", 2]]
 
 max(map); // ["b", 2]
 ```
+
+## Upgrading
+
+Each package's README has an upgrading guide listing what callers need to change for each major version:
+
+- [`@ts-utils/array`](./packages/array/README.md#upgrading)
+- [`@ts-utils/map`](./packages/map/README.md#upgrading)

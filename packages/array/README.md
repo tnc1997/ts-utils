@@ -218,3 +218,25 @@ try {
 ```
 
 `instanceof` can fail if more than one copy of the package is loaded, for example when the same program `import`s and `require`s it (so both the ESM and CommonJS builds are used), when two versions are installed, or across realms such as iframes. In that case, check `error.name === "InsufficientValuesError"` instead.
+
+## Upgrading
+
+### Upgrading to 3.x
+
+- Node.js 18 or later is required, and the builds use ES2015 syntax, so browsers without ES2015 support (e.g. Internet Explorer 11) need the package transpiled and polyfilled in your bundler, or should stay on 2.x.
+- `max([])` and `min([])` now throw an [`InsufficientValuesError`](#insufficientvalueserror) instead of returning `undefined`, and `mode([])` throws instead of returning `-1`. `sum`, `mean`, `median`, and `range` throw an `InsufficientValuesError` instead of a `TypeError` or bare `Error` for an empty array. `median` and `range` no longer throw for a single-element array: `median([5])` returns `5` and `range([5])` returns `0`.
+- The package has an `exports` map, so only the package root and `package.json` can be imported, and deep imports into `dist` (e.g. `@ts-utils/array/dist/index.js`) no longer resolve. The built files were renamed from `dist/index.js`, `dist/index.esm.js`, `dist/index.umd.js`, and `dist/array.d.ts` to `dist/array.cjs`, `dist/array.mjs`, `dist/array.umd.js`, and `dist/array.d.cts`/`dist/array.d.mts`, the UMD global changed from `array` to `tsUtils.array`, and source maps are no longer included.
+- Behaviour changes worth checking, although they're fixes:
+  - `NaN` and empty slots now give `NaN` from all of the numeric functions (`max`, `mean`, `median`, `min`, `mode`, `range`, and `sum`).
+  - `range` returns `0` when all of the values are equal, including when they are infinite, e.g. `range([Infinity, Infinity])`.
+  - `max` and `min` treat `-0` as less than `0`, so `max([-0, 0])` returns `0` and `min([0, -0])` returns `-0`.
+  - `contains` finds `NaN`, and reads empty slots as `undefined`.
+  - `max`, `min`, `median`, and `range` no longer sort the input in place, and `median` and `range` sort numerically rather than as strings.
+  - `mapAsync` preserves empty slots instead of filling them with `undefined`.
+  - `filterAsync` keeps the values passed to the callback, rather than reading them from the array after all of the callbacks have settled, so changes a callback makes to the array no longer affect the result.
+
+### Upgrading to 2.x
+
+- The async functions moved from the `@ts-utils/array/async` entry point to the package root and were renamed: `map` → `mapAsync` and `filter` → `filterAsync`. Their callbacks return a `Promise` instead of an RxJS `Observable`, and they return a `Promise` instead of an `Observable`. The `rxjs` and `@ts-utils/map` peer dependencies were removed.
+- `frequency(array)` was renamed to `frequencies(array)`. The `frequency(array, value)` overload, which returned the count of `value`, was removed; use `count(array, (v) => v === value)` instead.
+- `countBy(array, callback)`, which returned a `Map` of counts by key, was removed. `count(array, predicate?)` returns a number instead; to count by key, use `frequencies(array.map(callback))`.
