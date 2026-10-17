@@ -10,7 +10,7 @@ Small, focused utility packages for built-in JavaScript types, published to npm 
 The packages have a few things in common:
 
 - They're written in TypeScript, and the type declarations are included, so there's no separate `@types` package to install.
-- They're marked `"sideEffects": false`, so bundlers can leave out any functions you don't use.
+- They're marked `"sideEffects": false`, so bundlers using the ES module build can leave out any functions you don't use.
 - Functions that need at least one value, such as `max` and `mean`, throw an `InsufficientValuesError` for empty input rather than returning `undefined` or a sentinel value.
 - Numeric functions handle `NaN` the same way as [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max): if the input contains `NaN`, the result is `NaN` (or, for the `Map` functions `max` and `min`, the first entry whose value is `NaN`).
 
@@ -29,7 +29,7 @@ Each package can also be installed on its own.
 Utilities for the `Array` type: statistics, counting, and concurrency-limited async mapping and filtering.
 
 [![npm version](https://img.shields.io/npm/v/@ts-utils/array)](https://www.npmjs.com/package/@ts-utils/array)
-[![npm license](https://img.shields.io/npm/l/@ts-utils/array)](./LICENSE)
+[![npm license](https://img.shields.io/npm/l/@ts-utils/array)](./packages/array/LICENSE)
 [![npm downloads](https://img.shields.io/npm/dm/@ts-utils/array)](https://www.npmjs.com/package/@ts-utils/array)
 
 | Export                                                                                                                                                      | Description                                                                       |
@@ -61,7 +61,7 @@ mean([1, 2, 3]); // 2
 Utilities for the `Map` type: lookups, conversion to arrays, and the entries with the maximum and minimum values.
 
 [![npm version](https://img.shields.io/npm/v/@ts-utils/map)](https://www.npmjs.com/package/@ts-utils/map)
-[![npm license](https://img.shields.io/npm/l/@ts-utils/map)](./LICENSE)
+[![npm license](https://img.shields.io/npm/l/@ts-utils/map)](./packages/map/LICENSE)
 [![npm downloads](https://img.shields.io/npm/dm/@ts-utils/map)](https://www.npmjs.com/package/@ts-utils/map)
 
 | Export                                                                                      | Description                                                                |
@@ -95,7 +95,7 @@ The packages support Node.js 18 and later. The builds are compiled to ES2015 syn
 Each package ships three builds:
 
 - a CommonJS build, used by `require`;
-- an ES module build, used by `import` and by bundlers;
+- an ES module build, used by `import` and by bundlers that support the `exports` field;
 - a UMD build, which can be loaded with a `<script>` tag, e.g. from [jsDelivr](https://www.jsdelivr.com/), and registers the functions on the `tsUtils.array` and `tsUtils.map` globals.
 
 For `<script>` tag examples, see the package READMEs: [`@ts-utils/array`](./packages/array/README.md#using-a-script-tag) and [`@ts-utils/map`](./packages/map/README.md#using-a-script-tag).
