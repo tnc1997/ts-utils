@@ -161,7 +161,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `mode(array: number[]): number`
 
-Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
+Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned. `-0` and `0` are counted as the same value, and the result keeps the sign of the one that appears first in the array. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { mode } from "@ts-utils/array";
@@ -230,6 +230,7 @@ try {
   - `NaN` and empty slots now give `NaN` from all of the numeric functions (`max`, `mean`, `median`, `min`, `mode`, `range`, and `sum`).
   - `range` returns `0` when all of the values are equal, including when they are infinite, e.g. `range([Infinity, Infinity])`.
   - `max` and `min` treat `-0` as less than `0`, so `max([-0, 0])` returns `0` and `min([0, -0])` returns `-0`.
+  - `mode` keeps the sign of `-0`: `-0` and `0` are counted as the same value, and the result is the one that appears first, so `mode([-0])` returns `-0`.
   - `contains` finds `NaN`, and reads empty slots as `undefined`.
   - `max`, `min`, `median`, and `range` no longer sort the input in place, and `median` and `range` sort numerically rather than as strings.
   - `mapAsync` preserves empty slots instead of filling them with `undefined`.
