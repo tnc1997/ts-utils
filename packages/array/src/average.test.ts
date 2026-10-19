@@ -33,6 +33,10 @@ describe("mean", () => {
     expect(mean([1, 2, 3, 4, 5])).toEqual(3);
   });
 
+  it("should return -0 for [-0]", () => {
+    expect(mean([-0])).toBe(-0);
+  });
+
   it.each([
     [[1, NaN, 3]],
     [[NaN, 1, 3]],
@@ -96,6 +100,15 @@ describe("median", () => {
 
   it("should return the median of an odd-length array", () => {
     expect(median([1, 2, 3, 4, 5])).toEqual(3);
+  });
+
+  it.each([
+    [[-0], -0],
+    [[-0, -0], -0],
+    [[-0, 0], 0],
+    [[0, -0], 0],
+  ])("should keep the sign of zero in the median of %p", (array, expected) => {
+    expect(median(array)).toBe(expected);
   });
 
   it.each([
@@ -167,6 +180,18 @@ describe("mode", () => {
   it("should return the mode of an odd-length array", () => {
     expect(mode([1, 2, 2, 3, 4])).toEqual(2);
   });
+
+  it.each([
+    [[-0], -0],
+    [[-0, -0, 1], -0],
+    [[-0, 0], -0],
+    [[0, -0], 0],
+  ])(
+    "should count -0 and 0 as the same value and keep the sign of the first for %p",
+    (array, expected) => {
+      expect(mode(array)).toBe(expected);
+    },
+  );
 
   it.each([
     [[1, NaN, 3]],

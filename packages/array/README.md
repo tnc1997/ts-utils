@@ -161,7 +161,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `mode(array: number[]): number`
 
-Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
+Returns the mode of an array of numerical values. When multiple values are tied for the highest frequency, the tied value that appears first in the array is returned. `-0` and `0` are counted as the same value, and the result keeps the sign of the one that appears first in the array. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
 
 ```ts
 import { mode } from "@ts-utils/array";

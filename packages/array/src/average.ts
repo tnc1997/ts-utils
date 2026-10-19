@@ -75,6 +75,9 @@ export function median(array: number[]): number {
  * are tied for the highest frequency, the tied value that appears first in
  * the array is returned.
  *
+ * `-0` and `0` are counted as the same value, and the result keeps the sign
+ * of the one that appears first in the array.
+ *
  * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
  * `max` and `min`.
  * @param array - the array to calculate the mode of
@@ -115,7 +118,10 @@ export function mode(array: number[]): number {
     }
   });
 
-  return _mode;
+  // `Map` normalises a `-0` key to `0`, so the value is returned as it first
+  // appears in the array to keep its sign. `-0 === 0`, so this finds the first
+  // occurrence of either.
+  return array.find((value) => value === _mode)!;
 }
 
 /**
