@@ -33,7 +33,7 @@ console.log(contains([1, 2, 3], 2));
 
 ### `count<T>(array: T[], callback?: (value: T) => boolean): number`
 
-Returns the number of values in an array that optionally satisfy a condition.
+Returns the number of values in an array that optionally satisfy a condition. Like [`Array.prototype.filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter), empty slots in sparse arrays are skipped, with or without a callback: they aren't counted, and the callback isn't called for them.
 
 ```ts
 import { count } from "@ts-utils/array";
@@ -234,6 +234,7 @@ try {
   - `contains` finds `NaN`, and reads empty slots as `undefined`.
   - `max`, `min`, `median`, and `range` no longer sort the input in place, and `median` and `range` sort numerically rather than as strings.
   - `mapAsync` preserves empty slots instead of filling them with `undefined`.
+  - `count` without a callback skips empty slots, as it already did with one, so `count([1, , 3])` returns `2` and `count(new Array(3))` returns `0`.
   - `filterAsync` keeps the values passed to the callback, rather than reading them from the array after all of the callbacks have settled, so changes a callback makes to the array no longer affect the result.
 
 ### Upgrading to 2.x
