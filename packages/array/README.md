@@ -230,6 +230,7 @@ try {
   - `NaN` and empty slots now give `NaN` from all of the numeric functions (`max`, `mean`, `median`, `min`, `mode`, `range`, and `sum`).
   - `range` returns `0` when all of the values are equal, including when they are infinite, e.g. `range([Infinity, Infinity])`.
   - `max` and `min` treat `-0` as less than `0`, so `max([-0, 0])` returns `0` and `min([0, -0])` returns `-0`.
+  - `mode` keeps the sign of `-0`: `-0` and `0` are counted as the same value, and the result is the one that appears first, so `mode([-0])` returns `-0`.
   - `contains` finds `NaN`, and reads empty slots as `undefined`.
   - `max`, `min`, `median`, and `range` no longer sort the input in place, and `median` and `range` sort numerically rather than as strings.
   - `mapAsync` preserves empty slots instead of filling them with `undefined`.

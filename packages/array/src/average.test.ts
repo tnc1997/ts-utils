@@ -186,6 +186,8 @@ describe("mode", () => {
     [[-0, -0, 1], -0],
     [[-0, 0], -0],
     [[0, -0], 0],
+    [[1, -0, 0, 1], 1],
+    [[-0, 1, 0, 1], -0],
   ])(
     "should count -0 and 0 as the same value and keep the sign of the first for %p",
     (array, expected) => {

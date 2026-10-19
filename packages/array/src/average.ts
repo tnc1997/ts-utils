@@ -1,5 +1,4 @@
 import { InsufficientValuesError } from "./errors";
-import { frequencies } from "./frequencies";
 import { max } from "./max";
 import { min } from "./min";
 import { sum } from "./sum";
@@ -95,33 +94,43 @@ export function mode(array: number[]): number {
     );
   }
 
-  // `frequencies` skips empty slots, and `NaN` is counted like any other
-  // value, so either would otherwise give a result that depends on how often
-  // the other values appear.
+  // Each key keeps the first value counted under it, since `Map` normalises a
+  // `-0` key to `0` and the result should keep the sign of the value as it
+  // first appears in the array.
+  const _frequencies = new Map<number, { count: number; value: number }>();
+
   for (let i = 0; i < array.length; i++) {
     const value = array[i];
 
+    // Empty slots and `NaN` would otherwise be skipped or counted like any
+    // other value, which would give a result that depends on how often the
+    // other values appear.
     if (value === undefined || Number.isNaN(value)) {
       return NaN;
     }
-  }
 
-  const _frequencies: Map<number, number> = frequencies(array);
+    const frequency = _frequencies.get(value);
+
+    if (frequency) {
+      frequency.count++;
+    } else {
+      _frequencies.set(value, { count: 1, value });
+    }
+  }
 
   let _max = 0;
   let _mode!: number;
 
-  _frequencies.forEach((value, key) => {
-    if (_max < value) {
-      _max = value;
-      _mode = key;
+  // The keys are iterated in the order they were first counted, so the tied
+  // value that appears first in the array wins.
+  _frequencies.forEach(({ count, value }) => {
+    if (_max < count) {
+      _max = count;
+      _mode = value;
     }
   });
 
-  // `Map` normalises a `-0` key to `0`, so the value is returned as it first
-  // appears in the array to keep its sign. `-0 === 0`, so this finds the first
-  // occurrence of either.
-  return array.find((value) => value === _mode)!;
+  return _mode;
 }
 
 /**
