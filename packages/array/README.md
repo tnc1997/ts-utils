@@ -119,7 +119,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `mean(array: number[]): number`
 
-Returns the mean of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
+Returns the mean of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number), or if it contains both `Infinity` and `-Infinity`. The result may be `±Infinity` if the sum of the values overflows, even if the true mean is finite.
 
 ```ts
 import { mean } from "@ts-utils/array";
@@ -132,7 +132,7 @@ Throws an [`InsufficientValuesError`](#insufficientvalueserror) if the array is 
 
 ### `median(array: number[]): number`
 
-Returns the median of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number).
+Returns the median of an array of numerical values. The result is `NaN` if the array contains `NaN` (or an empty slot), as for [`max`](#maxarray-number-number) and [`min`](#minarray-number-number), or if the two middle values are `-Infinity` and `Infinity`.
 
 ```ts
 import { median } from "@ts-utils/array";

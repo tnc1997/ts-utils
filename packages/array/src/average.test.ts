@@ -59,6 +59,18 @@ describe("mean", () => {
     expect(mean(array)).toBeNaN();
   });
 
+  it.each([
+    [[1, Infinity], Infinity],
+    [[-Infinity, 1], -Infinity],
+    [[Infinity, -Infinity], NaN],
+  ])("should return the mean of %p as %p", (array, expected) => {
+    expect(mean(array)).toBe(expected);
+  });
+
+  it("should return Infinity when the sum overflows", () => {
+    expect(mean([Number.MAX_VALUE, Number.MAX_VALUE])).toBe(Infinity);
+  });
+
   it("should throw when the array is empty", () => {
     expect(() => mean([])).toThrow(InsufficientValuesError);
     expect(() => mean([])).toThrow(
@@ -132,6 +144,31 @@ describe("median", () => {
     ["only holes", new Array<number>(3)],
   ])("should return NaN for a sparse array with %s", (_, array) => {
     expect(median(array)).toBeNaN();
+  });
+
+  it.each([
+    [[Number.MAX_VALUE, Number.MAX_VALUE], Number.MAX_VALUE],
+    [[-Number.MAX_VALUE, -Number.MAX_VALUE], -Number.MAX_VALUE],
+    [[-Number.MAX_VALUE, Number.MAX_VALUE], 0],
+  ])(
+    "should return the median of %p without overflowing",
+    (array, expected) => {
+      expect(median(array)).toBe(expected);
+    },
+  );
+
+  it("should return the median of subnormal values without rounding to 0", () => {
+    expect(median([5e-324, 5e-324])).toBe(5e-324);
+  });
+
+  it.each([
+    [[Infinity, Infinity], Infinity],
+    [[1, Infinity], Infinity],
+    [[-Infinity, -Infinity], -Infinity],
+    [[-Infinity, 1], -Infinity],
+    [[-Infinity, Infinity], NaN],
+  ])("should return the median of %p as %p", (array, expected) => {
+    expect(median(array)).toBe(expected);
   });
 
   it("should throw when the array is empty", () => {
