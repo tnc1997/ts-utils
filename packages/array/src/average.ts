@@ -7,7 +7,9 @@ import { sum } from "./sum";
  * Returns the mean of an array of numerical values.
  *
  * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
- * `max` and `min`.
+ * `max` and `min`, or if it contains both `Infinity` and `-Infinity`. The
+ * result may be `±Infinity` if the sum of the values overflows, even if the
+ * true mean is finite.
  * @param array - the array to calculate the mean of
  * @returns the mean of the array
  * @throws {InsufficientValuesError} if the array is empty
@@ -30,7 +32,8 @@ export function mean(array: number[]): number {
  * Returns the median of an array of numerical values.
  *
  * The result is `NaN` if the array contains `NaN` (or an empty slot), as for
- * `max` and `min`.
+ * `max` and `min`, or if the two middle values are `-Infinity` and
+ * `Infinity`.
  * @param array - the array to calculate the median of
  * @returns the median of the array
  * @throws {InsufficientValuesError} if the array is empty
@@ -59,9 +62,20 @@ export function median(array: number[]): number {
 
     // `sorted` has the same length as `array`, which is checked to be
     // non-empty above, so `middle` and `middle - 1` are always valid indexes.
-    return sorted.length % 2 === 0
-      ? (sorted[middle - 1]! + sorted[middle]!) / 2
-      : sorted[middle]!;
+    if (sorted.length % 2 === 0) {
+      const a = sorted[middle - 1]!;
+      const b = sorted[middle]!;
+
+      const midpoint = (a + b) / 2;
+
+      // The sum of two large finite values can overflow to `±Infinity` even
+      // though their midpoint is finite, so halve them before adding instead.
+      // Halving first would otherwise round subnormal values (e.g. `5e-324`)
+      // to `0`, so it is only used when the sum overflows.
+      return Number.isFinite(midpoint) ? midpoint : a / 2 + b / 2;
+    } else {
+      return sorted[middle]!;
+    }
   } else {
     throw new InsufficientValuesError(
       "The array does not contain enough values to calculate the median.",
