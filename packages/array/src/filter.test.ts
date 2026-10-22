@@ -132,6 +132,8 @@ describe("filterAsync", () => {
       const result = await filterAsync(array, callback, { concurrency });
 
       expect(callback).toHaveBeenCalledTimes(2);
+      expect(callback).toHaveBeenNthCalledWith(1, 1, 0, array);
+      expect(callback).toHaveBeenNthCalledWith(2, 3, 2, array);
       expect(result).toHaveLength(2);
       expect(result).toEqual([1, 3]);
     }
@@ -143,7 +145,9 @@ describe("filterAsync", () => {
     for (const concurrency of [1, 2, Infinity]) {
       const callback = jest.fn(async () => true);
 
-      expect(await filterAsync(array, callback, { concurrency })).toEqual([]);
+      const result = await filterAsync(array, callback, { concurrency });
+
+      expect(result).toHaveLength(0);
       expect(callback).not.toHaveBeenCalled();
     }
   });
@@ -157,29 +161,31 @@ describe("filterAsync", () => {
   });
 
   it("should call the callback with each value, its index, and the array", async () => {
-    const array = [5, 6];
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [5, 6];
 
-    const callback = jest.fn<Promise<boolean>, [number, number, number[]]>(
-      async () => true,
-    );
+      const callback = jest.fn<Promise<boolean>, [number, number, number[]]>(
+        async () => true,
+      );
 
-    await filterAsync(array, callback);
+      await filterAsync(array, callback, { concurrency });
 
-    expect(callback).toHaveBeenCalledTimes(2);
-    expect(callback).toHaveBeenNthCalledWith(1, 5, 0, array);
-    expect(callback).toHaveBeenNthCalledWith(2, 6, 1, array);
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(callback).toHaveBeenNthCalledWith(1, 5, 0, array);
+      expect(callback).toHaveBeenNthCalledWith(2, 6, 1, array);
 
-    for (const [, , received] of callback.mock.calls) {
-      expect(received).toBe(array);
+      for (const [, , received] of callback.mock.calls) {
+        expect(received).toBe(array);
+      }
     }
   });
 
   it("should return a new array without changing the input", async () => {
     const array = [1, 2, 3];
 
-    const result = await filterAsync(array, async () => true);
+    const result = await filterAsync(array, async (value) => value !== 2);
 
-    expect(result).toEqual([1, 2, 3]);
+    expect(result).toEqual([1, 3]);
     expect(result).not.toBe(array);
     expect(array).toEqual([1, 2, 3]);
   });
@@ -298,26 +304,21 @@ describe("filterAsync", () => {
     await expect(
       filterAsync([1, 2, 3], callback, { concurrency: 2 }),
     ).rejects.toThrow("boom 2");
-
-    // Wait for the callback for value 1, which was already running, to
-    // reject too.
-    await delay(20);
-
-    expect(callback).toHaveBeenCalledTimes(2);
   });
 
   it("should resolve with the filtered values when stopOnError is false and no callback rejects", async () => {
-    const callback = jest.fn(async (value: number) => value);
+    const callback = jest.fn(async (value: number) => value % 2 === 1);
 
     expect(
       await filterAsync([1, 2, 3], callback, { stopOnError: false }),
-    ).toEqual([1, 2, 3]);
+    ).toEqual([1, 3]);
     expect(
       await filterAsync([1, 2, 3], callback, {
         concurrency: 2,
         stopOnError: false,
       }),
-    ).toEqual([1, 2, 3]);
+    ).toEqual([1, 3]);
+    expect(callback).toHaveBeenCalledTimes(6);
   });
 
   it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
@@ -345,12 +346,14 @@ describe("filterAsync", () => {
     async (concurrency) => {
       const callback = jest.fn(async (value: number) => value % 2 === 0);
 
-      await expect(
-        filterAsync([1, 2, 3], callback, { concurrency }),
-      ).rejects.toThrow(RangeError);
-      await expect(filterAsync([], callback, { concurrency })).rejects.toThrow(
-        "The concurrency must be a positive integer or Infinity.",
-      );
+      for (const array of [[1, 2, 3], []]) {
+        const promise = filterAsync(array, callback, { concurrency });
+
+        await expect(promise).rejects.toThrow(RangeError);
+        await expect(promise).rejects.toThrow(
+          "The concurrency must be a positive integer or Infinity.",
+        );
+      }
       expect(callback).not.toHaveBeenCalled();
     },
   );
