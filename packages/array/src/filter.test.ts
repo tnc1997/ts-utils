@@ -122,6 +122,68 @@ describe("filterAsync", () => {
     expect(maxActive).toEqual(array.length);
   });
 
+  it("should skip holes in sparse arrays regardless of concurrency", async () => {
+    // eslint-disable-next-line no-sparse-arrays
+    const array = [1, , 3, ,];
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async () => true);
+
+      const result = await filterAsync(array, callback, { concurrency });
+
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(2);
+      expect(result).toEqual([1, 3]);
+    }
+  });
+
+  it("should resolve to an empty array for an array of only holes regardless of concurrency", async () => {
+    const array = new Array<number>(3);
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async () => true);
+
+      expect(await filterAsync(array, callback, { concurrency })).toEqual([]);
+      expect(callback).not.toHaveBeenCalled();
+    }
+  });
+
+  it("should resolve to an empty array for an empty array without calling the callback", async () => {
+    const callback = jest.fn(async (value: number) => value);
+
+    expect(await filterAsync([], callback)).toEqual([]);
+    expect(await filterAsync([], callback, { concurrency: 2 })).toEqual([]);
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("should call the callback with each value, its index, and the array", async () => {
+    const array = [5, 6];
+
+    const callback = jest.fn<Promise<boolean>, [number, number, number[]]>(
+      async () => true,
+    );
+
+    await filterAsync(array, callback);
+
+    expect(callback).toHaveBeenCalledTimes(2);
+    expect(callback).toHaveBeenNthCalledWith(1, 5, 0, array);
+    expect(callback).toHaveBeenNthCalledWith(2, 6, 1, array);
+
+    for (const [, , received] of callback.mock.calls) {
+      expect(received).toBe(array);
+    }
+  });
+
+  it("should return a new array without changing the input", async () => {
+    const array = [1, 2, 3];
+
+    const result = await filterAsync(array, async () => true);
+
+    expect(result).toEqual([1, 2, 3]);
+    expect(result).not.toBe(array);
+    expect(array).toEqual([1, 2, 3]);
+  });
+
   it("should not visit values appended to the array regardless of concurrency", async () => {
     for (const concurrency of [1, 2, Infinity]) {
       const array = [1, 2];
@@ -226,6 +288,38 @@ describe("filterAsync", () => {
     }
   });
 
+  it("should reject with the first rejection reason and ignore later rejections", async () => {
+    const callback = jest.fn(async (value: number) => {
+      await delay(value === 1 ? 10 : 5);
+
+      throw new Error(`boom ${value}`);
+    });
+
+    await expect(
+      filterAsync([1, 2, 3], callback, { concurrency: 2 }),
+    ).rejects.toThrow("boom 2");
+
+    // Wait for the callback for value 1, which was already running, to
+    // reject too.
+    await delay(20);
+
+    expect(callback).toHaveBeenCalledTimes(2);
+  });
+
+  it("should resolve with the filtered values when stopOnError is false and no callback rejects", async () => {
+    const callback = jest.fn(async (value: number) => value);
+
+    expect(
+      await filterAsync([1, 2, 3], callback, { stopOnError: false }),
+    ).toEqual([1, 2, 3]);
+    expect(
+      await filterAsync([1, 2, 3], callback, {
+        concurrency: 2,
+        stopOnError: false,
+      }),
+    ).toEqual([1, 2, 3]);
+  });
+
   it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
     const callback = jest.fn(async (value: number) => {
       await delay(value === 1 ? 5 : 10);
@@ -246,13 +340,18 @@ describe("filterAsync", () => {
     expect(callback).toHaveBeenCalledTimes(2);
   });
 
-  it("should throw a range error when the concurrency is invalid", async () => {
-    async function callback(value: number): Promise<boolean> {
-      return value % 2 === 0;
-    }
+  it.each([NaN, 0, -1, 1.5, -Infinity])(
+    "should throw a range error when the concurrency is %p",
+    async (concurrency) => {
+      const callback = jest.fn(async (value: number) => value % 2 === 0);
 
-    await expect(
-      filterAsync([1, 2, 3], callback, { concurrency: NaN }),
-    ).rejects.toThrow(RangeError);
-  });
+      await expect(
+        filterAsync([1, 2, 3], callback, { concurrency }),
+      ).rejects.toThrow(RangeError);
+      await expect(filterAsync([], callback, { concurrency })).rejects.toThrow(
+        "The concurrency must be a positive integer or Infinity.",
+      );
+      expect(callback).not.toHaveBeenCalled();
+    },
+  );
 });
