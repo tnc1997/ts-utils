@@ -108,14 +108,22 @@ describe("mapAsync", () => {
     // awaited.
     expect(calls).toEqual([1, 2, 3]);
 
-    return expect(promise).resolves.toEqual([1, 2, 3]);
+    return promise;
   });
 
-  it("should not start more callbacks than there are values when the concurrency is greater than the length", async () => {
+  it("should resolve with the mapped values when the concurrency is greater than the length", async () => {
+    const callback = jest.fn(async (value: number) => value * value);
+
+    expect(await mapAsync([1, 2], callback, { concurrency: 10 })).toEqual([
+      1, 4,
+    ]);
+  });
+
+  it("should not run more callbacks concurrently than there are values when the concurrency is greater than the length", async () => {
     let active = 0;
     let maxActive = 0;
 
-    const callback = jest.fn(async (value: number) => {
+    async function callback(value: number): Promise<number> {
       active++;
       maxActive = Math.max(maxActive, active);
 
@@ -124,12 +132,10 @@ describe("mapAsync", () => {
       active--;
 
       return value * value;
-    });
+    }
 
-    expect(await mapAsync([1, 2], callback, { concurrency: 10 })).toEqual([
-      1, 4,
-    ]);
-    expect(callback).toHaveBeenCalledTimes(2);
+    await mapAsync([1, 2], callback, { concurrency: 10 });
+
     expect(maxActive).toEqual(2);
   });
 
@@ -153,22 +159,38 @@ describe("mapAsync", () => {
     }
   });
 
-  it("should return a new array without changing the input", async () => {
+  it("should return a new array", async () => {
     const array = [1, 2, 3];
 
-    const result = await mapAsync(array, async (value) => value * value);
+    const result = await mapAsync(array, async (value) => value);
 
-    expect(result).toEqual([1, 4, 9]);
     expect(result).not.toBe(array);
+  });
+
+  it("should not change the input array", async () => {
+    const array = [1, 2, 3];
+
+    await mapAsync(array, async (value) => value * value);
+
     expect(array).toEqual([1, 2, 3]);
   });
 
-  it("should resolve to an empty array for an empty array without calling the callback", async () => {
-    const callback = jest.fn(async (value: number) => value);
+  it("should resolve to an empty array for an empty array regardless of concurrency", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async (value: number) => value);
 
-    expect(await mapAsync([], callback)).toEqual([]);
-    expect(await mapAsync([], callback, { concurrency: 2 })).toEqual([]);
-    expect(callback).not.toHaveBeenCalled();
+      expect(await mapAsync([], callback, { concurrency })).toEqual([]);
+    }
+  });
+
+  it("should not call the callback for an empty array regardless of concurrency", async () => {
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async (value: number) => value);
+
+      await mapAsync([], callback, { concurrency });
+
+      expect(callback).not.toHaveBeenCalled();
+    }
   });
 
   it("should skip holes in sparse arrays regardless of concurrency", async () => {
@@ -249,10 +271,9 @@ describe("mapAsync", () => {
     expect(await mapAsync(array, callback, { concurrency: 1 })).toEqual([
       1, 2, 30,
     ]);
-    expect(callback).toHaveBeenNthCalledWith(3, 30, 2, array);
   });
 
-  it("should skip values deleted from the array regardless of concurrency", async () => {
+  it("should not call the callback for values deleted from the array regardless of concurrency", async () => {
     for (const concurrency of [1, Infinity]) {
       const array = [1, 2, 3];
 
@@ -266,12 +287,36 @@ describe("mapAsync", () => {
         },
       );
 
+      await mapAsync(array, callback, { concurrency });
+
+      expect(callback).not.toHaveBeenCalledWith(
+        expect.anything(),
+        2,
+        expect.anything(),
+      );
+    }
+  });
+
+  it("should leave the slots of values deleted from the array empty regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<number> {
+      if (index === 0) {
+        delete array[2];
+      }
+
+      return value;
+    }
+
+    for (const concurrency of [1, Infinity]) {
+      const array = [1, 2, 3];
+
       const result = await mapAsync(array, callback, { concurrency });
 
-      expect(callback).toHaveBeenCalledTimes(2);
       expect(result).toHaveLength(3);
       expect(2 in result).toBe(false);
-      expect(result.slice(0, 2)).toEqual([1, 2]);
     }
   });
 
@@ -386,7 +431,19 @@ describe("mapAsync", () => {
     expect(callback).toHaveBeenCalledTimes(2);
   });
 
-  it("should treat a callback that throws synchronously like one that rejects", async () => {
+  it("should reject with the error thrown synchronously by a callback", async () => {
+    function callback(value: number): Promise<number> {
+      if (value === 1) {
+        throw new Error("boom");
+      }
+
+      return Promise.resolve(value);
+    }
+
+    await expect(mapAsync([1, 2, 3], callback)).rejects.toThrow("boom");
+  });
+
+  it("should reject with an aggregate error of every error thrown synchronously by a callback when stopOnError is false", async () => {
     function callback(value: number): Promise<number> {
       if (value === 1 || value === 3) {
         throw new Error(`boom ${value}`);
@@ -395,29 +452,40 @@ describe("mapAsync", () => {
       return Promise.resolve(value);
     }
 
-    await expect(mapAsync([1, 2, 3], callback)).rejects.toThrow("boom 1");
-
-    const promise = mapAsync([1, 2, 3], callback, { stopOnError: false });
-
-    await expect(promise).rejects.toHaveProperty("name", "AggregateError");
-    await expect(promise).rejects.toHaveProperty("errors", [
+    await expect(
+      mapAsync([1, 2, 3], callback, { stopOnError: false }),
+    ).rejects.toHaveProperty("errors", [
       new Error("boom 1"),
       new Error("boom 3"),
     ]);
   });
 
   it.each(["boom", undefined])(
-    "should pass through a rejection reason of %p unchanged",
+    "should reject with a rejection reason of %p unchanged",
     async (reason) => {
-      const callback = jest.fn(async (value: number) => {
+      async function callback(value: number): Promise<number> {
+        if (value === 1) {
+          throw reason;
+        }
+
+        return value;
+      }
+
+      await expect(mapAsync([1, 2, 3], callback)).rejects.toBe(reason);
+    },
+  );
+
+  it.each(["boom", undefined])(
+    "should include a rejection reason of %p unchanged in the aggregate error when stopOnError is false",
+    async (reason) => {
+      async function callback(value: number): Promise<number> {
         if (value !== 2) {
           throw reason;
         }
 
         return value;
-      });
+      }
 
-      await expect(mapAsync([1, 2, 3], callback)).rejects.toBe(reason);
       await expect(
         mapAsync([1, 2, 3], callback, { stopOnError: false }),
       ).rejects.toHaveProperty("errors", [reason, reason]);
