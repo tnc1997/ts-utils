@@ -341,6 +341,43 @@ describe("filterAsync", () => {
     expect(callback).toHaveBeenCalledTimes(2);
   });
 
+  it.each([
+    [1, [1]],
+    [2, [1, 2]],
+    [Infinity, [1, 2, 3]],
+  ])(
+    "should invoke the same callbacks after a synchronous throw as after a rejection with a concurrency of %p",
+    async (concurrency, expected) => {
+      const callback = jest.fn((value: number): Promise<boolean> => {
+        if (value === 1) {
+          throw new Error("boom");
+        }
+
+        return Promise.resolve(true);
+      });
+
+      await expect(
+        filterAsync([1, 2, 3], callback, { concurrency }),
+      ).rejects.toThrow("boom");
+
+      // Wait for the callbacks that were already running to settle, in case
+      // they would start any more.
+      await delay(10);
+
+      expect(callback.mock.calls.map(([value]) => value)).toEqual(expected);
+    },
+  );
+
+  it("should reject with the first error when several callbacks throw synchronously", async () => {
+    const errors = [new Error("boom 1"), new Error("boom 2")];
+
+    function callback(value: number): Promise<boolean> {
+      throw errors[value - 1];
+    }
+
+    await expect(filterAsync([1, 2], callback)).rejects.toBe(errors[0]);
+  });
+
   it.each([NaN, 0, -1, 1.5, -Infinity])(
     "should throw a range error when the concurrency is %p",
     async (concurrency) => {

@@ -104,8 +104,13 @@ export async function mapAsync<T1, T2>(
 
       try {
         // `index` is an own index of `array` here, so `array[index]` is a
-        // value of type `T1`.
-        results[index] = await callback(array[index]!, index, array);
+        // value of type `T1`. The callback is invoked inside an `async`
+        // function, so that a callback that throws synchronously rejects
+        // like one that returns a rejected promise. Otherwise, the catch
+        // below would run before the remaining workers have started, and
+        // with `stopOnError`, they would exit without invoking theirs.
+        results[index] = await (async () =>
+          callback(array[index]!, index, array))();
       } catch (error) {
         if (stopOnError) {
           failed = true;
