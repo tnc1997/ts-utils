@@ -8,6 +8,9 @@ describe("sum", () => {
   it("should return -0 for an array of -0", () => {
     expect(sum([-0])).toBe(-0);
     expect(sum([-0, -0])).toBe(-0);
+  });
+
+  it("should return 0 for an array of -0 and 0", () => {
     expect(sum([-0, 0])).toBe(0);
   });
 

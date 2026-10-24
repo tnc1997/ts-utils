@@ -3,6 +3,9 @@ import { count } from "./index";
 describe("count", () => {
   const array: number[] = [1, 2, 3, 4];
 
+  // eslint-disable-next-line no-sparse-arrays
+  const sparse: number[] = [1, , 3] as number[];
+
   it("should count the number of values in an array", () => {
     expect(count(array)).toEqual(4);
   });
@@ -25,16 +28,19 @@ describe("count", () => {
 
   it("should count the number of values in an array of strings", () => {
     expect(count(["a", "bb", "ccc"])).toEqual(3);
+  });
+
+  it("should count the number of values in an array of strings that satisfy a condition", () => {
     expect(count(["a", "bb", "ccc"], (value) => value.length > 1)).toEqual(2);
   });
 
   it("should count undefined values", () => {
     expect(count([1, undefined, 3])).toEqual(3);
-    expect(count([1, undefined, 3], (value) => value === undefined)).toEqual(1);
   });
 
-  // eslint-disable-next-line no-sparse-arrays
-  const sparse: number[] = [1, , 3] as number[];
+  it("should count undefined values that satisfy a condition", () => {
+    expect(count([1, undefined, 3], (value) => value === undefined)).toEqual(1);
+  });
 
   it("should skip empty slots in a sparse array", () => {
     expect(count(sparse)).toEqual(2);
