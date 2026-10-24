@@ -421,12 +421,14 @@ describe("mapAsync", () => {
       async (concurrency) => {
         const callback = jest.fn(async (value: number) => value * value);
 
-        await expect(
-          mapAsync([1, 2, 3], callback, { concurrency }),
-        ).rejects.toThrow(RangeError);
-        await expect(mapAsync([], callback, { concurrency })).rejects.toThrow(
-          "The concurrency must be a positive integer or Infinity.",
-        );
+        for (const array of [[1, 2, 3], []]) {
+          const promise = mapAsync(array, callback, { concurrency });
+
+          await expect(promise).rejects.toThrow(RangeError);
+          await expect(promise).rejects.toThrow(
+            "The concurrency must be a positive integer or Infinity.",
+          );
+        }
       },
     );
   });
