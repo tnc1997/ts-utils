@@ -624,7 +624,7 @@ describe("mapAsync", () => {
       [2, [1, 2]],
       [Infinity, [1, 2, 3]],
     ])(
-      "should invoke the same callbacks after a synchronous throw as after a rejection with a concurrency of %p",
+      "should invoke the same callbacks as after a rejection with a concurrency of %p",
       async (concurrency, expected) => {
         const callback = jest.fn((value: number): Promise<number> => {
           if (value === 1) {
@@ -646,7 +646,7 @@ describe("mapAsync", () => {
       },
     );
 
-    it("should reject with an aggregate error of every error thrown synchronously by a callback when stopOnError is false", async () => {
+    it("should reject with an aggregate error of every thrown error when stopOnError is false", async () => {
       function callback(value: number): Promise<number> {
         if (value === 1 || value === 3) {
           throw new Error(`boom ${value}`);
@@ -663,7 +663,17 @@ describe("mapAsync", () => {
       ]);
     });
 
-    it("should reject with the error thrown synchronously by a callback", async () => {
+    it("should reject with the first error when several callbacks throw", async () => {
+      const errors = [new Error("boom 1"), new Error("boom 2")];
+
+      function callback(value: number): Promise<number> {
+        throw errors[value - 1];
+      }
+
+      await expect(mapAsync([1, 2], callback)).rejects.toBe(errors[0]);
+    });
+
+    it("should reject with the thrown error", async () => {
       const error = new Error("boom");
 
       function callback(value: number): Promise<number> {
@@ -675,16 +685,6 @@ describe("mapAsync", () => {
       }
 
       await expect(mapAsync([1, 2, 3], callback)).rejects.toBe(error);
-    });
-
-    it("should reject with the first error when several callbacks throw synchronously", async () => {
-      const errors = [new Error("boom 1"), new Error("boom 2")];
-
-      function callback(value: number): Promise<number> {
-        throw errors[value - 1];
-      }
-
-      await expect(mapAsync([1, 2], callback)).rejects.toBe(errors[0]);
     });
   });
 

@@ -504,7 +504,7 @@ describe("filterAsync", () => {
       [2, [1, 2]],
       [Infinity, [1, 2, 3]],
     ])(
-      "should invoke the same callbacks after a synchronous throw as after a rejection with a concurrency of %p",
+      "should invoke the same callbacks as after a rejection with a concurrency of %p",
       async (concurrency, expected) => {
         const callback = jest.fn((value: number): Promise<boolean> => {
           if (value === 1) {
@@ -526,7 +526,7 @@ describe("filterAsync", () => {
       },
     );
 
-    it("should reject with the first error when several callbacks throw synchronously", async () => {
+    it("should reject with the first error when several callbacks throw", async () => {
       const errors = [new Error("boom 1"), new Error("boom 2")];
 
       function callback(value: number): Promise<boolean> {
