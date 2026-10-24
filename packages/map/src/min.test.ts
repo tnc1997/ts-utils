@@ -1,17 +1,6 @@
 import { InsufficientValuesError, min } from "./index";
 
 describe("min", () => {
-  it("should return the entry with the minimum value of a map", () => {
-    const array: [string, number][] = [
-      ["a", 3],
-      ["b", 1],
-      ["c", 2],
-    ];
-    const map: Map<string, number> = new Map<string, number>(array);
-
-    expect(min<string>(map)).toEqual(["b", 1]);
-  });
-
   it("should not mutate the input map", () => {
     const map = new Map([
       ["a", 3],
@@ -26,6 +15,62 @@ describe("min", () => {
       ["b", 1],
       ["c", 2],
     ]);
+  });
+
+  it("should return the entry with the minimum value of a large map", () => {
+    const map = new Map(
+      Array.from({ length: 200_000 }, (_, index) => [index, index]),
+    );
+
+    expect(min(map)).toEqual([0, 0]);
+  });
+
+  it("should return the entry with the minimum value of a map", () => {
+    const array: [string, number][] = [
+      ["a", 3],
+      ["b", 1],
+      ["c", 2],
+    ];
+    const map: Map<string, number> = new Map<string, number>(array);
+
+    expect(min<string>(map)).toEqual(["b", 1]);
+  });
+
+  it("should return the first entry whose value is NaN", () => {
+    const map = new Map([
+      ["a", 1],
+      ["b", NaN],
+      ["c", NaN],
+    ]);
+
+    expect(min(map)).toEqual(["b", NaN]);
+  });
+
+  it("should return the first inserted entry when -0 values are tied", () => {
+    const map = new Map([
+      ["a", -0],
+      ["b", -0],
+    ]);
+
+    expect(min(map)).toEqual(["a", -0]);
+  });
+
+  it("should return the first inserted entry when 0 values are tied", () => {
+    const map = new Map([
+      ["a", 0],
+      ["b", 0],
+    ]);
+
+    expect(min(map)).toEqual(["a", 0]);
+  });
+
+  it("should return the first inserted entry when values are tied", () => {
+    const map = new Map([
+      ["a", 5],
+      ["b", 5],
+    ]);
+
+    expect(min(map)).toEqual(["a", 5]);
   });
 
   it.each([
@@ -54,51 +99,6 @@ describe("min", () => {
     const map = new Map(values.map((value, index) => [index, value]));
 
     expect(min(map)[1]).toBe(Math.min(...values));
-  });
-
-  it("should return the first entry whose value is NaN", () => {
-    const map = new Map([
-      ["a", 1],
-      ["b", NaN],
-      ["c", NaN],
-    ]);
-
-    expect(min(map)).toEqual(["b", NaN]);
-  });
-
-  it("should return the first inserted entry when values are tied", () => {
-    const map = new Map([
-      ["a", 5],
-      ["b", 5],
-    ]);
-
-    expect(min(map)).toEqual(["a", 5]);
-  });
-
-  it("should return the first inserted entry when -0 values are tied", () => {
-    const map = new Map([
-      ["a", -0],
-      ["b", -0],
-    ]);
-
-    expect(min(map)).toEqual(["a", -0]);
-  });
-
-  it("should return the first inserted entry when 0 values are tied", () => {
-    const map = new Map([
-      ["a", 0],
-      ["b", 0],
-    ]);
-
-    expect(min(map)).toEqual(["a", 0]);
-  });
-
-  it("should return the entry with the minimum value of a large map", () => {
-    const map = new Map(
-      Array.from({ length: 200_000 }, (_, index) => [index, index]),
-    );
-
-    expect(min(map)).toEqual([0, 0]);
   });
 
   it("should throw an error when the map is empty", () => {

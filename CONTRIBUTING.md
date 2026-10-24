@@ -259,8 +259,31 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
   the package's public exports.
 - Title each test in the form `should <expected behavior>`, e.g.
   `it("should return the sum of the values of an array", ...)`.
-- Sort `it` blocks alphabetically by title within each `describe` block, and insert new tests in
-  alphabetical position rather than appending them.
+- Assert one behavior in each `it` block, and name that behavior in its title, so that a failing test
+  says what broke and doesn't hide a second regression behind the first. As a guide:
+  - Several `expect`s that describe one outcome count as one behavior, e.g. a result's length and the
+    absence of a hole, or a thrown error's class and message.
+  - Looping over inputs or using `it.each` for the same behavior is fine, e.g.
+    `for (const concurrency of [1, 2, Infinity])`.
+  - The result, the number or arguments of callback calls, mutation of the input, and timing (such as
+    the calls made before the result is awaited, or the maximum concurrency) are separate behaviors, so
+    test each of them in its own `it` block.
+  - Option values that are documented to behave differently, such as `stopOnError: true` and `false`,
+    are tested separately.
+- Group tests by functionality:
+  - Once a function has enough tests that they're hard to scan, group them in nested `describe` blocks
+    named after the behavior or option under test, not after the implementation, e.g.
+    `describe("concurrency", ...)`, `describe("sparse arrays", ...)`, or
+    `describe("when stopOnError is false", ...)`. Functions that share options, such as `mapAsync` and
+    `filterAsync`, use the same group names. Leave small blocks, such as `sum` or `entries`, flat.
+  - Don't repeat in a test's title a qualifier that its group provides, e.g. write
+    `it("should skip holes", ...)` inside `describe("sparse arrays", ...)`. Jest prints the full
+    `describe` path on failure, and a group can be run on its own with `-t`, e.g.
+    `npm exec --workspace packages/array -- jest --coverage=false -t "mapAsync sparse arrays"`.
+  - Sort the groups alphabetically, and sort the `it` blocks alphabetically by title within each group
+    (or within a flat block), comparing titles character by character as `Array.prototype.sort` does.
+    Add a new test to the group for the behavior it covers, in alphabetical position, rather than
+    appending it.
 - Cover edge cases alongside the happy path, such as empty and single-element inputs, negative numbers,
   and duplicates, and check that functions don't mutate their inputs.
 - When testing that a function throws, assert both the error class and the message:
