@@ -309,63 +309,6 @@ describe("mapAsync", () => {
       expect(maxActive()).toEqual(2);
     });
 
-    it("should resolve with the mapped values when the concurrency is greater than the length", async () => {
-      async function callback(value: number): Promise<number> {
-        return value * value;
-      }
-
-      expect(await mapAsync([1, 2], callback, { concurrency: 10 })).toEqual([
-        1, 4,
-      ]);
-    });
-
-    it("should resolve with the mapped values with a concurrency limit", async () => {
-      const { callback } = trackConcurrency();
-
-      const array = [1, 2, 3, 4, 5, 6, 7, 8];
-
-      expect(await mapAsync(array, callback, { concurrency: 3 })).toEqual([
-        1, 4, 9, 16, 25, 36, 49, 64,
-      ]);
-    });
-
-    it("should resolve with the mapped values without a concurrency limit", async () => {
-      const { callback } = trackConcurrency();
-
-      const array = [1, 2, 3, 4, 5];
-
-      expect(await mapAsync(array, callback)).toEqual([1, 4, 9, 16, 25]);
-    });
-
-    it("should return the mapped values in their original order", async () => {
-      function callback(value: number): Promise<number> {
-        const delay = (5 - value) * 5;
-
-        function executor(resolve: (value: number) => void): void {
-          function handler(): void {
-            resolve(value * value);
-          }
-
-          setTimeout(handler, delay);
-        }
-
-        return new Promise<number>(executor);
-      }
-
-      const array = [1, 2, 3, 4, 5];
-      const expected = [1, 4, 9, 16, 25];
-
-      expect(await mapAsync(array, callback, { concurrency: 1 })).toEqual(
-        expected,
-      );
-      expect(await mapAsync(array, callback, { concurrency: 2 })).toEqual(
-        expected,
-      );
-      expect(
-        await mapAsync(array, callback, { concurrency: Infinity }),
-      ).toEqual(expected);
-    });
-
     it("should run all callbacks concurrently by default", async () => {
       const { callback, maxActive } = trackConcurrency();
 
@@ -578,12 +521,61 @@ describe("mapAsync", () => {
       expect(array).toEqual([1, 2, 3]);
     });
 
+    it("should resolve with the mapped values when the concurrency is greater than the length", async () => {
+      async function callback(value: number): Promise<number> {
+        return value * value;
+      }
+
+      expect(await mapAsync([1, 2], callback, { concurrency: 10 })).toEqual([
+        1, 4,
+      ]);
+    });
+
+    it("should resolve with the mapped values with a concurrency limit", async () => {
+      const { callback } = trackConcurrency();
+
+      const array = [1, 2, 3, 4, 5, 6, 7, 8];
+
+      expect(await mapAsync(array, callback, { concurrency: 3 })).toEqual([
+        1, 4, 9, 16, 25, 36, 49, 64,
+      ]);
+    });
+
     it("should return a new array", async () => {
       const array = [1, 2, 3];
 
       const result = await mapAsync(array, async (value) => value);
 
       expect(result).not.toBe(array);
+    });
+
+    it("should return the mapped values in their original order regardless of concurrency", async () => {
+      function callback(value: number): Promise<number> {
+        const delay = (5 - value) * 5;
+
+        function executor(resolve: (value: number) => void): void {
+          function handler(): void {
+            resolve(value * value);
+          }
+
+          setTimeout(handler, delay);
+        }
+
+        return new Promise<number>(executor);
+      }
+
+      const array = [1, 2, 3, 4, 5];
+      const expected = [1, 4, 9, 16, 25];
+
+      expect(await mapAsync(array, callback, { concurrency: 1 })).toEqual(
+        expected,
+      );
+      expect(await mapAsync(array, callback, { concurrency: 2 })).toEqual(
+        expected,
+      );
+      expect(
+        await mapAsync(array, callback, { concurrency: Infinity }),
+      ).toEqual(expected);
     });
   });
 
