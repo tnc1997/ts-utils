@@ -4,6 +4,29 @@ function delay(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+function filterWithTwoRejections(): {
+  callback: jest.Mock<Promise<boolean>, [number]>;
+  promise: Promise<number[]>;
+} {
+  // The callback for value 1 rejects after the callback for value 3.
+  const callback = jest.fn(async (value: number) => {
+    await delay(value === 1 ? 20 : 5);
+
+    if (value === 1 || value === 3) {
+      throw new Error(`boom ${value}`);
+    }
+
+    return value % 2 === 0;
+  });
+
+  const promise = filterAsync([1, 2, 3, 4, 5, 6], callback, {
+    concurrency: 2,
+    stopOnError: false,
+  });
+
+  return { callback, promise };
+}
+
 describe("filterAsync", () => {
   it("should filter the values by the truthiness of the resolved values", async () => {
     const array: unknown[] = [
@@ -48,6 +71,20 @@ describe("filterAsync", () => {
     expect(await filterAsync([1, 2, 3, 4], callback)).toEqual([2, 4]);
   });
 
+  it("should resolve with the filtered values with a concurrency limit", async () => {
+    async function callback(value: number): Promise<boolean> {
+      await delay(5);
+
+      return value % 2 === 0;
+    }
+
+    const array = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    expect(await filterAsync(array, callback, { concurrency: 3 })).toEqual([
+      2, 4, 6, 8,
+    ]);
+  });
+
   it("should never run more callbacks concurrently than the given concurrency limit", async () => {
     let active = 0;
     let maxActive = 0;
@@ -65,9 +102,8 @@ describe("filterAsync", () => {
 
     const array = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    expect(await filterAsync(array, callback, { concurrency: 3 })).toEqual([
-      2, 4, 6, 8,
-    ]);
+    await filterAsync(array, callback, { concurrency: 3 });
+
     expect(maxActive).toBeLessThanOrEqual(3);
     expect(maxActive).toEqual(3);
   });
@@ -101,6 +137,18 @@ describe("filterAsync", () => {
     ).toEqual(expected);
   });
 
+  it("should resolve with the filtered values without a concurrency limit", async () => {
+    async function callback(value: number): Promise<boolean> {
+      await delay(5);
+
+      return value % 2 === 0;
+    }
+
+    const array = [1, 2, 3, 4, 5, 6];
+
+    expect(await filterAsync(array, callback)).toEqual([2, 4, 6]);
+  });
+
   it("should run all callbacks concurrently by default", async () => {
     let active = 0;
     let maxActive = 0;
@@ -118,22 +166,35 @@ describe("filterAsync", () => {
 
     const array = [1, 2, 3, 4, 5, 6];
 
-    expect(await filterAsync(array, callback)).toEqual([2, 4, 6]);
+    await filterAsync(array, callback);
+
     expect(maxActive).toEqual(array.length);
   });
 
-  it("should skip holes in sparse arrays regardless of concurrency", async () => {
+  it("should not call the callback for holes in sparse arrays regardless of concurrency", async () => {
     // eslint-disable-next-line no-sparse-arrays
     const array = [1, , 3, ,];
 
     for (const concurrency of [1, 2, Infinity]) {
       const callback = jest.fn(async () => true);
 
-      const result = await filterAsync(array, callback, { concurrency });
+      await filterAsync(array, callback, { concurrency });
 
       expect(callback).toHaveBeenCalledTimes(2);
       expect(callback).toHaveBeenNthCalledWith(1, 1, 0, array);
       expect(callback).toHaveBeenNthCalledWith(2, 3, 2, array);
+    }
+  });
+
+  it("should leave holes in sparse arrays out of the result regardless of concurrency", async () => {
+    // eslint-disable-next-line no-sparse-arrays
+    const array = [1, , 3, ,];
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const result = await filterAsync(array, async () => true, {
+        concurrency,
+      });
+
       expect(result).toHaveLength(2);
       expect(result).toEqual([1, 3]);
     }
@@ -143,20 +204,41 @@ describe("filterAsync", () => {
     const array = new Array<number>(3);
 
     for (const concurrency of [1, 2, Infinity]) {
-      const callback = jest.fn(async () => true);
-
-      const result = await filterAsync(array, callback, { concurrency });
+      const result = await filterAsync(array, async () => true, {
+        concurrency,
+      });
 
       expect(result).toHaveLength(0);
+    }
+  });
+
+  it("should not call the callback for an array of only holes regardless of concurrency", async () => {
+    const array = new Array<number>(3);
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async () => true);
+
+      await filterAsync(array, callback, { concurrency });
+
       expect(callback).not.toHaveBeenCalled();
     }
   });
 
-  it("should resolve to an empty array for an empty array without calling the callback", async () => {
-    const callback = jest.fn(async (value: number) => value);
+  it("should resolve to an empty array for an empty array", async () => {
+    async function callback(value: number): Promise<number> {
+      return value;
+    }
 
     expect(await filterAsync([], callback)).toEqual([]);
     expect(await filterAsync([], callback, { concurrency: 2 })).toEqual([]);
+  });
+
+  it("should not call the callback for an empty array", async () => {
+    const callback = jest.fn(async (value: number) => value);
+
+    await filterAsync([], callback);
+    await filterAsync([], callback, { concurrency: 2 });
+
     expect(callback).not.toHaveBeenCalled();
   });
 
@@ -180,17 +262,51 @@ describe("filterAsync", () => {
     }
   });
 
-  it("should return a new array without changing the input", async () => {
+  it("should resolve with the values for which the callback resolves to true", async () => {
     const array = [1, 2, 3];
 
     const result = await filterAsync(array, async (value) => value !== 2);
 
     expect(result).toEqual([1, 3]);
+  });
+
+  it("should return a new array", async () => {
+    const array = [1, 2, 3];
+
+    const result = await filterAsync(array, async (value) => value !== 2);
+
     expect(result).not.toBe(array);
+  });
+
+  it("should not change the input array", async () => {
+    const array = [1, 2, 3];
+
+    await filterAsync(array, async (value) => value !== 2);
+
     expect(array).toEqual([1, 2, 3]);
   });
 
-  it("should not visit values appended to the array regardless of concurrency", async () => {
+  it("should not include values appended to the array in the result regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<boolean> {
+      if (array.length < 4) {
+        array.push(4);
+      }
+
+      return value % 2 === 0;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
+    }
+  });
+
+  it("should not call the callback for values appended to the array regardless of concurrency", async () => {
     for (const concurrency of [1, 2, Infinity]) {
       const array = [1, 2];
 
@@ -204,13 +320,58 @@ describe("filterAsync", () => {
         },
       );
 
-      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
+      await filterAsync(array, callback, { concurrency });
+
       expect(callback).toHaveBeenCalledTimes(2);
+    }
+  });
+
+  it("should keep the values appended to the array regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<boolean> {
+      if (array.length < 4) {
+        array.push(4);
+      }
+
+      return value % 2 === 0;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      await filterAsync(array, callback, { concurrency });
+
       expect(array).toEqual([1, 2, 4, 4]);
     }
   });
 
   it("should keep the values passed to the callback even if the array is changed afterwards", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<boolean> {
+      if (index === 1) {
+        array[1] = 5;
+        array.length = 3;
+      }
+
+      return value % 2 === 0;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2, 3, 4];
+
+      // Like `Array.prototype.filter`, the changed value at index 1 is kept
+      // as it was when visited.
+      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
+    }
+  });
+
+  it("should not call the callback for values removed from the array regardless of concurrency", async () => {
     for (const concurrency of [1, 2, Infinity]) {
       const array = [1, 2, 3, 4];
 
@@ -225,49 +386,54 @@ describe("filterAsync", () => {
         },
       );
 
-      // Like `Array.prototype.filter`, the changed value at index 1 is kept
-      // as it was when visited, and the removed index 3 is not visited.
-      expect(await filterAsync(array, callback, { concurrency })).toEqual([2]);
+      // Like `Array.prototype.filter`, the removed index 3 is not visited.
+      await filterAsync(array, callback, { concurrency });
+
       expect(callback).toHaveBeenCalledTimes(3);
     }
   });
 
-  it("should reject with an aggregate error of every rejection reason when stopOnError is false", async () => {
-    const callback = jest.fn(async (value: number) => {
-      await delay(value === 1 ? 20 : 5);
-
-      if (value === 1 || value === 3) {
-        throw new Error(`boom ${value}`);
-      }
-
-      return value % 2 === 0;
-    });
-
-    const promise = filterAsync([1, 2, 3, 4, 5, 6], callback, {
-      concurrency: 2,
-      stopOnError: false,
-    });
+  it("should reject with an aggregate error when stopOnError is false", async () => {
+    const { promise } = filterWithTwoRejections();
 
     await expect(promise).rejects.toBeInstanceOf(
       (globalThis as unknown as { AggregateError: ErrorConstructor })
         .AggregateError,
     );
     await expect(promise).rejects.toHaveProperty("name", "AggregateError");
+  });
+
+  it("should reject with every rejection reason in the order they happened when stopOnError is false", async () => {
+    const { promise } = filterWithTwoRejections();
+
     await expect(promise).rejects.toHaveProperty("errors", [
       new Error("boom 3"),
       new Error("boom 1"),
     ]);
+  });
+
+  it("should invoke every callback after a rejection when stopOnError is false", async () => {
+    const { callback, promise } = filterWithTwoRejections();
+
+    await promise.catch(() => undefined);
+
     expect(callback).toHaveBeenCalledTimes(6);
   });
 
-  it("should reject with an error named AggregateError when AggregateError is not available", async () => {
+  describe("when AggregateError is not available", () => {
     const global = globalThis as { AggregateError?: unknown };
     const { AggregateError } = global;
 
-    delete global.AggregateError;
+    beforeEach(() => {
+      delete global.AggregateError;
+    });
 
-    try {
-      const promise = filterAsync(
+    afterEach(() => {
+      global.AggregateError = AggregateError;
+    });
+
+    function filterWithoutAggregateError(): Promise<number[]> {
+      return filterAsync(
         [1, 2, 3],
         async (value: number) => {
           if (value !== 2) {
@@ -278,20 +444,28 @@ describe("filterAsync", () => {
         },
         { stopOnError: false },
       );
+    }
+
+    it("should reject with an error named AggregateError", async () => {
+      const promise = filterWithoutAggregateError();
 
       await expect(promise).rejects.toBeInstanceOf(Error);
       await expect(promise).rejects.toHaveProperty("name", "AggregateError");
-      await expect(promise).rejects.toHaveProperty(
+    });
+
+    it("should reject with every rejection reason", async () => {
+      await expect(filterWithoutAggregateError()).rejects.toHaveProperty(
+        "errors",
+        [new Error("boom 1"), new Error("boom 3")],
+      );
+    });
+
+    it("should reject with the number of rejections in the message", async () => {
+      await expect(filterWithoutAggregateError()).rejects.toHaveProperty(
         "message",
         "2 of 3 callbacks rejected.",
       );
-      await expect(promise).rejects.toHaveProperty("errors", [
-        new Error("boom 1"),
-        new Error("boom 3"),
-      ]);
-    } finally {
-      global.AggregateError = AggregateError;
-    }
+    });
   });
 
   it("should reject with the first rejection reason and ignore later rejections", async () => {
@@ -312,13 +486,45 @@ describe("filterAsync", () => {
     expect(
       await filterAsync([1, 2, 3], callback, { stopOnError: false }),
     ).toEqual([1, 3]);
+  });
+
+  it("should resolve with the filtered values with a concurrency limit when stopOnError is false and no callback rejects", async () => {
+    const callback = jest.fn(async (value: number) => value % 2 === 1);
+
     expect(
       await filterAsync([1, 2, 3], callback, {
         concurrency: 2,
         stopOnError: false,
       }),
     ).toEqual([1, 3]);
+  });
+
+  it("should call the callback once for each value when stopOnError is false and no callback rejects", async () => {
+    const callback = jest.fn(async (value: number) => value % 2 === 1);
+
+    await filterAsync([1, 2, 3], callback, { stopOnError: false });
+    await filterAsync([1, 2, 3], callback, {
+      concurrency: 2,
+      stopOnError: false,
+    });
+
     expect(callback).toHaveBeenCalledTimes(6);
+  });
+
+  it("should reject with the first rejection reason while other callbacks are running with a concurrency limit", async () => {
+    async function callback(value: number): Promise<boolean> {
+      await delay(value === 1 ? 5 : 10);
+
+      if (value === 1) {
+        throw new Error("boom");
+      }
+
+      return value % 2 === 0;
+    }
+
+    await expect(
+      filterAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }),
+    ).rejects.toThrow("boom");
   });
 
   it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
@@ -332,9 +538,9 @@ describe("filterAsync", () => {
       return value % 2 === 0;
     });
 
-    await expect(
-      filterAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }),
-    ).rejects.toThrow("boom");
+    await filterAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }).catch(
+      () => undefined,
+    );
 
     await delay(30);
 
@@ -391,6 +597,20 @@ describe("filterAsync", () => {
           "The concurrency must be a positive integer or Infinity.",
         );
       }
+    },
+  );
+
+  it.each([NaN, 0, -1, 1.5, -Infinity])(
+    "should not call the callback when the concurrency is %p",
+    async (concurrency) => {
+      const callback = jest.fn(async (value: number) => value % 2 === 0);
+
+      for (const array of [[1, 2, 3], []]) {
+        await filterAsync(array, callback, { concurrency }).catch(
+          () => undefined,
+        );
+      }
+
       expect(callback).not.toHaveBeenCalled();
     },
   );
