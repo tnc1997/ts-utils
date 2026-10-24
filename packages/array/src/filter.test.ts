@@ -4,6 +4,27 @@ function delay(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+function trackConcurrency(): {
+  callback: (value: number) => Promise<boolean>;
+  maxActive: () => number;
+} {
+  let active = 0;
+  let maxActive = 0;
+
+  async function callback(value: number): Promise<boolean> {
+    active++;
+    maxActive = Math.max(maxActive, active);
+
+    await delay(5);
+
+    active--;
+
+    return value % 2 === 0;
+  }
+
+  return { callback, maxActive: () => maxActive };
+}
+
 function filterWithTwoRejections(): {
   callback: jest.Mock<Promise<boolean>, [number]>;
   promise: Promise<number[]>;
@@ -165,48 +186,23 @@ describe("filterAsync", () => {
 
   describe("concurrency", () => {
     it("should never run more callbacks concurrently than the given concurrency limit", async () => {
-      let active = 0;
-      let maxActive = 0;
-
-      async function callback(value: number): Promise<boolean> {
-        active++;
-        maxActive = Math.max(maxActive, active);
-
-        await new Promise((resolve) => setTimeout(resolve, 5));
-
-        active--;
-
-        return value % 2 === 0;
-      }
+      const { callback, maxActive } = trackConcurrency();
 
       const array = [1, 2, 3, 4, 5, 6, 7, 8];
 
       await filterAsync(array, callback, { concurrency: 3 });
 
-      expect(maxActive).toBeLessThanOrEqual(3);
-      expect(maxActive).toEqual(3);
+      expect(maxActive()).toEqual(3);
     });
 
     it("should run all callbacks concurrently by default", async () => {
-      let active = 0;
-      let maxActive = 0;
-
-      async function callback(value: number): Promise<boolean> {
-        active++;
-        maxActive = Math.max(maxActive, active);
-
-        await new Promise((resolve) => setTimeout(resolve, 5));
-
-        active--;
-
-        return value % 2 === 0;
-      }
+      const { callback, maxActive } = trackConcurrency();
 
       const array = [1, 2, 3, 4, 5, 6];
 
       await filterAsync(array, callback);
 
-      expect(maxActive).toEqual(array.length);
+      expect(maxActive()).toEqual(array.length);
     });
   });
 

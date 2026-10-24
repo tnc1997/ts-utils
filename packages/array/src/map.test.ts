@@ -297,7 +297,6 @@ describe("mapAsync", () => {
 
       await mapAsync(array, callback, { concurrency: 3 });
 
-      expect(maxActive()).toBeLessThanOrEqual(3);
       expect(maxActive()).toEqual(3);
     });
 
