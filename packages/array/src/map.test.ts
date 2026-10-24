@@ -446,6 +446,10 @@ describe("mapAsync", () => {
 
       await mapAsync([1, 2, 3, 4], callback).catch(() => undefined);
 
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(10);
+
       expect(callback).toHaveBeenCalledTimes(4);
     });
 
@@ -502,12 +506,20 @@ describe("mapAsync", () => {
       await expect(
         mapAsync([1, 2, 3], callback, { concurrency: 2 }),
       ).rejects.toThrow("boom 2");
+
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(20);
     });
 
     it("should reject with the first rejection reason while other callbacks are running with a concurrency limit", async () => {
       const { promise } = mapWithFirstRejection();
 
       await expect(promise).rejects.toThrow("boom");
+
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(30);
     });
 
     it("should reject with the rejection reason without a concurrency limit", async () => {
@@ -522,6 +534,10 @@ describe("mapAsync", () => {
       }
 
       await expect(mapAsync([1, 2, 3, 4], callback)).rejects.toThrow("boom");
+
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(10);
     });
 
     it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {

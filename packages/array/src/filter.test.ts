@@ -327,6 +327,10 @@ describe("filterAsync", () => {
       await expect(
         filterAsync([1, 2, 3], callback, { concurrency: 2 }),
       ).rejects.toThrow("boom 2");
+
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(20);
     });
 
     it("should reject with the first rejection reason while other callbacks are running with a concurrency limit", async () => {
@@ -343,6 +347,10 @@ describe("filterAsync", () => {
       await expect(
         filterAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }),
       ).rejects.toThrow("boom");
+
+      // Wait for the callbacks that were already running to settle, so that
+      // they don't settle during a later test.
+      await delay(30);
     });
 
     it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
