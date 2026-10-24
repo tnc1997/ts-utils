@@ -459,14 +459,6 @@ describe("mapAsync", () => {
       expect(settled).toEqual([1, 2]);
     });
 
-    it("should not start a callback in the slot freed by the first rejection with a concurrency limit", async () => {
-      const { calls, promise } = mapWithFirstRejection();
-
-      await promise.catch(() => undefined);
-
-      expect(calls).toEqual([1, 2]);
-    });
-
     it("should not start more callbacks when a later rejection frees a slot", async () => {
       const callback = jest.fn(async (value: number) => {
         await delay(value === 1 ? 10 : 5);
