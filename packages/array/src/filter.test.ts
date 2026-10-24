@@ -291,11 +291,9 @@ describe("filterAsync", () => {
       async (concurrency) => {
         const callback = jest.fn(async (value: number) => value % 2 === 0);
 
-        for (const array of [[1, 2, 3], []]) {
-          await filterAsync(array, callback, { concurrency }).catch(
-            () => undefined,
-          );
-        }
+        await filterAsync([1, 2, 3], callback, { concurrency }).catch(
+          () => undefined,
+        );
 
         expect(callback).not.toHaveBeenCalled();
       },

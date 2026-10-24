@@ -410,7 +410,6 @@ describe("mapAsync", () => {
         await mapAsync([1, 2, 3], callback, { concurrency }).catch(
           () => undefined,
         );
-        await mapAsync([], callback, { concurrency }).catch(() => undefined);
 
         expect(callback).not.toHaveBeenCalled();
       },
