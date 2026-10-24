@@ -710,6 +710,9 @@ describe("mapAsync", () => {
 
       await expect(promise).rejects.toBeInstanceOf(Error);
       await expect(promise).rejects.toHaveProperty("name", "AggregateError");
+      await expect(promise).rejects.not.toBeInstanceOf(
+        AggregateError as ErrorConstructor,
+      );
     });
 
     it("should reject with every rejection reason", async () => {
