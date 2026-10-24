@@ -1,6 +1,12 @@
 import { containsKey, containsValue } from "./index";
 
 describe("containsKey", () => {
+  it("should check if a map does contain NaN as a key", () => {
+    const map = new Map([[NaN, 1]]);
+
+    expect(containsKey(map, NaN)).toBe(true);
+  });
+
   it("should check if a map does contain a specified key", () => {
     const array: [string, number][] = [
       ["a", 1],
@@ -10,12 +16,6 @@ describe("containsKey", () => {
     const map: Map<string, number> = new Map<string, number>(array);
 
     expect(containsKey<string, number>(map, "a")).toBeTruthy();
-  });
-
-  it("should check if a map does contain NaN as a key", () => {
-    const map = new Map([[NaN, 1]]);
-
-    expect(containsKey(map, NaN)).toBe(true);
   });
 
   it("should check if a map does not contain a specified key", () => {
@@ -37,6 +37,15 @@ describe("containsKey", () => {
 });
 
 describe("containsValue", () => {
+  it("should check if a map does contain NaN as a value", () => {
+    const map = new Map([
+      ["a", 1],
+      ["b", NaN],
+    ]);
+
+    expect(containsValue(map, NaN)).toBe(true);
+  });
+
   it("should check if a map does contain a specified value", () => {
     const array: [string, number][] = [
       ["a", 1],
@@ -46,15 +55,6 @@ describe("containsValue", () => {
     const map: Map<string, number> = new Map<string, number>(array);
 
     expect(containsValue<string, number>(map, 1)).toBeTruthy();
-  });
-
-  it("should check if a map does contain NaN as a value", () => {
-    const map = new Map([
-      ["a", 1],
-      ["b", NaN],
-    ]);
-
-    expect(containsValue(map, NaN)).toBe(true);
   });
 
   it("should check if a map does not contain a specified value", () => {
