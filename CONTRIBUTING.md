@@ -279,7 +279,7 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
   - Don't repeat in a test's title a qualifier that its group provides, e.g. write
     `it("should skip holes", ...)` inside `describe("sparse arrays", ...)`. Jest prints the full
     `describe` path on failure, and a group can be run on its own with `-t`, e.g.
-    `npm exec --workspace packages/array -- jest -t "mapAsync sparse arrays"`.
+    `npm exec --workspace packages/array -- jest --coverage=false -t "mapAsync sparse arrays"`.
   - Sort the groups alphabetically, and sort the `it` blocks alphabetically by title within each group
     (or within a flat block), comparing titles character by character as `Array.prototype.sort` does.
     Add a new test to the group for the behavior it covers, in alphabetical position, rather than
