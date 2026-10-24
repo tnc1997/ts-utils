@@ -25,6 +25,58 @@ function trackConcurrency(): {
   return { callback, maxActive: () => maxActive };
 }
 
+function mapWithFirstRejection(): {
+  calls: number[];
+  promise: Promise<number[]>;
+  settled: number[];
+} {
+  const calls: number[] = [];
+  const settled: number[] = [];
+
+  // The callback for value 1 rejects while the callback for value 2 is
+  // still running.
+  async function callback(value: number): Promise<number> {
+    calls.push(value);
+
+    await delay(value === 1 ? 5 : 10);
+
+    settled.push(value);
+
+    if (value === 1) {
+      throw new Error("boom");
+    }
+
+    return value;
+  }
+
+  const promise = mapAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 });
+
+  return { calls, promise, settled };
+}
+
+function mapWithTwoRejections(concurrency: number): {
+  callback: jest.Mock<Promise<number>, [number]>;
+  promise: Promise<number[]>;
+} {
+  // The callback for value 1 rejects after the callback for value 3.
+  const callback = jest.fn(async (value: number) => {
+    await delay(value === 1 ? 20 : 5);
+
+    if (value === 1 || value === 3) {
+      throw new Error(`boom ${value}`);
+    }
+
+    return value;
+  });
+
+  const promise = mapAsync([1, 2, 3, 4, 5, 6], callback, {
+    concurrency,
+    stopOnError: false,
+  });
+
+  return { callback, promise };
+}
+
 describe("mapAsync", () => {
   it("should map the values in an array asynchronously", async () => {
     function callback(value: number): Promise<number> {
@@ -42,14 +94,23 @@ describe("mapAsync", () => {
     expect(await mapAsync([1, 2, 3, 4], callback)).toEqual([1, 4, 9, 16]);
   });
 
-  it("should never run more callbacks concurrently than the given concurrency limit", async () => {
-    const { callback, maxActive } = trackConcurrency();
+  it("should resolve with the mapped values with a concurrency limit", async () => {
+    const { callback } = trackConcurrency();
 
     const array = [1, 2, 3, 4, 5, 6, 7, 8];
 
     expect(await mapAsync(array, callback, { concurrency: 3 })).toEqual([
       1, 4, 9, 16, 25, 36, 49, 64,
     ]);
+  });
+
+  it("should never run more callbacks concurrently than the given concurrency limit", async () => {
+    const { callback, maxActive } = trackConcurrency();
+
+    const array = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    await mapAsync(array, callback, { concurrency: 3 });
+
     expect(maxActive()).toBeLessThanOrEqual(3);
     expect(maxActive()).toEqual(3);
   });
@@ -83,12 +144,21 @@ describe("mapAsync", () => {
     );
   });
 
+  it("should resolve with the mapped values without a concurrency limit", async () => {
+    const { callback } = trackConcurrency();
+
+    const array = [1, 2, 3, 4, 5];
+
+    expect(await mapAsync(array, callback)).toEqual([1, 4, 9, 16, 25]);
+  });
+
   it("should run all callbacks concurrently by default", async () => {
     const { callback, maxActive } = trackConcurrency();
 
     const array = [1, 2, 3, 4, 5];
 
-    expect(await mapAsync(array, callback)).toEqual([1, 4, 9, 16, 25]);
+    await mapAsync(array, callback);
+
     expect(maxActive()).toEqual(array.length);
   });
 
@@ -185,7 +255,20 @@ describe("mapAsync", () => {
     },
   );
 
-  it("should skip holes in sparse arrays regardless of concurrency", async () => {
+  it("should not call the callback for holes in sparse arrays regardless of concurrency", async () => {
+    // eslint-disable-next-line no-sparse-arrays
+    const array = [1, , 3];
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const callback = jest.fn(async (value: number | undefined) => value);
+
+      await mapAsync(array, callback, { concurrency });
+
+      expect(callback).toHaveBeenCalledTimes(2);
+    }
+  });
+
+  it("should leave holes in sparse arrays empty in the result regardless of concurrency", async () => {
     // eslint-disable-next-line no-sparse-arrays
     const array = [1, , 3];
 
@@ -194,7 +277,6 @@ describe("mapAsync", () => {
 
       const result = await mapAsync(array, callback, { concurrency });
 
-      expect(callback).toHaveBeenCalledTimes(2);
       expect(result).toHaveLength(3);
       expect(1 in result).toBe(false);
       expect(result[0]).toEqual(1);
@@ -202,7 +284,7 @@ describe("mapAsync", () => {
     }
   });
 
-  it("should not visit values appended to the array regardless of concurrency", async () => {
+  it("should not call the callback for values appended to the array regardless of concurrency", async () => {
     for (const concurrency of [1, 2, Infinity]) {
       const array = [1, 2];
 
@@ -216,15 +298,57 @@ describe("mapAsync", () => {
         },
       );
 
-      const result = await mapAsync(array, callback, { concurrency });
+      await mapAsync(array, callback, { concurrency });
 
       expect(callback).toHaveBeenCalledTimes(2);
+    }
+  });
+
+  it("should not include values appended to the array in the result regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<number> {
+      if (array.length < 4) {
+        array.push(9);
+      }
+
+      return value * value;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      const result = await mapAsync(array, callback, { concurrency });
+
       expect(result).toEqual([1, 4]);
+    }
+  });
+
+  it("should keep the values appended to the array regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<number> {
+      if (array.length < 4) {
+        array.push(9);
+      }
+
+      return value * value;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2];
+
+      await mapAsync(array, callback, { concurrency });
+
       expect(array).toEqual([1, 2, 9, 9]);
     }
   });
 
-  it("should not visit values removed from the array regardless of concurrency", async () => {
+  it("should not call the callback for values removed from the array regardless of concurrency", async () => {
     for (const concurrency of [1, 2, Infinity]) {
       const array = [1, 2, 3];
 
@@ -238,9 +362,30 @@ describe("mapAsync", () => {
         },
       );
 
-      const result = await mapAsync(array, callback, { concurrency });
+      await mapAsync(array, callback, { concurrency });
 
       expect(callback).toHaveBeenCalledTimes(2);
+    }
+  });
+
+  it("should leave the slots of values removed from the array empty regardless of concurrency", async () => {
+    async function callback(
+      value: number,
+      index: number,
+      array: number[],
+    ): Promise<number> {
+      if (index === 0) {
+        array.pop();
+      }
+
+      return value * value;
+    }
+
+    for (const concurrency of [1, 2, Infinity]) {
+      const array = [1, 2, 3];
+
+      const result = await mapAsync(array, callback, { concurrency });
+
       expect(result).toHaveLength(3);
       expect(2 in result).toBe(false);
       expect(result.slice(0, 2)).toEqual([1, 4]);
@@ -309,6 +454,20 @@ describe("mapAsync", () => {
     },
   );
 
+  it("should reject with the rejection reason without a concurrency limit", async () => {
+    async function callback(value: number): Promise<number> {
+      await delay(value === 1 ? 5 : 10);
+
+      if (value === 1) {
+        throw new Error("boom");
+      }
+
+      return value;
+    }
+
+    await expect(mapAsync([1, 2, 3, 4], callback)).rejects.toThrow("boom");
+  });
+
   it("should invoke every callback before rejecting without a concurrency limit", async () => {
     const callback = jest.fn(async (value: number) => {
       await delay(value === 1 ? 5 : 10);
@@ -320,7 +479,8 @@ describe("mapAsync", () => {
       return value;
     });
 
-    await expect(mapAsync([1, 2, 3, 4], callback)).rejects.toThrow("boom");
+    await mapAsync([1, 2, 3, 4], callback).catch(() => undefined);
+
     expect(callback).toHaveBeenCalledTimes(4);
   });
 
@@ -337,45 +497,61 @@ describe("mapAsync", () => {
     ).rejects.toThrow("2 of 2 callbacks rejected.");
   });
 
-  it("should reject with an aggregate error of every rejection reason in the order they happened when stopOnError is false", async () => {
+  it("should reject with an aggregate error when stopOnError is false", async () => {
     for (const concurrency of [2, Infinity]) {
-      const callback = jest.fn(async (value: number) => {
-        await delay(value === 1 ? 20 : 5);
-
-        if (value === 1 || value === 3) {
-          throw new Error(`boom ${value}`);
-        }
-
-        return value;
-      });
-
-      const promise = mapAsync([1, 2, 3, 4, 5, 6], callback, {
-        concurrency,
-        stopOnError: false,
-      });
+      const { promise } = mapWithTwoRejections(concurrency);
 
       await expect(promise).rejects.toBeInstanceOf(
         (globalThis as unknown as { AggregateError: ErrorConstructor })
           .AggregateError,
       );
       await expect(promise).rejects.toHaveProperty("name", "AggregateError");
+    }
+  });
+
+  it("should reject with the number of rejections in the aggregate error message when stopOnError is false", async () => {
+    for (const concurrency of [2, Infinity]) {
+      const { promise } = mapWithTwoRejections(concurrency);
+
       await expect(promise).rejects.toThrow("2 of 6 callbacks rejected.");
+    }
+  });
+
+  it("should reject with every rejection reason in the order they happened when stopOnError is false", async () => {
+    for (const concurrency of [2, Infinity]) {
+      const { promise } = mapWithTwoRejections(concurrency);
+
       await expect(promise).rejects.toHaveProperty("errors", [
         new Error("boom 3"),
         new Error("boom 1"),
       ]);
+    }
+  });
+
+  it("should invoke every callback after a rejection when stopOnError is false", async () => {
+    for (const concurrency of [2, Infinity]) {
+      const { callback, promise } = mapWithTwoRejections(concurrency);
+
+      await promise.catch(() => undefined);
+
       expect(callback).toHaveBeenCalledTimes(6);
     }
   });
 
-  it("should reject with an error named AggregateError when AggregateError is not available", async () => {
+  describe("when AggregateError is not available", () => {
     const global = globalThis as { AggregateError?: unknown };
     const { AggregateError } = global;
 
-    delete global.AggregateError;
+    beforeEach(() => {
+      delete global.AggregateError;
+    });
 
-    try {
-      const promise = mapAsync(
+    afterEach(() => {
+      global.AggregateError = AggregateError;
+    });
+
+    function mapWithoutAggregateError(): Promise<number[]> {
+      return mapAsync(
         [1, 2, 3],
         async (value: number) => {
           if (value !== 2) {
@@ -386,20 +562,28 @@ describe("mapAsync", () => {
         },
         { stopOnError: false },
       );
+    }
+
+    it("should reject with an error named AggregateError", async () => {
+      const promise = mapWithoutAggregateError();
 
       await expect(promise).rejects.toBeInstanceOf(Error);
       await expect(promise).rejects.toHaveProperty("name", "AggregateError");
-      await expect(promise).rejects.toHaveProperty(
+    });
+
+    it("should reject with every rejection reason", async () => {
+      await expect(mapWithoutAggregateError()).rejects.toHaveProperty(
+        "errors",
+        [new Error("boom 1"), new Error("boom 3")],
+      );
+    });
+
+    it("should reject with the number of rejections in the message", async () => {
+      await expect(mapWithoutAggregateError()).rejects.toHaveProperty(
         "message",
         "2 of 3 callbacks rejected.",
       );
-      await expect(promise).rejects.toHaveProperty("errors", [
-        new Error("boom 1"),
-        new Error("boom 3"),
-      ]);
-    } finally {
-      global.AggregateError = AggregateError;
-    }
+    });
   });
 
   it("should reject with the first rejection reason and ignore later rejections", async () => {
@@ -412,6 +596,18 @@ describe("mapAsync", () => {
     await expect(
       mapAsync([1, 2, 3], callback, { concurrency: 2 }),
     ).rejects.toThrow("boom 2");
+  });
+
+  it("should not start more callbacks when a later rejection frees a slot", async () => {
+    const callback = jest.fn(async (value: number) => {
+      await delay(value === 1 ? 10 : 5);
+
+      throw new Error(`boom ${value}`);
+    });
+
+    await mapAsync([1, 2, 3], callback, { concurrency: 2 }).catch(
+      () => undefined,
+    );
 
     // Wait for the callback for value 1, which was already running, to
     // reject too.
@@ -489,6 +685,11 @@ describe("mapAsync", () => {
     expect(await mapAsync([1, 2, 3], callback, { stopOnError: false })).toEqual(
       [1, 4, 9],
     );
+  });
+
+  it("should resolve with the mapped values with a concurrency limit when stopOnError is false and no callback rejects", async () => {
+    const callback = jest.fn(async (value: number) => value * value);
+
     expect(
       await mapAsync([1, 2, 3], callback, {
         concurrency: 2,
@@ -497,7 +698,23 @@ describe("mapAsync", () => {
     ).toEqual([1, 4, 9]);
   });
 
-  it("should skip holes in sparse arrays when stopOnError is false", async () => {
+  it("should not call the callback for holes in sparse arrays when stopOnError is false", async () => {
+    // eslint-disable-next-line no-sparse-arrays
+    const array = [1, , 3];
+
+    for (const concurrency of [1, Infinity]) {
+      const callback = jest.fn(async (value: number | undefined) => value);
+
+      await mapAsync(array, callback, {
+        concurrency,
+        stopOnError: false,
+      });
+
+      expect(callback).toHaveBeenCalledTimes(2);
+    }
+  });
+
+  it("should leave holes in sparse arrays empty in the result when stopOnError is false", async () => {
     // eslint-disable-next-line no-sparse-arrays
     const array = [1, , 3];
 
@@ -509,40 +726,44 @@ describe("mapAsync", () => {
         stopOnError: false,
       });
 
-      expect(callback).toHaveBeenCalledTimes(2);
       expect(result).toHaveLength(3);
       expect(1 in result).toBe(false);
     }
   });
 
-  it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
-    const calls: number[] = [];
-    const settled: number[] = [];
+  it("should reject with the first rejection reason while other callbacks are running with a concurrency limit", async () => {
+    const { promise } = mapWithFirstRejection();
 
-    async function callback(value: number): Promise<number> {
-      calls.push(value);
+    await expect(promise).rejects.toThrow("boom");
+  });
 
-      await delay(value === 1 ? 5 : 10);
+  it("should not start a callback in the slot freed by the first rejection with a concurrency limit", async () => {
+    const { calls, promise } = mapWithFirstRejection();
 
-      settled.push(value);
+    await promise.catch(() => undefined);
 
-      if (value === 1) {
-        throw new Error("boom");
-      }
-
-      return value;
-    }
-
-    await expect(
-      mapAsync([1, 2, 3, 4, 5, 6], callback, { concurrency: 2 }),
-    ).rejects.toThrow("boom");
     expect(calls).toEqual([1, 2]);
+  });
+
+  it("should stop starting callbacks after the first rejection with a concurrency limit", async () => {
+    const { calls, promise } = mapWithFirstRejection();
+
+    await promise.catch(() => undefined);
 
     // The callback for value 2 was already running, so it runs to
     // completion, but no further callbacks are started.
     await delay(30);
 
     expect(calls).toEqual([1, 2]);
+  });
+
+  it("should let the callbacks that were already running settle after the first rejection with a concurrency limit", async () => {
+    const { promise, settled } = mapWithFirstRejection();
+
+    await promise.catch(() => undefined);
+
+    await delay(30);
+
     expect(settled).toEqual([1, 2]);
   });
 
@@ -594,6 +815,19 @@ describe("mapAsync", () => {
       await expect(mapAsync([], callback, { concurrency })).rejects.toThrow(
         "The concurrency must be a positive integer or Infinity.",
       );
+    },
+  );
+
+  it.each([NaN, 0, -1, 1.5, -Infinity])(
+    "should not call the callback when the concurrency is %p",
+    async (concurrency) => {
+      const callback = jest.fn(async (value: number) => value * value);
+
+      await mapAsync([1, 2, 3], callback, { concurrency }).catch(
+        () => undefined,
+      );
+      await mapAsync([], callback, { concurrency }).catch(() => undefined);
+
       expect(callback).not.toHaveBeenCalled();
     },
   );
