@@ -31,12 +31,12 @@ describe("count", () => {
   });
 
   it("should not call the condition for empty slots", () => {
-    const callback = jest.fn(() => true);
+    const callback = jest.fn((value: number) => value > 0);
 
     count(sparse, callback);
 
     expect(callback).toHaveBeenCalledTimes(2);
-    expect(callback).not.toHaveBeenCalledWith(undefined);
+    expect(callback.mock.calls.map(([value]) => value)).toEqual([1, 3]);
   });
 
   it("should return 0 for an array of only empty slots", () => {
