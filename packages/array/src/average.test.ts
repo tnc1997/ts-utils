@@ -292,9 +292,27 @@ describe("range", () => {
     },
   );
 
-  it("should return NaN when the array contains NaN", () => {
-    expect(range([1, NaN, 3])).toBeNaN();
-    expect(range([NaN, 1, 3])).toBeNaN();
+  it.each([
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole in the middle", [1, , 3] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole between equal values", [1, , 1] as number[]],
+    // eslint-disable-next-line no-sparse-arrays
+    ["a hole at the end", [1, 2, ,] as number[]],
+    ["only holes", new Array<number>(3)],
+  ])("should return NaN for a sparse array with %s", (_, array) => {
+    expect(range(array)).toBeNaN();
+  });
+
+  it.each([
+    [[1, NaN, 3]],
+    [[NaN, 1, 3]],
+    [[1, 3, NaN]],
+    [[1, NaN, 1]],
+    [[NaN]],
+    [[NaN, NaN]],
+  ])("should return NaN when %p contains NaN", (array) => {
+    expect(range(array)).toBeNaN();
   });
 
   it("should return the range of a large array", () => {
