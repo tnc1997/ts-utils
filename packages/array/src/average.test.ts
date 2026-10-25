@@ -1,5 +1,17 @@
 import { InsufficientValuesError, mean, median, mode, range } from "./index";
 
+const sparseArrays: [string, number[]][] = [
+  // eslint-disable-next-line no-sparse-arrays
+  ["a hole at the start", [, 1, 3] as number[]],
+  // eslint-disable-next-line no-sparse-arrays
+  ["a hole in the middle", [1, , 3] as number[]],
+  // eslint-disable-next-line no-sparse-arrays
+  ["a hole between equal values", [1, , 1] as number[]],
+  // eslint-disable-next-line no-sparse-arrays
+  ["a hole at the end", [1, 2, ,] as number[]],
+  ["only holes", new Array<number>(3)],
+];
+
 describe("mean", () => {
   it("should not mutate the input array", () => {
     const array = [2, 10, 1];
@@ -17,17 +29,12 @@ describe("mean", () => {
     expect(mean([Number.MAX_VALUE, Number.MAX_VALUE])).toBe(Infinity);
   });
 
-  it.each([
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole in the middle", [1, , 3] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole between equal values", [1, , 1] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole at the end", [1, 2, ,] as number[]],
-    ["only holes", new Array<number>(3)],
-  ])("should return NaN for a sparse array with %s", (_, array) => {
-    expect(mean(array)).toBeNaN();
-  });
+  it.each(sparseArrays)(
+    "should return NaN for a sparse array with %s",
+    (_, array) => {
+      expect(mean(array)).toBeNaN();
+    },
+  );
 
   it.each([
     [[1, NaN, 3]],
@@ -97,15 +104,12 @@ describe("median", () => {
     expect(array).toEqual([2, 10, 1]);
   });
 
-  it.each([
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole in the middle", [1, , 3] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole at the end", [1, 2, ,] as number[]],
-    ["only holes", new Array<number>(3)],
-  ])("should return NaN for a sparse array with %s", (_, array) => {
-    expect(median(array)).toBeNaN();
-  });
+  it.each(sparseArrays)(
+    "should return NaN for a sparse array with %s",
+    (_, array) => {
+      expect(median(array)).toBeNaN();
+    },
+  );
 
   it.each([
     [[3, NaN, 1]],
@@ -202,17 +206,12 @@ describe("mode", () => {
     expect(array).toEqual([2, 10, 1, 10]);
   });
 
-  it.each([
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole in the middle", [1, , 3] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole between equal values", [1, , 1] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole at the end", [1, 2, ,] as number[]],
-    ["only holes", new Array<number>(3)],
-  ])("should return NaN for a sparse array with %s", (_, array) => {
-    expect(mode(array)).toBeNaN();
-  });
+  it.each(sparseArrays)(
+    "should return NaN for a sparse array with %s",
+    (_, array) => {
+      expect(mode(array)).toBeNaN();
+    },
+  );
 
   it.each([
     [[1, NaN, 3]],
@@ -292,17 +291,12 @@ describe("range", () => {
     },
   );
 
-  it.each([
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole in the middle", [1, , 3] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole between equal values", [1, , 1] as number[]],
-    // eslint-disable-next-line no-sparse-arrays
-    ["a hole at the end", [1, 2, ,] as number[]],
-    ["only holes", new Array<number>(3)],
-  ])("should return NaN for a sparse array with %s", (_, array) => {
-    expect(range(array)).toBeNaN();
-  });
+  it.each(sparseArrays)(
+    "should return NaN for a sparse array with %s",
+    (_, array) => {
+      expect(range(array)).toBeNaN();
+    },
+  );
 
   it.each([
     [[1, NaN, 3]],
