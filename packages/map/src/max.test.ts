@@ -95,7 +95,7 @@ describe("max", () => {
     [[-0, 0, 0]],
     [[-0, 0, -0]],
     [[0, -0, 0]],
-  ])("should return the value that Math.max returns for %j", (values) => {
+  ])("should return the value that Math.max returns for %p", (values) => {
     const map = new Map(values.map((value, index) => [index, value]));
 
     expect(max(map)[1]).toBe(Math.max(...values));

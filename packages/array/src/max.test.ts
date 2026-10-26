@@ -22,7 +22,7 @@ describe("max", () => {
     [[-0, 0, 0]],
     [[-0, 0, -0]],
     [[0, -0, 0]],
-  ])("should match Math.max for %j", (array) => {
+  ])("should match Math.max for %p", (array) => {
     expect(max(array)).toBe(Math.max(...array));
   });
 

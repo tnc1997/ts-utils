@@ -95,7 +95,7 @@ describe("min", () => {
     [[-0, 0, 0]],
     [[-0, 0, -0]],
     [[0, -0, 0]],
-  ])("should return the value that Math.min returns for %j", (values) => {
+  ])("should return the value that Math.min returns for %p", (values) => {
     const map = new Map(values.map((value, index) => [index, value]));
 
     expect(min(map)[1]).toBe(Math.min(...values));
