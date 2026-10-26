@@ -120,7 +120,7 @@ describe("median", () => {
     [[1, 2, 3, NaN]],
     [[NaN]],
     [[NaN, NaN]],
-  ])("should return NaN when %j contains NaN", (array) => {
+  ])("should return NaN when %p contains NaN", (array) => {
     expect(median(array)).toBeNaN();
   });
 
@@ -271,21 +271,21 @@ describe("range", () => {
   });
 
   it.each([[[-0]], [[-0, 0]], [[0, -0]]])(
-    "should return 0 rather than -0 for %j",
+    "should return 0 rather than -0 for %p",
     (array) => {
       expect(range(array)).toBe(0);
     },
   );
 
   it.each([[[Infinity]], [[-Infinity, -Infinity]], [[5, 5, 5]]])(
-    "should return 0 when all of the values in %j are equal",
+    "should return 0 when all of the values in %p are equal",
     (array) => {
       expect(range(array)).toBe(0);
     },
   );
 
   it.each([[[-Infinity, Infinity]], [[1, Infinity]], [[-Infinity, 1]]])(
-    "should return Infinity when %j contains an infinite extreme",
+    "should return Infinity when %p contains an infinite extreme",
     (array) => {
       expect(range(array)).toBe(Infinity);
     },

@@ -22,7 +22,7 @@ describe("min", () => {
     [[-0, 0, 0]],
     [[-0, 0, -0]],
     [[0, -0, 0]],
-  ])("should match Math.min for %j", (array) => {
+  ])("should match Math.min for %p", (array) => {
     expect(min(array)).toBe(Math.min(...array));
   });
 
