@@ -1,5 +1,10 @@
 /**
  * Returns the frequency of each value in an array.
+ *
+ * Values are compared using SameValueZero, like the keys of a `Map`, so `NaN`
+ * values are counted together, `-0` and `0` are counted together under the key
+ * `0`, and objects are compared by reference. The keys are in the order that
+ * the values first appear, and empty slots in sparse arrays are skipped.
  * @param array - the array to get the frequencies of
  * @returns the frequency of each value in an array
  * @example

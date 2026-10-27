@@ -61,7 +61,7 @@ console.log(await filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0,
 
 ### `frequencies<T>(array: T[]): Map<T, number>`
 
-Returns the frequency of each value in an array.
+Returns the frequency of each value in an array. Values are compared using SameValueZero, like the keys of a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality), so `NaN` values are counted together, `-0` and `0` are counted together under the key `0`, and objects are compared by reference. The keys are in the order that the values first appear, and empty slots in sparse arrays are skipped.
 
 ```ts
 import { frequencies } from "@ts-utils/array";
