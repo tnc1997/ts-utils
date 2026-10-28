@@ -67,7 +67,7 @@ describe("mean", () => {
   });
 
   it("should return the mean of an array whose mean is not exactly representable", () => {
-    expect(mean([0.1, 0.2])).toBeCloseTo(0.15);
+    expect(mean([0.1, 0.2])).toBeCloseTo(0.15, 15);
   });
 
   it("should return the mean of an array with duplicate values", () => {

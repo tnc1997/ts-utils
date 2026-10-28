@@ -2,7 +2,7 @@ import { InsufficientValuesError, sum } from "./index";
 
 describe("sum", () => {
   it("should add the values from left to right without compensated summation", () => {
-    expect(sum([0.1, 0.2])).toBe(0.1 + 0.2);
+    expect(sum([0.1, 0.2, 0.3])).toBe(0.1 + 0.2 + 0.3);
   });
 
   it("should not mutate the input array", () => {
@@ -20,6 +20,14 @@ describe("sum", () => {
 
   it("should return 0 for an array of -0 and 0", () => {
     expect(sum([-0, 0])).toBe(0);
+  });
+
+  it("should return NaN for a large array with NaN at the end", () => {
+    const array = Array.from({ length: 200_000 }, (_, index) => index);
+
+    array.push(NaN);
+
+    expect(sum(array)).toBeNaN();
   });
 
   it.each([
@@ -48,6 +56,9 @@ describe("sum", () => {
     [[1, Infinity], Infinity],
     [[-Infinity, 1], -Infinity],
     [[Infinity, -Infinity], NaN],
+    [[Infinity, Infinity], Infinity],
+    [[Number.MAX_VALUE, Number.MAX_VALUE], Infinity],
+    [[-Number.MAX_VALUE, -Number.MAX_VALUE], -Infinity],
   ])("should return the sum of %p as %p", (array, expected) => {
     expect(sum(array)).toBe(expected);
   });
