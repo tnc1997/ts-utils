@@ -66,6 +66,10 @@ describe("mean", () => {
     expect(mean([2, 10, 1])).toEqual(13 / 3);
   });
 
+  it("should return the mean of an array whose mean is not exactly representable", () => {
+    expect(mean([0.1, 0.2])).toBeCloseTo(0.15, 15);
+  });
+
   it("should return the mean of an array with duplicate values", () => {
     expect(mean([2, 2, 4])).toEqual(8 / 3);
   });
