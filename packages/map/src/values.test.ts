@@ -7,6 +7,7 @@ describe("values", () => {
     values<string, number>(map).push(2);
 
     expect(map).toEqual(new Map([["a", 1]]));
+    expect(values<string, number>(map)).toEqual([1]);
   });
 
   it("should return a new array for each call", () => {
@@ -27,8 +28,9 @@ describe("values", () => {
 
     map.delete(1);
     map.set(1, "c");
+    map.set(2, "d");
 
-    expect(values<number, string>(map)).toEqual(["b", "c"]);
+    expect(values<number, string>(map)).toEqual(["d", "c"]);
   });
 
   it("should return the values of a map", () => {
@@ -53,7 +55,7 @@ describe("values", () => {
       ]),
     );
 
-    expect(result).toEqual([1, value, NaN, undefined]);
+    expect(result).toStrictEqual([1, value, NaN, undefined]);
     expect(result[1]).toBe(value);
   });
 });

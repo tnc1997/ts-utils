@@ -7,6 +7,7 @@ describe("keys", () => {
     keys<string, number>(map).push("b");
 
     expect(map).toEqual(new Map([["a", 1]]));
+    expect(keys<string, number>(map)).toEqual(["a"]);
   });
 
   it("should return a new array for each call", () => {
@@ -27,6 +28,7 @@ describe("keys", () => {
 
     map.delete(1);
     map.set(1, "c");
+    map.set(2, "d");
 
     expect(keys<number, string>(map)).toEqual([2, 1]);
   });
@@ -53,13 +55,13 @@ describe("keys", () => {
       ]),
     );
 
-    expect(result).toEqual([1, key, NaN, undefined]);
+    expect(result).toStrictEqual([1, key, NaN, undefined]);
     expect(result[1]).toBe(key);
   });
 
   it("should return +0 for a -0 key", () => {
     const [key] = keys<number, number>(new Map<number, number>([[-0, 1]]));
 
-    expect(Object.is(key, 0)).toBe(true);
+    expect(key).toBe(0);
   });
 });

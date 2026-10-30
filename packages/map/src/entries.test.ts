@@ -9,6 +9,7 @@ describe("entries", () => {
     }
 
     expect(map).toEqual(new Map([["a", 1]]));
+    expect(entries<string, number>(map)).toEqual([["a", 1]]);
   });
 
   it("should not change the map when the array is changed", () => {
@@ -18,6 +19,7 @@ describe("entries", () => {
     result.push(["b", 2]);
 
     expect(map).toEqual(new Map([["a", 1]]));
+    expect(entries<string, number>(map)).toEqual([["a", 1]]);
   });
 
   it("should return a new array for each call", () => {
@@ -38,9 +40,10 @@ describe("entries", () => {
 
     map.delete(1);
     map.set(1, "c");
+    map.set(2, "d");
 
     expect(entries<number, string>(map)).toEqual([
-      [2, "b"],
+      [2, "d"],
       [1, "c"],
     ]);
   });
@@ -67,7 +70,7 @@ describe("entries", () => {
       ]),
     );
 
-    expect(result).toEqual([
+    expect(result).toStrictEqual([
       [1, NaN],
       [key, value],
       [NaN, undefined],
