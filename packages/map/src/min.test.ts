@@ -17,17 +17,6 @@ describe("min", () => {
     ]);
   });
 
-  it("should return the key by reference", () => {
-    const a = { id: 1 };
-    const b = { id: 2 };
-    const map = new Map([
-      [a, 1],
-      [b, 2],
-    ]);
-
-    expect(min(map)[0]).toBe(a);
-  });
-
   it("should return a new entry that does not share state with the map", () => {
     const map = new Map([
       ["a", 1],
@@ -42,6 +31,8 @@ describe("min", () => {
       ["a", 1],
       ["b", 2],
     ]);
+    expect(min(map)).not.toBe(entry);
+    expect(min(map)).toEqual(["a", 1]);
   });
 
   it("should return the entry with the minimum value of a large map", () => {
@@ -98,6 +89,17 @@ describe("min", () => {
     ]);
 
     expect(min(map)).toEqual(["a", 5]);
+  });
+
+  it("should return the key by reference", () => {
+    const a = { id: 1 };
+    const b = { id: 2 };
+    const map = new Map([
+      [a, 2],
+      [b, 1],
+    ]);
+
+    expect(min(map)[0]).toBe(b);
   });
 
   it.each([

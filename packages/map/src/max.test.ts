@@ -17,17 +17,6 @@ describe("max", () => {
     ]);
   });
 
-  it("should return the key by reference", () => {
-    const a = { id: 1 };
-    const b = { id: 2 };
-    const map = new Map([
-      [a, 1],
-      [b, 2],
-    ]);
-
-    expect(max(map)[0]).toBe(b);
-  });
-
   it("should return a new entry that does not share state with the map", () => {
     const map = new Map([
       ["a", 1],
@@ -42,6 +31,8 @@ describe("max", () => {
       ["a", 1],
       ["b", 2],
     ]);
+    expect(max(map)).not.toBe(entry);
+    expect(max(map)).toEqual(["b", 2]);
   });
 
   it("should return the entry with the maximum value of a large map", () => {
@@ -98,6 +89,17 @@ describe("max", () => {
     ]);
 
     expect(max(map)).toEqual(["a", 5]);
+  });
+
+  it("should return the key by reference", () => {
+    const a = { id: 1 };
+    const b = { id: 2 };
+    const map = new Map([
+      [a, 1],
+      [b, 2],
+    ]);
+
+    expect(max(map)[0]).toBe(b);
   });
 
   it.each([
