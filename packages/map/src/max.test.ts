@@ -135,6 +135,9 @@ describe("max", () => {
 
     expect(() => max<string>(map)).toThrow(InsufficientValuesError);
     expect(() => max<string>(map)).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => max<string>(map)).toThrow(
       "The map does not contain enough values to calculate the maximum.",
     );
   });

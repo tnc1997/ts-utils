@@ -135,6 +135,9 @@ describe("min", () => {
 
     expect(() => min<string>(map)).toThrow(InsufficientValuesError);
     expect(() => min<string>(map)).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => min<string>(map)).toThrow(
       "The map does not contain enough values to calculate the minimum.",
     );
   });
