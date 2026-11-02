@@ -85,6 +85,9 @@ describe("mean", () => {
   it("should throw when the array is empty", () => {
     expect(() => mean([])).toThrow(InsufficientValuesError);
     expect(() => mean([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => mean([])).toThrow(
       "The array does not contain enough values to calculate the mean.",
     );
   });
@@ -182,6 +185,9 @@ describe("median", () => {
   it("should throw when the array is empty", () => {
     expect(() => median([])).toThrow(InsufficientValuesError);
     expect(() => median([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => median([])).toThrow(
       "The array does not contain enough values to calculate the median.",
     );
   });
@@ -259,6 +265,9 @@ describe("mode", () => {
 
   it("should throw when the array is empty", () => {
     expect(() => mode([])).toThrow(InsufficientValuesError);
+    expect(() => mode([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
     expect(() => mode([])).toThrow(
       "The array does not contain enough values to calculate the mode.",
     );
@@ -346,6 +355,9 @@ describe("range", () => {
 
   it("should throw when the array is empty", () => {
     expect(() => range([])).toThrow(InsufficientValuesError);
+    expect(() => range([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
     expect(() => range([])).toThrow(
       "The array does not contain enough values to calculate the range.",
     );

@@ -262,7 +262,7 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
 - Assert one behavior in each `it` block, and name that behavior in its title, so that a failing test
   says what broke and doesn't hide a second regression behind the first. As a guide:
   - Several `expect`s that describe one outcome count as one behavior, e.g. a result's length and the
-    absence of a hole, or a thrown error's class and message.
+    absence of a hole, or a thrown error's class, name, and message.
   - Looping over inputs or using `it.each` for the same behavior is fine, e.g.
     `for (const concurrency of [1, 2, Infinity])`.
   - The result, the number or arguments of callback calls, mutation of the input, and timing (such as
@@ -286,11 +286,18 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
     appending it.
 - Cover edge cases alongside the happy path, such as empty and single-element inputs, negative numbers,
   and duplicates, and check that functions don't mutate their inputs.
-- When testing that a function throws, assert both the error class and the message:
+- When testing that a function throws, assert the error class, name, and message. The name is what
+  the documentation tells users to check when more than one copy of the package is loaded and
+  `instanceof` fails, so a test of the class alone doesn't cover it:
 
   ```ts
   expect(() => sum([])).toThrow(InsufficientValuesError);
-  expect(() => sum([])).toThrow("The array does not contain enough values to calculate the sum.");
+  expect(() => sum([])).toThrow(
+    expect.objectContaining({ name: "InsufficientValuesError" }),
+  );
+  expect(() => sum([])).toThrow(
+    "The array does not contain enough values to calculate the sum.",
+  );
   ```
 
 Coverage is enforced at 100% for branches, functions, lines, and statements, so `npm test` fails if any

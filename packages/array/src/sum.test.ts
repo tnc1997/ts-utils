@@ -84,6 +84,9 @@ describe("sum", () => {
   it("should throw an error when the array is empty", () => {
     expect(() => sum([])).toThrow(InsufficientValuesError);
     expect(() => sum([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => sum([])).toThrow(
       "The array does not contain enough values to calculate the sum.",
     );
   });

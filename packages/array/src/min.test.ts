@@ -69,6 +69,9 @@ describe("min", () => {
   it("should throw an error when the array is empty", () => {
     expect(() => min([])).toThrow(InsufficientValuesError);
     expect(() => min([])).toThrow(
+      expect.objectContaining({ name: "InsufficientValuesError" }),
+    );
+    expect(() => min([])).toThrow(
       "The array does not contain enough values to calculate the minimum.",
     );
   });
