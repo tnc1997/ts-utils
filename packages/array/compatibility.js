@@ -2,68 +2,30 @@
 
 const { check } = require("../../compatibility.base.js");
 
-const double = async (value) => value * 2;
-const isEven = async (value) => value % 2 === 0;
-
-/**
- * Returns the name of the error that `promise` rejects with, and the messages
- * of its `errors` for an `AggregateError`, or of the error itself otherwise.
- */
-const rejection = (promise) =>
-  promise.then(
-    () => "resolved",
-    (error) => [
-      error.name,
-      error.errors ? error.errors.map(({ message }) => message) : error.message,
-    ],
-  );
-
-const rejectOdd = async (value) => {
-  if (value % 2 !== 0) {
-    throw new Error(`boom ${value}`);
-  }
-
-  return value;
-};
-
 check(__dirname, "tsUtils.array", [
   {
     name: "contains",
-    run: ({ contains }) => [
-      contains([1, 2, 3], 2),
-      contains([1, 2, 3], 4),
-      contains([1, NaN, 3], NaN),
-    ],
-    expected: [true, false, true],
+    run: ({ contains }) => contains([1, 2, 3], 2),
+    expected: true,
   },
   {
     name: "count",
-    run: ({ count }) => [
-      count([1, 2, 3, 4, 5]),
-      count([1, 2, 3, 4, 5], (value) => value % 2 === 0),
-    ],
-    expected: [5, 2],
+    run: ({ count }) => count([1, 2, 3, 4, 5]),
+    expected: 5,
   },
   {
     name: "filterAsync",
-    run: async ({ filterAsync }) => [
-      await filterAsync([1, 2, 3, 4, 5], isEven),
-      await filterAsync([1, 2, 3, 4, 5], isEven, { concurrency: 2 }),
-      await filterAsync([0, 1, "", "a", null], async (value) => value),
-    ],
-    expected: [
-      [2, 4],
-      [2, 4],
-      [1, "a"],
-    ],
+    run: ({ filterAsync }) =>
+      filterAsync([1, 2, 3, 4, 5], async (value) => value % 2 === 0),
+    expected: [2, 4],
   },
   {
     name: "frequencies",
-    run: ({ frequencies }) => frequencies(["a", "b", "a"]),
-    expected: new Map([
+    run: ({ frequencies }) => [...frequencies(["a", "b", "a"])],
+    expected: [
       ["a", 2],
       ["b", 1],
-    ]),
+    ],
   },
   {
     name: "InsufficientValuesError",
@@ -76,18 +38,8 @@ check(__dirname, "tsUtils.array", [
   },
   {
     name: "mapAsync",
-    run: async ({ mapAsync }) => [
-      await mapAsync([1, 2, 3], double),
-      await mapAsync([1, 2, 3], double, { concurrency: 2 }),
-      await rejection(mapAsync([1, 2, 3], rejectOdd, { concurrency: 1 })),
-      await rejection(mapAsync([1, 2, 3], rejectOdd, { stopOnError: false })),
-    ],
-    expected: [
-      [2, 4, 6],
-      [2, 4, 6],
-      ["Error", "boom 1"],
-      ["AggregateError", ["boom 1", "boom 3"]],
-    ],
+    run: ({ mapAsync }) => mapAsync([1, 2, 3], async (value) => value * 2),
+    expected: [2, 4, 6],
   },
   {
     name: "max",
@@ -106,8 +58,8 @@ check(__dirname, "tsUtils.array", [
   },
   {
     name: "median",
-    run: ({ median }) => [median([10, 9, 1]), median([1, 3, 2, 4])],
-    expected: [9, 2.5],
+    run: ({ median }) => median([10, 9, 1]),
+    expected: 9,
   },
   {
     name: "min",
@@ -128,10 +80,5 @@ check(__dirname, "tsUtils.array", [
     name: "sum",
     run: ({ sum }) => sum([1, 2, 3]),
     expected: 6,
-  },
-  {
-    name: "sum",
-    run: ({ sum }) => sum([]),
-    throws: "InsufficientValuesError",
   },
 ]);

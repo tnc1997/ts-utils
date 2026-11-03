@@ -7,14 +7,11 @@ const vm = require("node:vm");
 /**
  * Converts a value into a string that can be compared across realms, since
  * values returned by the UMD build are created in a separate `vm` context
- * and so have different prototypes to values created here.
+ * and so have different prototypes to values created here. Cases should
+ * return values that survive `JSON.stringify`, e.g. arrays rather than maps.
  */
 function serialize(value) {
-  return JSON.stringify(value, (key, value) =>
-    Object.prototype.toString.call(value) === "[object Map]"
-      ? { Map: [...value] }
-      : value,
-  );
+  return JSON.stringify(value);
 }
 
 /**
