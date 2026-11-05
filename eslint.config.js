@@ -1,35 +1,35 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-
-const { FlatCompat } = require("@eslint/eslintrc");
 const js = require("@eslint/js");
 const esX = require("eslint-plugin-es-x");
+const prettierRecommended = require("eslint-plugin-prettier/recommended");
+const { defineConfig } = require("eslint/config");
+const globals = require("globals");
+const tseslint = require("typescript-eslint");
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
-
-module.exports = [
+module.exports = defineConfig([
   {
     ignores: ["**/dist/**"],
   },
-  ...compat.config({
-    env: {
-      browser: true,
-      node: true,
+  js.configs.recommended,
+  tseslint.configs.recommended,
+  prettierRecommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
-    extends: [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended",
-    ],
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+  },
+  {
+    // Plain .js files are CommonJS, as the root package.json has no type.
+    files: ["**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs",
     },
-    plugins: ["@typescript-eslint"],
-  }),
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
   {
     // The builds target ES2015 and tsdown lowers newer syntax, but built-ins
     // aren't polyfilled, so package source must not use any newer than
@@ -63,4 +63,4 @@ module.exports = [
       "es-x/no-trailing-function-commas": "off",
     },
   },
-];
+]);
