@@ -86,7 +86,7 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) `^22.18.0`, `^24.11.0`, or `>=26.0.0`, matching the `engines` field in
+- [Node.js](https://nodejs.org/) `^22.23.0`, `^24.18.0`, or `>=26.4.0`, matching the `engines` field in
   the root `package.json`. This is the version needed to develop in the repository; the published
   packages support a wider range (see [Runtime support](#runtime-support)).
 - npm, which ships with Node.js. The repository relies on npm workspaces and a committed
