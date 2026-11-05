@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-
 const js = require("@eslint/js");
 const esX = require("eslint-plugin-es-x");
 const prettierRecommended = require("eslint-plugin-prettier/recommended");
@@ -20,6 +18,16 @@ module.exports = defineConfig([
         ...globals.browser,
         ...globals.node,
       },
+    },
+  },
+  {
+    // Plain .js files are CommonJS, as the root package.json has no type.
+    files: ["**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
   {

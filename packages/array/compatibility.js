@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-
 const { check } = require("../../compatibility.base.js");
 
 check(__dirname, "tsUtils.array", [
