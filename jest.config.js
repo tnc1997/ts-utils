@@ -1,7 +1,6 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.ts", "!src/**/*.test.ts"],
+  collectCoverageFrom: ["packages/*/src/**/*.ts", "!**/*.test.ts"],
   coverageThreshold: {
     global: {
       branches: 100,
@@ -10,5 +9,7 @@ module.exports = {
       statements: 100,
     },
   },
-  preset: "ts-jest",
+  transform: {
+    "^.+\\.ts$": ["ts-jest", { tsconfig: "tsconfig.base.json" }],
+  },
 };

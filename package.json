@@ -20,7 +20,7 @@
     "changeset": "changeset",
     "lint": "eslint .",
     "size": "size-limit",
-    "test": "npm exec --workspace packages -- jest --coverage"
+    "test": "jest --coverage"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.0",

@@ -61,7 +61,7 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
   UMD build via `unpkg` in a `vm` context) and runs a case for every export against each of them, to
   catch packaging/compatibility regressions and unsupported built-ins across Node versions. The shared
   runner is `compatibility.base.js` at the repository root.
-- `package.json`, `tsconfig.json`, `tsdown.config.mts`, `jest.config.js` – per-package configuration.
+- `package.json`, `tsconfig.json`, `tsdown.config.mts` – per-package configuration.
   Packages are marked `"sideEffects": false`, so modules must not have top-level side effects.
 - `README.md`, `CHANGELOG.md`, `LICENSE` – published alongside the package to npm.
 
@@ -71,9 +71,9 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
   `strict`, `noUncheckedIndexedAccess`, `noImplicitReturns`, and `noFallthroughCasesInSwitch`.
 - `compatibility.base.js` – the runner shared by every package's `compatibility.js`. It fails if an
   export has no case, or if a case returns an unexpected value or throws, in any of the builds.
-- `jest.config.base.js` – the base Jest configuration extended by every package. It collects coverage
-  from `src/**/*.ts` (excluding `*.test.ts` files) and enforces a 100% coverage threshold for branches,
-  functions, lines, and statements.
+- `jest.config.js` – the Jest configuration for every package, which runs their tests in a single Jest
+  run from the repository root. It collects coverage from `packages/*/src/**/*.ts` (excluding `*.test.ts`
+  files) and enforces a 100% coverage threshold for branches, functions, lines, and statements.
 - `.size-limit.js` – the bundle size budget for each package's ESM build (see
   [Checking bundle size](#checking-bundle-size)).
 - `.github/CODEOWNERS` – pull requests automatically request a review from the code owners.
@@ -106,17 +106,17 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
    npm run build
    ```
 
-3. Run the test suite (runs `jest --coverage` for every workspace under `packages/*`):
+3. Run the test suite (runs `jest --coverage` from the repository root, which runs the tests of every
+   package under `packages/*`):
 
    ```sh
    npm test
    ```
 
-   The packages don't define their own `test` scripts, so to run a single package's tests, run Jest in
-   that workspace instead:
+   To run a single package's tests, pass its directory to Jest instead:
 
    ```sh
-   npm exec --workspace packages/array -- jest
+   npx jest packages/array
    ```
 
 4. Lint the repository:
@@ -279,7 +279,7 @@ Tests are written with [Jest](https://jestjs.io/) and follow these conventions:
   - Don't repeat in a test's title a qualifier that its group provides, e.g. write
     `it("should skip holes", ...)` inside `describe("sparse arrays", ...)`. Jest prints the full
     `describe` path on failure, and a group can be run on its own with `-t`, e.g.
-    `npm exec --workspace packages/array -- jest --coverage=false -t "mapAsync sparse arrays"`.
+    `npx jest -t "mapAsync sparse arrays"`.
   - Sort the groups alphabetically, and sort the `it` blocks alphabetically by title within each group
     (or within a flat block), comparing titles character by character as `Array.prototype.sort` does.
     Add a new test to the group for the behavior it covers, in alphabetical position, rather than
@@ -363,8 +363,8 @@ and statements, so untested code fails the run with a message such as:
 Jest: Coverage for branches (87.5%) does not meet "global" threshold (100%)
 ```
 
-Check the coverage table printed above the message, or open
-`packages/<name>/coverage/lcov-report/index.html`, to find the uncovered lines, and add tests for them.
+Check the coverage table printed above the message, or open `coverage/lcov-report/index.html`, to find
+the uncovered lines, and add tests for them.
 
 **`npm run size` or `compatibility.js` can't find the build output.** Both run against `dist/`, which
 isn't committed, so they fail with messages such as:
