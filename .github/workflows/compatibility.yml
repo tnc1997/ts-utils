@@ -32,18 +32,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-node-${{ matrix.node }}
+          retention-days: 1
           path: |
             packages/array/package.json
             packages/array/dist
             packages/map/package.json
             packages/map/dist
     strategy:
+      fail-fast: false
       matrix:
-        # Keep in sync with `build` in the matrix of the compatibility job.
         node: [ '22', '24', '26' ]
 
   compatibility:
-    name: Compatibility
+    name: Compatibility (Build ${{ matrix.build }}, Node ${{ matrix.node }}, Package ${{ matrix.package }})
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -64,9 +65,8 @@ jobs:
       - name: Require @ts-utils/${{ matrix.package }} built on Node ${{ matrix.build }}
         run: node packages/${{ matrix.package }}/compatibility.js
     strategy:
+      fail-fast: false
       matrix:
-        # The Node versions that the packages are built on, which must match
-        # `node` in the matrix of the build job.
         build: [ '22', '24', '26' ]
         node: [ '18', '20', '22', '24', '26' ]
         package: [ 'array', 'map' ]
