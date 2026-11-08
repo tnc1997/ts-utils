@@ -27,37 +27,46 @@ function serialize(value) {
  * @param {{ name: string, run: (exports: object) => unknown, expected?: unknown, throws?: string }[]} cases - the cases to check
  */
 async function check(directory, name, cases) {
+  const manifestPath = path.join(directory, "package.json");
+
   const {
     main: mainPath,
     module: modulePath,
-    unpkg: umdPath,
+    unpkg: unpkgPath,
     jsdelivr: jsdelivrPath,
-  } = require(path.join(directory, "package.json"));
+  } = require(manifestPath);
 
-  if (jsdelivrPath !== umdPath) {
-    throw new Error(
-      `jsdelivr (${jsdelivrPath}) does not match unpkg (${umdPath}) in ${directory}/package.json`,
-    );
-  }
-
-  const context = {};
-
-  vm.createContext(context);
-
-  vm.runInContext(
-    fs.readFileSync(path.join(directory, umdPath), "utf8"),
-    context,
-  );
+  const failures = [];
 
   const builds = {
     cjs: require(path.join(directory, mainPath)),
     esm: await import(path.join(directory, modulePath)),
-    // The global name may be a dotted path into a namespace, e.g.
-    // `tsUtils.array`.
-    umd: name.split(".").reduce((object, key) => object?.[key], context),
   };
 
-  const failures = [];
+  if (typeof unpkgPath !== "string") {
+    failures.push(`umd: unpkg is missing in ${manifestPath}`);
+  } else {
+    if (jsdelivrPath !== unpkgPath) {
+      failures.push(
+        `umd: jsdelivr (${jsdelivrPath}) does not match unpkg (${unpkgPath}) in ${manifestPath}`,
+      );
+    }
+
+    const context = {};
+
+    vm.createContext(context);
+
+    vm.runInContext(
+      fs.readFileSync(path.join(directory, unpkgPath), "utf8"),
+      context,
+    );
+
+    // The global name may be a dotted path into a namespace, e.g.
+    // `tsUtils.array`.
+    builds.umd = name
+      .split(".")
+      .reduce((object, key) => object?.[key], context);
+  }
 
   for (const [build, exports] of Object.entries(builds)) {
     for (const key of Object.keys(exports)) {
