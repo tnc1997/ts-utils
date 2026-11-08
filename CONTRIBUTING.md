@@ -58,9 +58,9 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
   and not committed to source control.
 - `compatibility.js` – a plain Node script, run in CI, that loads each of the built package's entry
   points (the CJS build via `main` with `require`, the ESM build via `module` with `import()`, and the
-  UMD build via `browser` in a `vm` context) and runs a case for every export against each of them, to
-  catch packaging/compatibility regressions and unsupported built-ins across Node versions. The shared
-  runner is `compatibility.base.js` at the repository root.
+  UMD build via `unpkg`, which `jsdelivr` must match, in a `vm` context) and runs a case for every
+  export against each of them, to catch packaging/compatibility regressions and unsupported built-ins
+  across Node versions. The shared runner is `compatibility.base.js` at the repository root.
 - `package.json`, `tsconfig.json`, `tsdown.config.mts`, `jest.config.js` – per-package configuration.
   Packages are marked `"sideEffects": false`, so modules must not have top-level side effects.
 - `README.md`, `CHANGELOG.md`, `LICENSE` – published alongside the package to npm.

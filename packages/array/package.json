@@ -30,7 +30,8 @@
   ],
   "main": "./dist/array.cjs",
   "module": "./dist/array.mjs",
-  "browser": "./dist/array.umd.js",
+  "unpkg": "./dist/array.umd.js",
+  "jsdelivr": "./dist/array.umd.js",
   "types": "./dist/array.d.cts",
   "exports": {
     ".": {

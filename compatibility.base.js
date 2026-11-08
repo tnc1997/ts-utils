@@ -13,9 +13,9 @@ function serialize(value) {
 }
 
 /**
- * Loads the CJS (`main`), ESM (`module`), and UMD (`browser`) builds of the
+ * Loads the CJS (`main`), ESM (`module`), and UMD (`unpkg`) builds of the
  * package in `directory`, and checks the result of every case against each
- * of them.
+ * of them. The `jsdelivr` field must point at the same UMD build as `unpkg`.
  *
  * Every export of the package must have at least one case, so that every
  * function is run on each Node version. A case either returns a value (or a
@@ -27,16 +27,25 @@ function serialize(value) {
  * @param {{ name: string, run: (exports: object) => unknown, expected?: unknown, throws?: string }[]} cases - the cases to check
  */
 async function check(directory, name, cases) {
-  const { main: mainPath, module: modulePath, browser: browserPath } = require(
-    path.join(directory, "package.json"),
-  );
+  const {
+    main: mainPath,
+    module: modulePath,
+    unpkg: umdPath,
+    jsdelivr: jsdelivrPath,
+  } = require(path.join(directory, "package.json"));
+
+  if (jsdelivrPath !== umdPath) {
+    throw new Error(
+      `jsdelivr (${jsdelivrPath}) does not match unpkg (${umdPath}) in ${directory}/package.json`,
+    );
+  }
 
   const context = {};
 
   vm.createContext(context);
 
   vm.runInContext(
-    fs.readFileSync(path.join(directory, browserPath), "utf8"),
+    fs.readFileSync(path.join(directory, umdPath), "utf8"),
     context,
   );
 
