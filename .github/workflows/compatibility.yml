@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
