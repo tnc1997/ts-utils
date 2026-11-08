@@ -13,7 +13,7 @@ function serialize(value) {
 }
 
 /**
- * Loads the CJS (`main`), ESM (`module`), and UMD (`browser`) builds of the
+ * Loads the CJS (`main`), ESM (`module`), and UMD (`unpkg`) builds of the
  * package in `directory`, and checks the result of every case against each
  * of them.
  *
@@ -27,7 +27,7 @@ function serialize(value) {
  * @param {{ name: string, run: (exports: object) => unknown, expected?: unknown, throws?: string }[]} cases - the cases to check
  */
 async function check(directory, name, cases) {
-  const { main: mainPath, module: modulePath, browser: browserPath } = require(
+  const { main: mainPath, module: modulePath, unpkg: unpkgPath } = require(
     path.join(directory, "package.json"),
   );
 
@@ -36,7 +36,7 @@ async function check(directory, name, cases) {
   vm.createContext(context);
 
   vm.runInContext(
-    fs.readFileSync(path.join(directory, browserPath), "utf8"),
+    fs.readFileSync(path.join(directory, unpkgPath), "utf8"),
     context,
   );
 

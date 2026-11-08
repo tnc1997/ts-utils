@@ -24,7 +24,8 @@
   ],
   "main": "./dist/map.cjs",
   "module": "./dist/map.mjs",
-  "browser": "./dist/map.umd.js",
+  "unpkg": "./dist/map.umd.js",
+  "jsdelivr": "./dist/map.umd.js",
   "types": "./dist/map.d.cts",
   "exports": {
     ".": {
