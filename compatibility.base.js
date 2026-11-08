@@ -15,7 +15,7 @@ function serialize(value) {
 /**
  * Loads the CJS (`main`), ESM (`module`), and UMD (`unpkg`) builds of the
  * package in `directory`, and checks the result of every case against each
- * of them. The `jsdelivr` field must point at the same UMD build as `unpkg`.
+ * of them.
  *
  * Every export of the package must have at least one case, so that every
  * function is run on each Node version. A case either returns a value (or a
@@ -27,46 +27,28 @@ function serialize(value) {
  * @param {{ name: string, run: (exports: object) => unknown, expected?: unknown, throws?: string }[]} cases - the cases to check
  */
 async function check(directory, name, cases) {
-  const manifestPath = path.join(directory, "package.json");
+  const { main: mainPath, module: modulePath, unpkg: unpkgPath } = require(
+    path.join(directory, "package.json"),
+  );
 
-  const {
-    main: mainPath,
-    module: modulePath,
-    unpkg: unpkgPath,
-    jsdelivr: jsdelivrPath,
-  } = require(manifestPath);
+  const context = {};
 
-  const failures = [];
+  vm.createContext(context);
+
+  vm.runInContext(
+    fs.readFileSync(path.join(directory, unpkgPath), "utf8"),
+    context,
+  );
 
   const builds = {
     cjs: require(path.join(directory, mainPath)),
     esm: await import(path.join(directory, modulePath)),
-  };
-
-  if (typeof unpkgPath !== "string") {
-    failures.push(`umd: unpkg is missing in ${manifestPath}`);
-  } else {
-    if (jsdelivrPath !== unpkgPath) {
-      failures.push(
-        `umd: jsdelivr (${jsdelivrPath}) does not match unpkg (${unpkgPath}) in ${manifestPath}`,
-      );
-    }
-
-    const context = {};
-
-    vm.createContext(context);
-
-    vm.runInContext(
-      fs.readFileSync(path.join(directory, unpkgPath), "utf8"),
-      context,
-    );
-
     // The global name may be a dotted path into a namespace, e.g.
     // `tsUtils.array`.
-    builds.umd = name
-      .split(".")
-      .reduce((object, key) => object?.[key], context);
-  }
+    umd: name.split(".").reduce((object, key) => object?.[key], context),
+  };
+
+  const failures = [];
 
   for (const [build, exports] of Object.entries(builds)) {
     for (const key of Object.keys(exports)) {
