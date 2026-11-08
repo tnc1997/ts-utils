@@ -1,6 +1,6 @@
 {
   "name": "@ts-utils/array",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Utilities for the Array type: statistics (max, mean, median, min, mode, range, sum), contains, count, frequencies, and concurrency-limited mapAsync and filterAsync.",
   "keywords": [
     "array",
