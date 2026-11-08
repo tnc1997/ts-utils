@@ -133,9 +133,9 @@ package under the `@ts-utils` scope (`@ts-utils/array`, `@ts-utils/map`). A pack
    ```
 
 CI (see `.github/workflows/`) runs `npm run lint` (Lint), `npm test` on Node 22, 24, and 26 (Test),
-`npm run build` followed by each package's `compatibility.js` on Node 18 to 26 (Compatibility), and a
-bundle size check on pull requests to `main` (Size), so it's worth running all of these locally before
-opening a PR.
+`npm run build` on Node 22, 24, and 26 followed by each package's `compatibility.js` against each of
+those builds on Node 18 to 26 (Compatibility), and a bundle size check on pull requests to `main`
+(Size), so it's worth running all of these locally before opening a PR.
 
 If your change affects the public behavior of a package, add a changeset (see
 [Changesets and releases](#changesets-and-releases)).
@@ -227,10 +227,10 @@ built-in that isn't typed there can reach it through a cast, e.g.
 MDN's browser compatibility tables when in doubt.
 
 The Test workflow only runs the test suite on the Node versions allowed by the root `engines` field, and
-the Compatibility workflow, which runs every export of the built output on Node 18 to 26, only exercises
-the code paths that the cases in `compatibility.js` reach. Node 18 supports far more than ES2015, and
-browsers aren't tested, so neither workflow catches a built-in newer than ES2015: the Lint workflow is
-what keeps them out of the package source.
+the Compatibility workflow, which runs every export of the output built on each of Node 22, 24, and 26 on
+Node 18 to 26, only exercises the code paths that the cases in `compatibility.js` reach. Node 18 supports
+far more than ES2015, and browsers aren't tested, so neither workflow catches a built-in newer than
+ES2015: the Lint workflow is what keeps them out of the package source.
 
 ## Adding or changing a function
 

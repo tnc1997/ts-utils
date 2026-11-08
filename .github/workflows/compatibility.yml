@@ -28,11 +28,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - if: matrix.node == '24'
-        name: Upload dist
+      - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: dist-node-${{ matrix.node }}
           path: |
             packages/array/package.json
             packages/array/dist
@@ -40,6 +39,7 @@ jobs:
             packages/map/dist
     strategy:
       matrix:
+        # Keep in sync with `build` in the matrix of the compatibility job.
         node: [ '22', '24', '26' ]
 
   compatibility:
@@ -53,7 +53,7 @@ jobs:
       - name: Download dist
         uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: dist-node-${{ matrix.build }}
           path: packages
 
       - name: Setup Node.js
@@ -61,9 +61,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Require @ts-utils/${{ matrix.package }}
+      - name: Require @ts-utils/${{ matrix.package }} built on Node ${{ matrix.build }}
         run: node packages/${{ matrix.package }}/compatibility.js
     strategy:
       matrix:
+        # The Node versions that the packages are built on, which must match
+        # `node` in the matrix of the build job.
+        build: [ '22', '24', '26' ]
         node: [ '18', '20', '22', '24', '26' ]
         package: [ 'array', 'map' ]
